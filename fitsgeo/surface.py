@@ -67,7 +67,6 @@ magnitude meaning for visualization);
 ...
 Look README.md for information and usage examples\n"""
 	print(text)
-	return text
 
 
 def create_scene(
