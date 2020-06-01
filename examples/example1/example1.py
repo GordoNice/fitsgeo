@@ -1,51 +1,51 @@
 # Example1: General illustrative example of use FitsGeo module
 # Illustrative example of FitsGeo usage
 # Covers almost all implemented features
-import fitsgeo  # Import FitsGeo first
+import fitsgeo
 
-fitsgeo.list_all_surfaces()  # Show all implemented surfaces
+fitsgeo.surface.list_all_surfaces()  # Show all implemented surfaces
 
 # Create main scene with axis
 ax_l = 5  # Specify axis length
-scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(ax_length=ax_l)
+scene, ax_x, ax_y, ax_z = fitsgeo.surface.create_scene(ax_length=ax_l)
 # Change scene background
-scene.background = fitsgeo.rgb_to_vector(192, 192, 192)
+scene.background = fitsgeo.surface.rgb_to_vector(192, 192, 192)
 
 # Plane definition
-p1 = fitsgeo.P(0.5, 1, 1, 2)
-px1 = fitsgeo.P(0, 0, 0, 1, vert="x")
-py1 = fitsgeo.P(0, 0, 0, -1, vert="y")
-pz1 = fitsgeo.P(0, 0, 0, -2, vert="z")
+p1 = fitsgeo.surface.P(0.5, 1, 1, 2)
+px1 = fitsgeo.surface.P(0, 0, 0, 1, vert="x")
+py1 = fitsgeo.surface.P(0, 0, 0, -1, vert="y")
+pz1 = fitsgeo.surface.P(0, 0, 0, -2, vert="z")
 
 # BOX definition
-box_l = fitsgeo.BOX(
+box_l = fitsgeo.surface.BOX(
 	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l")
-box_r = fitsgeo.BOX(
+box_r = fitsgeo.surface.BOX(
 	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r")
 
 # RPP definition
-table = fitsgeo.RPP([-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table")
+table = fitsgeo.surface.RPP([-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table")
 
 # SPH definition
-ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball")
+ball = fitsgeo.surface.SPH([0, 1.5, 0], 0.5, name="Ball")
 
 # RCC definition
-cyl = fitsgeo.RCC([0, 0, 0], [1, 1, 1], 0.2, name="Cylinder")
+cyl = fitsgeo.surface.RCC([0, 0, 0], [1, 1, 1], 0.2, name="Cylinder")
 
 # TRC definition
-cone = fitsgeo.TRC([0, 2, 0], [0, 0.5, 0], 0.5, 0.2, name="Hat")
+cone = fitsgeo.surface.TRC([0, 2, 0], [0, 0.5, 0], 0.5, 0.2, name="Hat")
 
 # TX definition
-hoop = fitsgeo.T([-3, 0, 0], 1, 0.05, 0.08, name="Hoop", rot="x")
+hoop = fitsgeo.surface.T([-3, 0, 0], 1, 0.05, 0.08, name="Hoop", rot="x")
 
 # TY definition
-ring = fitsgeo.T([-3, 0, 0], 0.03, 0.02, 0.01, name="Ring")
+ring = fitsgeo.surface.T([-3, 0, 0], 0.03, 0.02, 0.01, name="Ring")
 
 # TZ definition
-donut = fitsgeo.T([0, 3, 0], 0.3, 0.1, 0.1, name="Donut", rot="z")
+donut = fitsgeo.surface.T([0, 3, 0], 0.3, 0.1, 0.1, name="Donut", rot="z")
 
 # REC definition
-tabletop = fitsgeo.REC(
+tabletop = fitsgeo.surface.REC(
 	[0, 0.9, 0],
 	[0, 0.1, 0],
 	[1, 0, 0],
@@ -81,19 +81,19 @@ pz1.draw(size=ax_l)
 
 box_l.draw(opacity=0.5, label_base=True, label_center=True)
 box_r.draw(opacity=0.5, label_base=True, label_center=True)
-table.draw(color=fitsgeo.SIENNA, label_center=True)
+table.draw(color=fitsgeo.surface.SIENNA, label_center=True)
 ball.draw(label_center=True)
 cyl.draw(label_base=True, label_center=True)
 cone.draw(label_base=True, label_center=True)
 
 hoop.draw(label_center=True)
-ring.draw(color=fitsgeo.GOLD, label_center=True)
-donut.draw(color=fitsgeo.PURPLE, label_center=True)
+ring.draw(color=fitsgeo.surface.GOLD, label_center=True)
+donut.draw(color=fitsgeo.surface.PURPLE, label_center=True)
 
-tabletop.draw(color=fitsgeo.OLIVE, label_center=True)
+tabletop.draw(color=fitsgeo.surface.OLIVE, label_center=True)
 
 # Export all drawn surfaces to PHITS as [ Surface ] section
-fitsgeo.phits_export(to_file=True, filename="example1")
+fitsgeo.surface.phits_export(to_file=True, filename="")
 
 # Properties of BOX
 print()

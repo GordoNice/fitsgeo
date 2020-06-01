@@ -1,4 +1,4 @@
-from const import *
+from fitsgeo.const import *
 
 import itertools
 from numpy import linalg as la
