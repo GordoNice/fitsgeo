@@ -1,6 +1,6 @@
-# Example2: Spheres with Hats
+# Example 2: Spheres with Hats
 # Illustrative example of FitsGeo usage
-# Shows how to create multiple objects
+# Shows how to easily create multiple (repeating) objects
 import fitsgeo
 
 # Create main scene, with axis

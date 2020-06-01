@@ -1,4 +1,4 @@
-# Example1: General illustrative example of use FitsGeo module
+# Example 1: General illustrative example of FitsGeo use
 # Illustrative example of FitsGeo usage
 # Covers almost all implemented features
 import fitsgeo

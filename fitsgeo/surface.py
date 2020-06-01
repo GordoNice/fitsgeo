@@ -2584,5 +2584,6 @@ class ELL:
 
 
 if __name__ == "__main__":
-	print("--- Welcome to FitsGeo! ---\nThis module need to be imported")
+	print(
+		"--- Welcome to FitsGeo! ---\nThis module must be imported!\n")
 	list_all_surfaces()

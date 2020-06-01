@@ -1,6 +1,6 @@
 ## FitsGeo
 
-**FitsGeo** is a Python module simplifying time consuming part of work related 
+**FitsGeo** is a Python package simplifying time consuming part of work related 
 to geometry development in particle transport Monte Carlo code **PHITS** (other
 codes can be added in future releases). We assume that user need to create an
 input file for PHITS code for his future research. Default way of creation
@@ -24,8 +24,6 @@ Install latest Python 3 framework, then type in console:
 
 ### Requirements
 
-vpython>=7.6.1
-
-numpy>=1.16.2
-
-scipy>=1.2.2
+* vpython>=7.6.1
+* numpy>=1.16.2
+* scipy>=1.2.2
