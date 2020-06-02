@@ -11,23 +11,30 @@ scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(ax_length=ax_l)
 # Change scene background
 scene.background = fitsgeo.rgb_to_vector(192, 192, 192)
 
+# Define materials
+water1 = fitsgeo.Material([[0, 1, 2], [0, 8, 1]], name="Water")
+vapor = fitsgeo.Material(
+	[[0, 1, 2/18], [0, 8, 16/18]], gas=True, name="Vapor", ratio_type="mass")
+metal = fitsgeo.Material([[56, 26, 1]], name="Metal")
+carbon = fitsgeo.Material([[0, 12, 1]], name="Carbon")
+
 # Plane definition
-p1 = fitsgeo.P(3, 3, 3, 0)
+p1 = fitsgeo.P(1, -1, -1, 4)
 px1 = fitsgeo.P(0, 0, 0, 1, vert="x")
 py1 = fitsgeo.P(0, 0, 0, -1, vert="y")
 pz1 = fitsgeo.P(0, 0, 0, -2, vert="z")
 
 # BOX definition
 box_l = fitsgeo.BOX(
-	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l")
+	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l", matn=metal.matn)
 box_r = fitsgeo.BOX(
-	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r")
+	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r", matn=metal.matn)
 
 # RPP definition
 table = fitsgeo.RPP([-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table")
 
 # SPH definition
-ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball")
+ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", matn=carbon.matn)
 
 # RCC definition
 cyl = fitsgeo.RCC([0, 0, 0], [1, 1, 1], 0.2, name="Cylinder")
@@ -51,6 +58,11 @@ tabletop = fitsgeo.REC(
 	[1, 0, 0],
 	[0, 2, 0], name="Table Top")
 
+wedge_r = fitsgeo.WED(
+	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge R")
+wedge_l = fitsgeo.WED(
+	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge L")
+
 # Redefine properties
 box_l.xyz0 = [box_l.x0+0.5, box_l.y0+2, box_l.z0+0.1]
 box_r.xyz0 = [box_r.x0+0.5, box_r.y0+2, box_r.z0+0.1]
@@ -71,7 +83,22 @@ donut.r = cyl.r + donut.b
 hoop.r = hoop.r * 0.7
 hoop.x0 = -table.get_width/2 - hoop.b
 
-table.y = [table.y[0], table.y[1] - tabletop.get_len_h]
+table.y[1] = table.y[1] - tabletop.get_len_h
+
+wedge_r.xyz0 = [
+	table.get_center[0]-table.get_width/2,
+	table.get_center[1]+table.get_height/2,
+	table.get_center[2]+table.get_length/2]
+
+wedge_r.h[0] = table.get_width
+
+wedge_l.xyz0 = [
+	table.get_center[0]+table.get_width/2,
+	table.get_center[1]+table.get_height/2,
+	table.get_center[2]-table.get_length/2]
+
+wedge_l.h[0] = -table.get_width
+wedge_l.b[2] = -wedge_l.b[2]
 
 # Draw objects on scene
 p1.draw(size=ax_l)  # Plane will be sized according to axis
@@ -82,7 +109,7 @@ pz1.draw(size=ax_l)
 box_l.draw(opacity=0.5, label_base=True, label_center=True)
 box_r.draw(opacity=0.5, label_base=True, label_center=True)
 table.draw(color=fitsgeo.SIENNA, label_center=True)
-ball.draw(label_center=True)
+ball.draw(opacity=0.5, label_center=True)
 cyl.draw(label_base=True, label_center=True)
 cone.draw(label_base=True, label_center=True)
 
@@ -91,6 +118,9 @@ ring.draw(color=fitsgeo.GOLD, label_center=True)
 donut.draw(color=fitsgeo.PURPLE, label_center=True)
 
 tabletop.draw(color=fitsgeo.OLIVE, label_center=True)
+
+wedge_l.draw(label_base=True, label_center=True)
+wedge_r.draw(label_base=True, label_center=True)
 
 # Export all drawn surfaces to PHITS as [ Surface ] section
 fitsgeo.phits_export(to_file=True, filename="example1")

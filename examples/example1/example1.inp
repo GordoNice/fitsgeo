@@ -23,6 +23,40 @@ $ dummy materials for example (must be defind by hand at current version)
 	mat[8]	H 2	O 1	GAS=0		$ 'Donut'
 	mat[9]	H 2	O 1	GAS=0		$ 'Table Top'
 
+[ Cell ]
+    1    -1    (5 6 7 8 9 10 11 12 13 14 16 15)	$ 'outer world'
+
+    6    3    -1.0    (-5)		$ name: 'Box_l'
+    7    3    -1.0    (-6)		$ name: 'Box_r'
+    8    1    -1.0    (-7)		$ name: 'Table'
+    9    4    -1.0    (-8)		$ name: 'Ball'
+    10    1    -1.0    (-9)		$ name: 'Cylinder'
+    11    1    -1.0    (-10)		$ name: 'Hat'
+    12    1    -1.0    (-11)		$ name: 'Hoop'
+    13    1    -1.0    (-12)		$ name: 'Ring'
+    14    1    -1.0    (-13)		$ name: 'Donut'
+    15    1    -1.0    (-14)		$ name: 'Table Top'
+    17    1    -1.0    (-16)		$ name: 'Wedge L'
+    16    1    -1.0    (-15)		$ name: 'Wedge R'
+
+[ Surface ]
+    1   P  1 -1 -1  4 $ name: 'P' (Plane) 1x + -1y + -1z − 4 = 0
+    2   PX      1 $ name: 'P' (Plane) x = 1
+    3   PY      -1 $ name: 'P' (Plane) y = -1
+    4   PZ      -2 $ name: 'P' (Plane) z = -2
+    5   BOX  -0.5 1 -1.9  1 0 0  0 1 0  0 0 1 $ name: 'Box_l' (box, all angles are 90deg) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Cx Cy Cz]
+    6   BOX  -0.5 1 0.8999999999999999  1 0 0  0 1 0  0 0 1 $ name: 'Box_r' (box, all angles are 90deg) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Cx Cy Cz]
+    7   RPP  -0.3 0.3  -1 0.9  -0.8 0.8 $ name: 'Table' (Rectangular solid) [x_min x_max] [y_min y_max] [z_min z_max]
+    8   SPH  0 1.5 0  0.5 $ name: 'Ball' (sphere) x0 y0 z0 R
+    9   RCC  0.0 1.5 1.4  0.0 0.0 -2.8  0.2 $ name: 'Cylinder' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+    10   TRC  0 2 0  0 0.5 0  0.5  0.2 $ name: 'Hat' (truncated right-angle cone) [x0 y0 z0] [Hx Hy Hz] R_b R_t
+    11   TX  -0.35 0 0  0.7  0.05  0.08 $ name: 'Hoop' (torus, with x rotational axis) [x0 y0 z0] A(R) B C
+    12   TY  -0.6666666666666666 1.02 -0.6666666666666666  0.03  0.02  0.01 $ name: 'Ring' (torus, with y rotational axis) [x0 y0 z0] A(R) B C
+    13   TZ  0.0 1.5 0.7  0.30000000000000004  0.1  0.1 $ name: 'Donut' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    14   REC  0 0.9 0  0 0.1 0  1 0 0  0 2 0 $ name: 'Table Top' (elliptical cylinder) [x0 y0 z0] [Hx Hy Hz] [Ax Ay Az] [Bx By Bz]
+    16   WED  0.3 0.8999999999999999 -0.8  0 -1 0  0 0 -1  -0.6 0 0 $ name: 'Wedge L' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
+    15   WED  -0.3 0.8999999999999999 0.8  0 -1 0  0 0 1  0.6 0 0 $ name: 'Wedge R' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
+
 [ Mat Name Color ]
 	mat		name			size	color
 	0		void			1.00	lightgray
@@ -35,36 +69,6 @@ $ dummy materials for example (must be defind by hand at current version)
 	7		Ring 			1.00	yellow
 	8		Donut 			1.00	purple
 	9		{Table Top} 	1.00	gray
-
-[ Surface ]
-    1      PZ          2        $ name: 'P' (Plane) z = 2
-    2      PX          1        $ name: 'P' (Plane) x = 1
-    3      PY          -1       $ name: 'P' (Plane) y = -1
-    4      PZ          -2       $ name: 'P' (Plane) z = -2
-    5      BOX  -0.5 1 -1.9  1 0 0  0 1 0  0 0 1        $ name: 'Box_l' (box, all angles are 90deg) base point [x0, y0, z0] [Ax, Ay, Az] [Bx, By, Bz] [Cx, Cy, Cz]
-    6      BOX  -0.5 1 0.8999999999999999  1 0 0  0 1 0  0 0 1  $ name: 'Box_r' (box, all angles are 90deg) base point [x0, y0, z0] [Ax, Ay, Az] [Bx, By, Bz] [Cx, Cy, Cz]
-    7      RPP  -0.3 0.3  -1 0.9  -0.8 0.8      $ name: 'Table' (Rectangular solid, each surface is vertical with x, y, z axes)) [x_min, x_max] [y_min, y_max] [z_min, z_max]
-    8      SPH  0 1.5 0  0.5    $ name: 'Ball' (sphere) [x0, y0, z0] R
-    9      RCC  0.0 1.5 1.4  0.0 0.0 -2.8  0.2  $ name: 'Cylinder' (cylinder) center of the bottom of the cylinder [x0, y0, z0] height [Hx, Hy, Hz] R
-    10      TRC  0 2 0  0 0.5 0  0.5  0.2       $ name: 'Hat' (truncated right-angle cone) center of the bottom of the cone [x0, y0, z0] height [Hx, Hy, Hz] R_bottom R_top
-    11      TX  -0.35 0 0  0.7  0.05  0.08      $ name: 'Hoop' (torus, with x rotational axis) center point [x0, y0, z0] R(A) B C
-    12      TY  -0.6666666666666666 1.02 -0.6666666666666666  0.03  0.02  0.01  $ name: 'Ring' (torus, with y rotational axis) center point [x0, y0, z0] R(A) B C
-    13      TZ  0.0 1.5 0.7  0.30000000000000004  0.1  0.1      $ name: 'Donut' (torus, with z rotational axis) center point [x0, y0, z0] R(A) B C
-    14      REC  0 0.9 0  0 0.1 0  1 0 0  0 2 0 $ name: 'Table Top' (elliptical cylinder) center of the bottom of the cylinder [x0, y0, z0] height [Hx, Hy, Hz] major axis vector [Ax, Ay, Az] minor axis vector [Bx, By, Bz]
-
-[ Cell ]
-    1    -1    (5 6 7 8 9 10 11 12 13 14)	$ 'outer world'
-
-    2     1    -1.0    (-5 9)				$ 'Box_l'
-    3     1    -1.0    (-6 9)				$ 'Box_r'
-    4     2    -1.0    (-7)					$ 'Table'
-    5     3    -1.0    (-8 9)				$ 'Ball'
-    6     4    -1.0    (-9)					$ 'Cylinder'
-    7     5    -1.0    (-10)				$ 'Hat'
-    8     6    -1.0    (-11)				$ 'Hoop'
-    9     7    -1.0    (-12)				$ 'Ring'
-    10    8    -1.0    (-13)				$ 'Donut'
-    11    9    -1.0    (-14) 				$ 'Table Top'
 
 [ T-3Dshow ]
 	title = Geometry 3D

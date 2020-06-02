@@ -13,40 +13,6 @@ surface_counter = itertools.count(1)
 drawn_surfaces = []  # All objects after drawing go here
 
 
-def phits_export(to_file=False, filename="example"):
-	# TODO: improve export to file
-	"""
-	Function for printing all drawn surfaces in PHITS format, uses drawn_surfaces
-	list which contains all surfaces after draw method execution
-
-	:param to_file: if True, file with PHTIS sections [ Surface ] and [ Cell ]
-	will be created
-	:param filename: name for output file
-	"""
-	if not drawn_surfaces:
-		print("drawn_surfaces list is empty! Draw any surface first!")
-		return
-
-	text_cell = "\n[ Cell ]\n"
-	text = ""
-	for s in drawn_surfaces:
-		text += f"{s.sn} "
-	text_cell += f"    1    -1    ({text[:-1]})	$ 'outer world'\n\n"
-	for s in drawn_surfaces:
-		text_cell +=\
-			f"    {s.sn+1}    {s.matn}    -1.0" + \
-			f"    ({-s.sn})		$ name: '{s.name}'\n"
-
-	text_s = "\n[ Surface ]\n"
-	for s in drawn_surfaces:
-		text_s += s.phits_print() + "\n"
-
-	if to_file:
-		with open(f"{filename}_FitsGeo.inp", "w", encoding="utf-8") as f:
-			f.write(text_cell)
-			f.write(text_s)
-
-
 def list_all_surfaces():
 	"""
 	List with all implemented surfaces for now
@@ -720,11 +686,11 @@ class BOX(Surface):
 		"""
 		Define BOX surface (all angles are 90deg)
 
-		:param xyz0: Base point coordinate [x0, y0, z0]
-		:param a: Vector from base point to first surface [Ax, Ay, Az]
-		:param b: Vector from base point to second surface [Bx, By, Bz]
-		:param c: Vector from base point to third surface [Cx, Cy, Cz]
-		:param name: Name for object
+		:param xyz0: base point coordinate [x0, y0, z0]
+		:param a: vector from base point to first surface [Ax, Ay, Az]
+		:param b: vector from base point to second surface [Bx, By, Bz]
+		:param c: vector from base point to third surface [Cx, Cy, Cz]
+		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
 		:param matn: material number, specifies the number of material
 		"""
@@ -740,7 +706,7 @@ class BOX(Surface):
 		"""
 		Get list of base point coordinate
 
-		:return: List [x0, y0, z0]
+		:return: list [x0, y0, z0]
 		"""
 		return self.__xyz0
 
@@ -758,7 +724,7 @@ class BOX(Surface):
 		"""
 		Get x component of base coordinate
 
-		:return: Float x0
+		:return: float x0
 		"""
 		return self.__xyz0[0]
 
@@ -767,7 +733,7 @@ class BOX(Surface):
 		"""
 		Set x component of base point coordinate
 
-		:param x0: Float x0
+		:param x0: float x0
 		"""
 		self.__xyz0[0] = x0
 
@@ -776,7 +742,7 @@ class BOX(Surface):
 		"""
 		Get y component of base coordinate
 
-		:return: Float y0
+		:return: float y0
 		"""
 		return self.__xyz0[1]
 
@@ -785,16 +751,16 @@ class BOX(Surface):
 		"""
 		Set y component of base point coordinate
 
-		:param y0: Float y0
+		:param y0: float y0
 		"""
 		self.__xyz0[1] = y0
 
 	@property
 	def z0(self):
 		"""
-		Get z component of base coordinate
+		Get z component of base point coordinate
 
-		:return: Float z0
+		:return: float z0
 		"""
 		return self.__xyz0[2]
 
@@ -803,7 +769,7 @@ class BOX(Surface):
 		"""
 		Set z component of base point coordinate
 
-		:param z0: Float z0
+		:param z0: float z0
 		"""
 		self.__xyz0[2] = z0
 
@@ -812,7 +778,7 @@ class BOX(Surface):
 		"""
 		Get vector from base point to first surface
 
-		:return: List A [Ax, Ay, Az]
+		:return: list A [Ax, Ay, Az]
 		"""
 		return self.__a
 
@@ -821,7 +787,7 @@ class BOX(Surface):
 		"""
 		Set vector from base point to first surface
 
-		:param a: List A [Ax, Ay, Az]
+		:param a: list A [Ax, Ay, Az]
 		"""
 		self.__a = a
 
@@ -830,7 +796,7 @@ class BOX(Surface):
 		"""
 		Get vector from base point to second surface
 
-		:return: List B [Bx, By, Bz]
+		:return: list B [Bx, By, Bz]
 		"""
 		return self.__b
 
@@ -839,7 +805,7 @@ class BOX(Surface):
 		"""
 		Set vector from base point to second surface
 
-		:param b: List B [Bx, By, Bz]
+		:param b: list B [Bx, By, Bz]
 		"""
 		self.__b = b
 
@@ -848,7 +814,7 @@ class BOX(Surface):
 		"""
 		Get vector from base point to third surface
 
-		:return: List C [Cx, Cy, Cz]
+		:return: list C [Cx, Cy, Cz]
 		"""
 		return self.__c
 
@@ -857,7 +823,7 @@ class BOX(Surface):
 		"""
 		Set vector from base point to third surface
 
-		:param c: List C [Cx, Cy, Cz]
+		:param c: list C [Cx, Cy, Cz]
 		"""
 		self.__c = c
 
@@ -866,7 +832,7 @@ class BOX(Surface):
 		"""
 		Get center of box as sum of vectors xyz0 and half diagonal
 
-		:return: List [xc, yc, zc]
+		:return: list [xc, yc, zc]
 		"""
 		return sum([self.xyz0, self.get_diagonal/2], axis=0)
 
@@ -875,7 +841,7 @@ class BOX(Surface):
 		"""
 		Get diagonal vector of box as sum of A, B, C vectors
 
-		:return: List diagonal vector of box
+		:return: list diagonal vector of box
 		"""
 		return sum([self.a, self.b, self.c], axis=0)
 
@@ -921,7 +887,7 @@ class BOX(Surface):
 		Get volume of defined box as absolute value of mixed product of vectors
 		A, B, C
 
-		:return: Volume of defined box
+		:return: volume of defined box
 		"""
 		return abs(inner(cross(self.a, self.b), self.c))
 
@@ -965,7 +931,7 @@ class BOX(Surface):
 		"""
 		Print PHITS surface definition
 
-		:return: String with PHITS surface definition
+		:return: string with PHITS surface definition
 		"""
 		xyz0 = " ".join(str(i) for i in self.xyz0)
 		a = " ".join(str(i) for i in self.a)
@@ -987,10 +953,10 @@ class BOX(Surface):
 		"""
 		Draw surface using vpython
 
-		:param opacity: Set opacity, where 1.0 is fully visible
-		:param color: Set surface color as vpython.vector, yellow by default
-		:param label_base: If True create label for object base
-		:param label_center: If True create label for object center
+		:param opacity: set opacity, where 1.0 is fully visible
+		:param color: set surface color as vpython.vector, yellow by default
+		:param label_base: if True create label for object base
+		:param label_center: if True create label for object center
 		:return: vpython.box and vpython.label objects
 		"""
 		x0 = self.get_center[0]
@@ -1517,7 +1483,7 @@ class RCC(Surface):
 		txt = \
 			f"    {self.sn} {self.trn}  " + \
 			f"{self.symbol}  {xyz0}  {h}  {self.r}" + \
-			f" $ name: '{self.name}' (cylinder) [x0 y0 z0] [Hx, Hy, Hz] R"
+			f" $ name: '{self.name}' (cylinder) [x0 y0 z0] [Hx Hy Hz] R"
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
@@ -2568,9 +2534,339 @@ class REC(Surface):
 		return el_cyl, lbl_c, lbl_b
 
 
-class WED:
+class WED(Surface):
 	# TODO: Wedge
-	pass
+	symbol = "WED"
+
+	def __init__(
+			self, xyz0: list, a: list, b: list, h: list,
+			name="WED", trn="", matn=1):
+		"""
+		Define WED (wedge) surface, note that only right triangle can be used as
+		bottom
+
+		:param xyz0: base vertex coordinate [x0, y0, z0]
+		:param a: vector to first side of triangle [Ax, Ay, Az]
+		:param b: vector to second side of triangle [Bx, By, Bz]
+		:param h: height vector from base vertex [Hx, Hy, Hz]
+		:param name: name for object
+		:param trn: transform number, specifies the number n of TRn
+		:param matn: material number, specifies the number of material
+		"""
+		self.xyz0 = xyz0
+		self.a = a
+		self.b = b
+		self.h = h
+
+		Surface.__init__(self, name, trn, matn)
+
+	@property
+	def xyz0(self):
+		"""
+		Get list of base vertex coordinate
+
+		:return: List [x0, y0, z0]
+		"""
+		return self.__xyz0
+
+	@xyz0.setter
+	def xyz0(self, xyz0: list):
+		"""
+		Set list of base vertex coordinate
+
+		:param xyz0: list [x0, y0, z0]
+		"""
+		self.__xyz0 = xyz0
+
+	@property
+	def x0(self):
+		"""
+		Get x component of base vertex coordinate
+
+		:return: Float x0
+		"""
+		return self.__xyz0[0]
+
+	@x0.setter
+	def x0(self, x0: float):
+		"""
+		Set x component of base vertex coordinate
+
+		:param x0: Float x0
+		"""
+		self.__xyz0[0] = x0
+
+	@property
+	def y0(self):
+		"""
+		Get y component of base vertex coordinate
+
+		:return: Float y0
+		"""
+		return self.__xyz0[1]
+
+	@y0.setter
+	def y0(self, y0: float):
+		"""
+		Set y component of base vertex coordinate
+
+		:param y0: Float y0
+		"""
+		self.__xyz0[1] = y0
+
+	@property
+	def z0(self):
+		"""
+		Get z component of base vertex coordinate
+
+		:return: float z0
+		"""
+		return self.__xyz0[2]
+
+	@z0.setter
+	def z0(self, z0: float):
+		"""
+		Set z component of base vertex coordinate
+
+		:param z0: float z0
+		"""
+		self.__xyz0[2] = z0
+
+	@property
+	def a(self):
+		"""
+		Get vector to first side of triangle
+
+		:return: list A [Ax, Ay, Az]
+		"""
+		return self.__a
+
+	@a.setter
+	def a(self, a: list):
+		"""
+		Set vector to first side of triangle
+
+		:param a: list A [Ax, Ay, Az]
+		"""
+		self.__a = a
+
+	@property
+	def b(self):
+		"""
+		Get vector to second side of triangle
+
+		:return: list B [Bx, By, Bz]
+		"""
+		return self.__b
+
+	@b.setter
+	def b(self, b: list):
+		"""
+		Set vector to second side of triangle
+
+		:param b: list B [Bx, By, Bz]
+		"""
+		self.__b = b
+
+	@property
+	def h(self):
+		"""
+		Get height vector from base vertex
+
+		:return: list H [Hx, Hy, Hz]
+		"""
+		return self.__h
+
+	@h.setter
+	def h(self, h: list):
+		"""
+		Set height vector from base vertex
+
+		:param h: list H [Hx, Hy, Hz]
+		"""
+		self.__h = h
+
+	@property
+	def get_center(self):
+		"""
+		Get centroid of wedge as sum of vectors xyz0 AB third and half H vector
+
+		:return: list [xc, yc, zc]
+		"""
+		sum_ab_third = sum([self.a, self.b], axis=0)/3
+		return sum(
+			[self.xyz0, sum_ab_third, [self.h[0]/2, self.h[1]/2, self.h[2]/2]],
+			axis=0)
+
+	@property
+	def get_len_a(self):
+		"""
+		Get length of wedge A vector (along x)
+
+		:return: float length of wedge A vector
+		"""
+		return la.norm(self.a)
+
+	@property
+	def get_len_b(self):
+		"""
+		Get length of wedge B vector (along y)
+
+		:return: float length of wedge B vector
+		"""
+		return la.norm(self.b)
+
+	@property
+	def get_len_h(self):
+		"""
+		Get length of height vector (along z)
+
+		:return: float length of height vector
+		"""
+		return la.norm(self.h)
+
+	@property
+	def get_volume(self):
+		"""
+		Get volume of defined wedge as half of absolute value of mixed product
+		of vectors A, B, H
+
+		:return: volume of defined wedge
+		"""
+		return abs(inner(cross(self.a, self.b), self.h))/2
+
+	@property
+	def get_ab_area(self):
+		"""
+		Get AB base vertex triangle surface area as half length of cross product
+		of A and B vectors
+
+		:return: AB base vertex triangle surface area
+		"""
+		return la.norm(cross(self.a, self.b))/2
+
+	@property
+	def get_ah_area(self):
+		"""
+		Get AH side rectangle surface area as length of cross product
+		of A and H vectors
+
+		:return: AH side rectangle surface area
+		"""
+		return la.norm(cross(self.a, self.h))
+
+	@property
+	def get_bh_area(self):
+		"""
+		Get BH side rectangle surface area as length of cross product
+		of B and H vectors
+
+		:return: BH side rectangle surface area
+		"""
+		return la.norm(cross(self.b, self.h))
+
+	@property
+	def get_full_area(self):
+		"""
+		Get full wedge surface area
+
+		:return: full wedge surface area
+		"""
+		return 2*self.get_ab_area + self.get_ah_area + self.get_bh_area
+
+	def phits_print(self):
+		"""
+		Print PHITS surface definition
+
+		:return: string with PHITS surface definition
+		"""
+		xyz0 = " ".join(str(i) for i in self.xyz0)
+		a = " ".join(str(i) for i in self.a)
+		b = " ".join(str(i) for i in self.b)
+		h = " ".join(str(i) for i in self.h)
+
+		txt = \
+			f"    {self.sn} {self.trn}  " + \
+			f"{self.symbol}  {xyz0}  {a}  {b}  {h}" + \
+			f" $ name: '{self.name}' " + \
+			"(wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]"
+
+		if self.trn != "":
+			txt += f" with tr{self.trn}"
+		print(txt)
+		return txt
+
+	def draw(
+			self, opacity=1.0, color=ORANGE, label_base=False, label_center=False):
+		"""
+		Draw surface using vpython
+
+		:param opacity: set opacity, where 1.0 is fully visible
+		:param color: set surface color as vpython.vector
+		:param label_base: if True create label for object base
+		:param label_center: if True create label for object center
+		:return: vpython.cylinder object
+		"""
+		x0, y0, z0 = self.x0, self.y0, self.z0
+
+		ax, ay, az = self.a[0], self.a[1], self.a[2]
+		bx, by, bz = self.b[0], self.b[1], self.b[2]
+		hx, hy, hz = self.h[0], self.h[1], self.h[2]
+
+		o = vertex(pos=vector(x0, y0, z0))  # Base vertex
+		o_prime = vertex(pos=vector(x0+hx, y0+hy, z0+hz))  # top vertex
+
+		a = vertex(pos=vector(x0+ax, y0+ay, z0+az))
+		a_prime = vertex(pos=vector(a.pos.x+hx, a.pos.y+hy, a.pos.z+hz))
+
+		b = vertex(pos=vector(x0+bx, y0+by, z0+bz))
+		b_prime = vertex(pos=vector(b.pos.x+hx, b.pos.y+hy, b.pos.z+hz))
+
+		# Defines colors and opacity to vertexes
+		for v in [o, o_prime, a, a_prime, b, b_prime]:
+			v.color = color
+			v.opacity = opacity
+
+		base_tr = vpython.triangle(vs=[o, a, b])
+		top_tr = vpython.triangle(vs=[o_prime, a_prime, b_prime])
+
+		side_ah = vpython.quad(vs=[o, a, a_prime, o_prime])
+		side_bh = vpython.quad(vs=[o, b, b_prime, o_prime])
+		side3 = vpython.quad(vs=[a, a_prime, b_prime, b])
+
+		wedge = vpython.compound([base_tr, top_tr, side_ah, side_bh, side3])
+
+		lbl_c, lbl_b = None, None
+		txt = f"{self.symbol} '{self.name}' sn: {self.sn}\n"
+		if label_center:
+			xc = notation(self.get_center[0])
+			yc = notation(self.get_center[1])
+			zc = notation(self.get_center[2])
+
+			txt_c = txt + f"center: ({xc}, {yc}, {zc})"
+			lbl_c = vpython.label(
+				font="monospace", box=False, opacity=0.5, border=6, space=0,
+				pos=vector(self.get_center[0], self.get_center[1], self.get_center[2]),
+				text=txt_c, height=14,
+				# for opposite directions
+				xoffset=(-1) ** self.sn * 20 * random.random(),
+				yoffset=(-1) ** self.sn * 100 * random.random())
+
+		if label_base:
+			xb = notation(o.pos.x)
+			yb = notation(o.pos.y)
+			zb = notation(o.pos.z)
+
+			txt_b = txt + f"base: ({xb}, {yb}, {zb})"
+			lbl_b = vpython.label(
+				font="monospace", box=False, opacity=0.5, border=6, space=0,
+				pos=o.pos,
+				text=txt_b, height=14,
+				# for random directions
+				xoffset=(-1) ** self.sn * 20 * random.random(),
+				yoffset=(-1) ** self.sn * 100 * random.random())
+		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
+		return wedge, lbl_c, lbl_b
 
 
 class HEX:

@@ -11,10 +11,10 @@ process, user can define geometry surfaces as Python objects with all coming
 benefits. Visualization based on **VPython**, so all defined surfaces in user
 geometry is purely 3D and can be viewed in browser from any point of view.
 
-In current version, **FitsGeo** provides the main modules: `surface.py` and
-`const.py`, and additional usage examples. **FitsGeo** works under any operating
-system (only Python 3 interpreter with additional modules have to be installed).
-Very basic skills in programming with Python required.
+**FitsGeo** works under any operating system: only Python 3 interpreter with
+additional modules (listed below) have to be installed. Very basic skills in
+programming with Python required. **FitsGeo** provides bunch of usage examples,
+which demonstrate basic workflow.
 
 ### Quick installation guide
 
@@ -33,6 +33,7 @@ Additional modules for FitsGeo use (automatically install via pip tool):
 * vpython>=7.6.1
 * numpy>=1.16.2
 * scipy>=1.2.2
+* pandas>=0.25.1
 
 All modules listed in `requirements.txt`.
 
