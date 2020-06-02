@@ -40,5 +40,5 @@ for i in range(n**3):
 	hats[i].draw(
 			color=fitsgeo.rgb_to_vector(2.04 * i, 255 - 2.04 * i, 0), truncated=True)
 
-# Export all drawn surfaces to PHITS as [ Surface ] section
+# Export all drawn surfaces to PHITS as [ Surface ] section and basic [ Cell ]
 fitsgeo.phits_export(to_file=True, filename="example2")

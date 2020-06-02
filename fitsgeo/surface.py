@@ -13,15 +13,15 @@ surface_counter = itertools.count(1)
 drawn_surfaces = []  # All objects after drawing go here
 
 
-def phits_export(to_file=False, filename="FitsGeo"):
+def phits_export(to_file=False, filename="example"):
 	# TODO: improve export to file
 	"""
 	Function for printing all drawn surfaces in PHITS format, uses drawn_surfaces
 	list which contains all surfaces after draw method execution
 
-	:param to_file: if True, file with PHTIS sections will be created
+	:param to_file: if True, file with PHTIS sections [ Surface ] and [ Cell ]
+	will be created
 	:param filename: name for output file
-	:return:
 	"""
 	if not drawn_surfaces:
 		print("drawn_surfaces list is empty! Draw any surface first!")
