@@ -3,13 +3,16 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
 	long_description = fh.read()
 
+with open("requirements.txt", "r", encoding="utf-8") as f:
+	requirements = f.read().rstrip("\n").split("\n")
+
 setuptools.setup(
 	name="FitsGeo",
 	version="0.1.7",
 	author="Ivan Gordeev",
 	author_email="gordeev@jinr.ru",
 	description="FitsGeo: package for PHITS geometry development",
-	keywords='VPython PHITS geometry visualization development',
+	keywords='Python VPython PHITS geometry visualization development',
 	long_description=long_description,
 	long_description_content_type="text/markdown",
 	url="https://github.com/GordoNice/fitsgeo",
@@ -28,8 +31,5 @@ setuptools.setup(
 		'Topic :: Scientific/Engineering :: Physics',
 		'Intended Audience :: Science/Research'],
 	python_requires='>=3.6',
-	install_requires=[
-		'vpython>=7.6.1',
-		'numpy>=1.16.2',
-		'scipy>=1.2.2']
+	install_requires=requirements
 )

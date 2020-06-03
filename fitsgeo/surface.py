@@ -10,7 +10,7 @@ from vpython import canvas, arrow, vertex, vector
 # Counter for objects, new object will have n+1 surface number
 surface_counter = itertools.count(1)
 
-drawn_surfaces = []  # All objects after drawing go here
+created_surfaces = []  # All objects after initialisation go here
 
 
 def list_all_surfaces():
@@ -223,6 +223,7 @@ class P(Surface):
 
 		Surface.__init__(self, name, trn, matn)
 		self.vert = vert
+		created_surfaces.append(self)
 
 	@property
 	def a(self):
@@ -357,7 +358,6 @@ class P(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(self, size=10, opacity=0.2, label=True):
@@ -432,8 +432,6 @@ class P(Surface):
 			lbl = vpython.label(
 				pos=dot2.pos, text=txt, font="monospace", box=False, border=6,
 				opacity=0.2, xoffset=0, yoffset=0, space=0,	height=12)
-
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return plane, lbl
 
 
@@ -455,6 +453,7 @@ class SPH(Surface):
 		self.r = r
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -641,7 +640,6 @@ class SPH(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(self, opacity=1.0, color=NAVY, label_center=False, label_base=False):
@@ -672,7 +670,6 @@ class SPH(Surface):
 				# for opposite directions
 				xoffset=(-1) ** self.sn * 20 * random.random(),
 				yoffset=(-1) ** self.sn * 100 * random.random())
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return sph, lbl
 
 
@@ -700,6 +697,7 @@ class BOX(Surface):
 		self.c = c
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -945,7 +943,6 @@ class BOX(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(
@@ -1004,7 +1001,6 @@ class BOX(Surface):
 				yoffset=(-1) ** self.sn * 100 * random.random(),
 				space=0,
 				height=14)
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return box, lbl_c, lbl_b
 
 
@@ -1030,6 +1026,7 @@ class RPP(Surface):
 		self.z = z
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def x(self):
@@ -1196,7 +1193,6 @@ class RPP(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(self, opacity=1.0, color=PERU, label_center=False):
@@ -1234,7 +1230,6 @@ class RPP(Surface):
 				yoffset=(-1) ** self.sn * 100 * random.random(),
 				space=0,
 				height=14)
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return box, lbl
 
 
@@ -1259,6 +1254,7 @@ class RCC(Surface):
 		self.r = r
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -1487,7 +1483,6 @@ class RCC(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(
@@ -1543,7 +1538,6 @@ class RCC(Surface):
 				xoffset=(-1) ** self.sn * 20 * random.random(),
 				yoffset=(-1) ** self.sn * 100 * random.random(),
 				space=0, height=14)
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return cyl, lbl_c, lbl_b
 
 
@@ -1571,6 +1565,7 @@ class TRC(Surface):
 		self.r_2 = r_2
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -1846,7 +1841,6 @@ class TRC(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(
@@ -1912,7 +1906,6 @@ class TRC(Surface):
 				# for opposite directions
 				xoffset=(-1) ** self.sn * 20 * random.random(),
 				yoffset=(-1) ** self.sn * 100 * random.random())
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return cone, lbl_c, lbl_b
 
 
@@ -1942,6 +1935,7 @@ class T(Surface):
 
 		Surface.__init__(self, name, trn, matn)
 		self.rot = rot
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -2173,7 +2167,6 @@ class T(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(
@@ -2220,7 +2213,6 @@ class T(Surface):
 				# for random directions
 				xoffset=(-1) ** self.sn * 20 * random.random(),
 				yoffset=(-1) ** self.sn * 100 * random.random())
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return tor, lbl
 
 
@@ -2247,6 +2239,7 @@ class REC(Surface):
 		self.b = b
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -2476,7 +2469,6 @@ class REC(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(
@@ -2530,7 +2522,6 @@ class REC(Surface):
 				# for random directions
 				xoffset=(-1) ** self.sn * 20 * random.random(),
 				yoffset=(-1) ** self.sn * 100 * random.random())
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return el_cyl, lbl_c, lbl_b
 
 
@@ -2559,6 +2550,7 @@ class WED(Surface):
 		self.h = h
 
 		Surface.__init__(self, name, trn, matn)
+		created_surfaces.append(self)
 
 	@property
 	def xyz0(self):
@@ -2793,7 +2785,6 @@ class WED(Surface):
 
 		if self.trn != "":
 			txt += f" with tr{self.trn}"
-		print(txt)
 		return txt
 
 	def draw(
@@ -2865,7 +2856,6 @@ class WED(Surface):
 				# for random directions
 				xoffset=(-1) ** self.sn * 20 * random.random(),
 				yoffset=(-1) ** self.sn * 100 * random.random())
-		drawn_surfaces.append(self) if self not in drawn_surfaces else drawn_surfaces
 		return wedge, lbl_c, lbl_b
 
 

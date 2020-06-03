@@ -12,32 +12,35 @@
 	proj = proton	# kind of incident particle
 
 [ Material ]
-$ dummy materials for example (must be defind by hand at current version)
-	mat[1]	H 2	O 1	GAS=0		$ 'Box_l' 'Box_r'
-	mat[2]	H 2	O 1	GAS=0		$ 'Table'
-	mat[3]	H 2	O 1	GAS=0		$ 'Ball'
-	mat[4]	H 2	O 1	GAS=0		$ 'Cylinder'
-	mat[5]	H 2	O 1	GAS=0		$ 'Hat'
-	mat[6]	H 2	O 1	GAS=0		$ 'Hoop'
-	mat[7]	H 2	O 1	GAS=0		$ 'Ring'
-	mat[8]	H 2	O 1	GAS=0		$ 'Donut'
-	mat[9]	H 2	O 1	GAS=0		$ 'Table Top'
+    mat[1] H 2 O 1  GAS=0 $ name: 'Water'
+    mat[2] H -0.111111 O -0.888889  GAS=1 $ name: 'Vapor'
+    mat[3] 56Fe 1  GAS=0 $ name: 'Metal'
+    mat[4] C 1  GAS=0 $ name: 'Carbon'
+    mat[5] Be 1  GAS=0 $ name: 'Beryllium'
+
+[ Mat Name Color ]
+	mat	name	size	color
+	1	Water	1.00	blue
+	2	Vapor	1.00	pastelblue
+	3	Metal	1.00	gray
+	4	Carbon	1.00	black
+	5	Beryllium	1.00	green
 
 [ Cell ]
-    1    -1    (5 6 7 8 9 10 11 12 13 14 16 15)	$ 'outer world'
+    1    -1    (5 6 7 8 9 10 11 12 13 14 15 16)	$ 'outer world'
 
     6    3    -1.0    (-5)		$ name: 'Box_l'
     7    3    -1.0    (-6)		$ name: 'Box_r'
     8    1    -1.0    (-7)		$ name: 'Table'
     9    4    -1.0    (-8)		$ name: 'Ball'
-    10    1    -1.0    (-9)		$ name: 'Cylinder'
+    10    5    -1.0    (-9)		$ name: 'Cylinder'
     11    1    -1.0    (-10)		$ name: 'Hat'
     12    1    -1.0    (-11)		$ name: 'Hoop'
     13    1    -1.0    (-12)		$ name: 'Ring'
     14    1    -1.0    (-13)		$ name: 'Donut'
     15    1    -1.0    (-14)		$ name: 'Table Top'
-    17    1    -1.0    (-16)		$ name: 'Wedge L'
     16    1    -1.0    (-15)		$ name: 'Wedge R'
+    17    1    -1.0    (-16)		$ name: 'Wedge L'
 
 [ Surface ]
     1   P  1 -1 -1  4 $ name: 'P' (Plane) 1x + -1y + -1z − 4 = 0
@@ -54,21 +57,8 @@ $ dummy materials for example (must be defind by hand at current version)
     12   TY  -0.6666666666666666 1.02 -0.6666666666666666  0.03  0.02  0.01 $ name: 'Ring' (torus, with y rotational axis) [x0 y0 z0] A(R) B C
     13   TZ  0.0 1.5 0.7  0.30000000000000004  0.1  0.1 $ name: 'Donut' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
     14   REC  0 0.9 0  0 0.1 0  1 0 0  0 2 0 $ name: 'Table Top' (elliptical cylinder) [x0 y0 z0] [Hx Hy Hz] [Ax Ay Az] [Bx By Bz]
-    16   WED  0.3 0.8999999999999999 -0.8  0 -1 0  0 0 -1  -0.6 0 0 $ name: 'Wedge L' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
     15   WED  -0.3 0.8999999999999999 0.8  0 -1 0  0 0 1  0.6 0 0 $ name: 'Wedge R' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
-
-[ Mat Name Color ]
-	mat		name			size	color
-	0		void			1.00	lightgray
-	1		Box 			1.00	brown
-	2		Table			1.00	orange
-	3		Ball			1.00	blue
-	4		Cylinder		1.00	green
-	5		Hat 			1.00	pastelyellow
-	6		Hoop 			1.00	pastelmagenta
-	7		Ring 			1.00	yellow
-	8		Donut 			1.00	purple
-	9		{Table Top} 	1.00	gray
+    16   WED  0.3 0.8999999999999999 -0.8  0 -1 0  0 0 -1  -0.6 0 0 $ name: 'Wedge L' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
 
 [ T-3Dshow ]
 	title = Geometry 3D

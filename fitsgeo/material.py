@@ -2,22 +2,24 @@
 import itertools
 import pandas as pd
 
+# Counter for objects, new object will have n+1 material number
 material_counter = itertools.count(1)
 
-created_materials = []  # All objects after drawing go here
+created_materials = []  # All objects after initialisation go here
 
 df_ptable = pd.read_csv(
 	"fitsgeo/data/PeriodicTable.dat",
-	sep="\t",
+	sep="\t", skiprows=0,
 	names=[
-		"symbol",
-		"name", "atomic_number", "atomic_weight", "density", "description"],
-	skiprows=0)
+		"symbol", "name", "atomic_number",
+		"atomic_weight", "density", "description"])
 
 
 class Material:
 
-	def __init__(self, elements: list, name="", ratio_type="atomic", gas=False):
+	def __init__(
+			self, elements: list, name="",
+			ratio_type="atomic", gas=False, color="black"):
 		"""
 		Define material
 
@@ -25,11 +27,13 @@ class Material:
 		:param name: name for object
 		:param ratio_type: type of ratio: "atomic" (by default) or "mass"
 		:param gas: True if gas (False by default)
+		:param color: color for material in ANGEL visualization
 		"""
 		self.elements = elements
 		self.name = name
 		self.ratio_type = ratio_type
 		self.gas = gas
+		self.color = color
 
 		self.matn = next(material_counter)
 		created_materials.append(self)
@@ -106,6 +110,24 @@ class Material:
 		"""
 		self.__gas = gas
 
+	@property
+	def color(self):
+		"""
+		Get material color
+
+		:return: str with ANGEL color
+		"""
+		return self.__color
+
+	@color.setter
+	def color(self, color: str):
+		"""
+		Set material color
+
+		:param color: ANGEL color
+		"""
+		self.__color = color
+
 	def phits_print(self):
 		"""
 		Prints PHITS definition
@@ -117,9 +139,7 @@ class Material:
 			gas = "GAS=1"
 
 		text_elrat = ""
-		a = []
-		el = []
-		q = []
+		a, el, q = [], [], []
 		for element in self.elements:
 			if element[0] == 0:
 				a.append("")
@@ -136,6 +156,4 @@ class Material:
 				text_elrat += "".join(f"{a[i]}{el[i]} -{round(q[i], ndigits=6)} ")
 
 		txt = f"    mat[{self.matn}] {text_elrat} {gas} $ name: '{self.name}'"
-
-		print(txt)
 		return txt
