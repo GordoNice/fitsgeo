@@ -2,11 +2,12 @@
 import itertools
 import pandas as pd
 
-# Counter for objects, new object will have n+1 material number
+# Counter for objects, every new object will have n+1 material number
 material_counter = itertools.count(1)
 
 created_materials = []  # All objects after initialisation go here
 
+# Periodic table
 df_ptable = pd.read_csv(
 	"fitsgeo/data/PeriodicTable.dat",
 	sep="\t", skiprows=0,
@@ -19,19 +20,21 @@ class Material:
 
 	def __init__(
 			self, elements: list, name="",
-			ratio_type="atomic", gas=False, color="black"):
+			ratio_type="atomic", density=1.0, gas=False, color="black"):
 		"""
 		Define material
 
 		:param elements: every element in [[A1, Z1, Q1], [A2, Z2, Q2]] format
-		:param name: name for object
+		:param name: name for material object
 		:param ratio_type: type of ratio: "atomic" (by default) or "mass"
+		:param density: density for material
 		:param gas: True if gas (False by default)
-		:param color: color for material in ANGEL visualization
+		:param color: color for material for PHITS ANGEL visualization
 		"""
 		self.elements = elements
 		self.name = name
 		self.ratio_type = ratio_type
+		self.density = density
 		self.gas = gas
 		self.color = color
 
@@ -91,6 +94,24 @@ class Material:
 		:param ratio_type: "atomic" or "mass" types
 		"""
 		self.__ratio_type = ratio_type
+
+	@property
+	def density(self):
+		"""
+		Get material density
+
+		:return: float density
+		"""
+		return self.__density
+
+	@density.setter
+	def density(self, density: float):
+		"""
+		Set material density
+
+		:param density: density for material
+		"""
+		self.__density = density
 
 	@property
 	def gas(self):

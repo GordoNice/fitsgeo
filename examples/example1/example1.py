@@ -11,13 +11,14 @@ scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(ax_length=ax_l)
 scene.background = fitsgeo.rgb_to_vector(192, 192, 192)
 
 # Define materials
-water1 = fitsgeo.Material([[0, 1, 2], [0, 8, 1]], name="Water", color="blue")
-vapor = fitsgeo.Material(
-	[[0, 1, 2/18], [0, 8, 16/18]],
-	gas=True, name="Vapor", ratio_type="mass", color="pastelblue")
-metal = fitsgeo.Material([[56, 26, 1]], name="Metal", color="brown")
-carbon = fitsgeo.Material([[0, 6, 1]], name="Carbon", color="black")
-beryllium = fitsgeo.Material([[0, 4, 1]], name="Beryllium", color="green")
+metal = fitsgeo.Material(
+	[[27, 13, 1]], name="Metal", density=2.69, color="brown")
+carbon = fitsgeo.Material(
+	[[0, 6, 1]], name="Carbon", density=1.8, color="purple")
+beryllium = fitsgeo.Material(
+	[[0, 4, 1]], density=1.85, name="Beryllium", color="green")
+poly = fitsgeo.Material(
+	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="yellow")
 
 # Surface definitions
 # Plane definition
@@ -28,42 +29,48 @@ pz1 = fitsgeo.P(0, 0, 0, -2, vert="z")
 
 # BOX definition
 box_l = fitsgeo.BOX(
-	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l", matn=metal.matn)
+	[-1, -1, -2],
+	[1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l", material=fitsgeo.VAPOR)
 box_r = fitsgeo.BOX(
-	[-1, -1, -2], [1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r", matn=metal.matn)
+	[-1, -1, -2],
+	[1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r", material=fitsgeo.VAPOR)
 
 # RPP definition
-table = fitsgeo.RPP([-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table", matn=metal.matn)
+table = fitsgeo.RPP(
+	[-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table", material=metal)
 
 # SPH definition
-ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", matn=carbon.matn)
+ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", material=fitsgeo.WATER)
 
 # RCC definition
-cyl = fitsgeo.RCC([0, 0, 0], [1, 1, 1], 0.2, name="Cylinder", matn=beryllium.matn)
+cyl = fitsgeo.RCC(
+	[0, 0, 0], [1, 1, 1], 0.2, name="Cylinder", material=beryllium)
 
 # TRC definition
-cone = fitsgeo.TRC([0, 2, 0], [0, 0.5, 0], 0.5, 0.2, name="Hat")
+cone = fitsgeo.TRC([0, 2, 0], [0, 0.5, 0], 0.5, 0.2, name="Hat", material=poly)
 
 # TX definition
-hoop = fitsgeo.T([-3, 0, 0], 1, 0.05, 0.08, name="Hoop", rot="x")
+hoop = fitsgeo.T(
+	[-3, 0, 0], 1, 0.05, 0.08, name="Hoop", rot="x", material=carbon)
 
 # TY definition
-ring = fitsgeo.T([-3, 0, 0], 0.03, 0.02, 0.01, name="Ring")
+ring = fitsgeo.T([-3, 0, 0], 0.03, 0.02, 0.01, name="Ring", material=poly)
 
 # TZ definition
-donut = fitsgeo.T([0, 3, 0], 0.3, 0.1, 0.1, name="Donut", rot="z")
+donut = fitsgeo.T(
+	[0, 3, 0], 0.3, 0.1, 0.1, name="Donut", rot="z", material=carbon)
 
 # REC definition
 tabletop = fitsgeo.REC(
 	[0, 0.9, 0],
 	[0, 0.1, 0],
 	[1, 0, 0],
-	[0, 2, 0], name="Table Top")
+	[0, 2, 0], name="Table Top", material=metal)
 
 wedge_r = fitsgeo.WED(
-	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge R")
+	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge R", material=metal)
 wedge_l = fitsgeo.WED(
-	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge L")
+	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge L", material=metal)
 
 # Redefine properties
 box_l.xyz0 = [box_l.x0+0.5, box_l.y0+2, box_l.z0+0.1]
@@ -109,20 +116,20 @@ py1.draw(size=ax_l)
 pz1.draw(size=ax_l)
 
 box_l.draw(opacity=0.5, label_base=True, label_center=True)
-box_r.draw(opacity=0.5, label_base=True, label_center=True)
-table.draw(color=fitsgeo.BROWN, label_center=True)
+box_r.draw(opacity=0.5, label_base=False, label_center=False)
+table.draw(label_center=True)
 ball.draw(opacity=0.5, label_center=True)
 cyl.draw(label_base=True, label_center=True)
 cone.draw(label_base=True, label_center=True)
 
 hoop.draw(label_center=True)
-ring.draw(color=fitsgeo.GOLD, label_center=True)
-donut.draw(color=fitsgeo.PURPLE, label_center=True)
+ring.draw(label_center=True)
+donut.draw(label_center=True)
 
-tabletop.draw(color=fitsgeo.BROWN, label_center=True)
+tabletop.draw(label_center=True)
 
-wedge_l.draw(color=fitsgeo.BROWN, label_base=True, label_center=True)
-wedge_r.draw(color=fitsgeo.BROWN, label_base=True, label_center=True)
+wedge_l.draw(label_base=True, label_center=True)
+wedge_r.draw(label_base=True, label_center=True)
 
 # Export all drawn surfaces to PHITS as [ Surface ] section
 fitsgeo.phits_export(to_file=True, inp_name="example1")

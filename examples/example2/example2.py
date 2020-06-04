@@ -7,6 +7,9 @@ import fitsgeo
 scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(
 	ax_length=12, background=fitsgeo.WHITE)
 
+poly = fitsgeo.Material(
+	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="yellow")
+
 balls = []
 hats = []
 
@@ -18,7 +21,8 @@ for z in range(n):
 		for x in range(n):
 			balls.append(
 				fitsgeo.SPH(
-					[x + (1 * x), y + (1 * y), z + (1 * z)], 0.5, matn=1))
+					[x + (1 * x), y + (1 * y), z + (1 * z)],
+					0.5, material=fitsgeo.WATER))
 
 			hat_h = balls[i].r
 			hat_r = balls[i].diameter/2
@@ -30,15 +34,13 @@ for z in range(n):
 			hats.append(
 				fitsgeo.TRC(
 					[hat_x0, hat_y0, hat_z0],
-					[0, hat_h, 0], hat_r, hat_r/2, matn=2))
+					[0, hat_h, 0], hat_r, hat_r/2, material=poly))
 			i += 1
 
 for i in range(n**3):
 
-	balls[i].draw(
-			color=fitsgeo.rgb_to_vector(255 - 2.04 * i, 0, 2.04 * i))
-	hats[i].draw(
-			color=fitsgeo.rgb_to_vector(2.04 * i, 255 - 2.04 * i, 0), truncated=True)
+	balls[i].draw()
+	hats[i].draw(truncated=True)
 
 # Export all drawn surfaces to PHITS as [ Surface ] section and basic [ Cell ]
-fitsgeo.phits_export(to_file=True, filename="example2")
+fitsgeo.phits_export(to_file=True, inp_name="example2")

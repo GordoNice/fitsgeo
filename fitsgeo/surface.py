@@ -1,13 +1,12 @@
-from fitsgeo.const import *
-
 import itertools
 from numpy import linalg as la
-from scipy.special import ellipe, ellipk
 from numpy import format_float_positional, abs, power, sqrt, sum, random, \
 	amin, inner, cross
+from scipy.special import ellipe, ellipk
 from vpython import canvas, arrow, vertex, vector
 
-# Counter for objects, new object will have n+1 surface number
+from fitsgeo.const import *
+# Counter for objects, every new object will have n+1 surface number
 surface_counter = itertools.count(1)
 
 created_surfaces = []  # All objects after initialisation go here
@@ -30,8 +29,9 @@ TRC - cone (may be unstable in visualization, when r_1 not comparable with r_2);
 T (TX, TY, TZ) - general torus (consists of rotational x, y, z axes);
 REC - Right elliptical cylinder (careful, because A and B vectors have only 
 magnitude meaning for visualization);
+WED - wedge surface, note that only right triangle can be used as bottom;
 ...
-Look README.md for information and usage examples\n"""
+Look at README.md for more information\n"""
 	print(text)
 
 
@@ -99,17 +99,17 @@ def notation(f: float):
 
 
 class Surface:  # superclass with common properties/methods for all surfaces
-	def __init__(self, name="Surface", trn="", matn=1):
+	def __init__(self, name="Surface", trn="", material=WATER):
 		"""
 		Define surface
 
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.name = name
 		self.trn = trn
-		self.matn = matn
+		self.material = material
 
 		self.sn = next(surface_counter)
 
@@ -168,22 +168,22 @@ class Surface:  # superclass with common properties/methods for all surfaces
 		self.__trn = trn
 
 	@property
-	def matn(self):
+	def material(self):
 		"""
-		Get material number for object
+		Get surface material
 
-		:return: int n
+		:return: Material object
 		"""
-		return self.__matn
+		return self.__material
 
-	@matn.setter
-	def matn(self, matn: int):
+	@material.setter
+	def material(self, material: Material):
 		"""
-		Set material number for object
+		Set surface material
 
-		:param matn: material number
+		:param material: material
 		"""
-		self.__matn = matn
+		self.__material = material
 
 
 class P(Surface):
@@ -194,7 +194,7 @@ class P(Surface):
 	def __init__(
 			self,
 			a: float, b: float, c: float, d: float,
-			name="P", trn="", matn=1, vert=""):
+			name="P", trn="", material=WATER, vert=""):
 		"""
 		Define plane surfaces: P (general), PX (vertical to x), PY (vertical to y),
 		PZ (vertical to z)
@@ -213,7 +213,7 @@ class P(Surface):
 		:param d: D
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		:param vert: axis to which plane is vertical
 		"""
 		self.a = a
@@ -221,7 +221,7 @@ class P(Surface):
 		self.c = c
 		self.d = d
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		self.vert = vert
 		created_surfaces.append(self)
 
@@ -439,7 +439,8 @@ class SPH(Surface):
 
 	symbol = "SPH"
 
-	def __init__(self, xyz0: list, r: float, name="SPH", trn="", matn=1):
+	def __init__(
+			self, xyz0: list, r: float, name="SPH", trn="", material=WATER):
 		"""
 		Define SPH (sphere) surface
 
@@ -447,12 +448,12 @@ class SPH(Surface):
 		:param r: radius
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.xyz0 = xyz0
 		self.r = r
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -642,16 +643,17 @@ class SPH(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, color=NAVY, label_center=False, label_base=False):
+	def draw(self, opacity=1.0, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector
 		:param label_center: if True create label for object
 		:param label_base: dummy flag, same as label_center for sphere
 		:return: vpython.sphere object
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		sph = vpython.sphere(
 			pos=vector(self.x0, self.y0, self.z0), color=color, opacity=opacity,
 			radius=self.r)
@@ -679,7 +681,7 @@ class BOX(Surface):
 
 	def __init__(
 			self, xyz0: list, a: list, b: list, c: list,
-			name="BOX", trn="", matn=1):
+			name="BOX", trn="", material=WATER):
 		"""
 		Define BOX surface (all angles are 90deg)
 
@@ -689,14 +691,14 @@ class BOX(Surface):
 		:param c: vector from base point to third surface [Cx, Cy, Cz]
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.xyz0 = xyz0
 		self.a = a
 		self.b = b
 		self.c = c
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -946,16 +948,17 @@ class BOX(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, color=CHOCOLATE, label_base=False, label_center=False):
+			self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector, yellow by default
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.box and vpython.label objects
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
 		z0 = self.get_center[2]
@@ -1009,7 +1012,7 @@ class RPP(Surface):
 	symbol = "RPP"
 
 	def __init__(
-			self, x: list, y: list, z: list, name="RPP", trn="", matn=1):
+			self, x: list, y: list, z: list, name="RPP", trn="", material=WATER):
 		"""
 		Define RPP (Rectangular solid) similar to BOX, but which each surface is
 		vertical with x, y, z axes
@@ -1019,13 +1022,13 @@ class RPP(Surface):
 		:param z: list with z min and max components [z_min, z_max]
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.x = x
 		self.y = y
 		self.z = z
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -1195,15 +1198,16 @@ class RPP(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, color=PERU, label_center=False):
+	def draw(self, opacity=1.0, label_center=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector
 		:param label_center: if True create label for object
 		:return: vpython.box and vpython.label objects
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
 		z0 = self.get_center[2]
@@ -1238,7 +1242,7 @@ class RCC(Surface):
 	symbol = "RCC"
 
 	def __init__(
-			self, xyz0: list, h: list, r: float, name="RCC", trn="", matn=1):
+			self, xyz0: list, h: list, r: float, name="RCC", trn="", material=WATER):
 		"""
 		Define RCC (cylinder)
 
@@ -1247,13 +1251,13 @@ class RCC(Surface):
 		:param r: radius of bottom face
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.xyz0 = xyz0
 		self.h = h
 		self.r = r
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -1486,16 +1490,17 @@ class RCC(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, color=GREEN, label_base=False, label_center=False):
+			self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		x0 = self.xyz0[0]
 		y0 = self.xyz0[1]
 		z0 = self.xyz0[2]
@@ -1547,7 +1552,7 @@ class TRC(Surface):
 
 	def __init__(
 			self, xyz0: list, h: list, r_1: float, r_2: float,
-			name="RCC", trn="", matn=1):
+			name="RCC", trn="", material=WATER):
 		"""
 		Define TRC (truncated right-angle cone) surface
 
@@ -1557,14 +1562,14 @@ class TRC(Surface):
 		:param r_2: radius of top face
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.xyz0 = xyz0
 		self.h = h
 		self.r_1 = r_1
 		self.r_2 = r_2
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -1844,18 +1849,19 @@ class TRC(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, color=GOLD,
+			self, opacity=1.0,
 			label_base=False, label_center=False, truncated=True):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector, magenta by default
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:param truncated: if True draw as truncated, otherwise simple cone
 		:return: vpython.cylinder object
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		position = vector(self.x0, self.y0, self.z0)
 		direction = vector(self.h[0], self.h[1], self.h[2])
 
@@ -1914,7 +1920,7 @@ class T(Surface):
 
 	def __init__(
 			self, xyz0: list,
-			r: float, b: float, c: float, name="T", trn="", matn=1, rot="y"):
+			r: float, b: float, c: float, name="T", trn="", material=WATER, rot="y"):
 		"""
 		Define T (torus) surface: TX (with x rotational axis),
 		TY (with y rotational axis), TZ (with z rotational axis)
@@ -1925,7 +1931,6 @@ class T(Surface):
 		:param c: ellipse "width" (half)
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
 		:param rot: rotational axis ("x", "y", "z")
 		"""
 		self.xyz0 = xyz0
@@ -1933,7 +1938,7 @@ class T(Surface):
 		self.b = b
 		self.c = c
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		self.rot = rot
 		created_surfaces.append(self)
 
@@ -2170,16 +2175,17 @@ class T(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, color=INDIGO, label_center=False, label_base=False):
+			self, opacity=1.0, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: Set opacity, where 1.0 is fully visible
-		:param color: Set surface color as vpython.vector, blue by default
 		:param label_center: If True create label for object
 		:param label_base: Dummy, same as label_center
 		:return: vpython.ring object
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		width = self.b
 		height = self.c
 
@@ -2221,7 +2227,7 @@ class REC(Surface):
 
 	def __init__(
 			self, xyz0: list, h: list, a: list, b: list,
-			name="RCC", trn="", matn=1):
+			name="RCC", trn="", material=WATER):
 		"""
 		Define REC (right elliptical cylinder) surface
 
@@ -2231,14 +2237,14 @@ class REC(Surface):
 		:param b: minor axis vector of ellipse orthogonal to H and A [Bx, By, Bz]
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.xyz0 = xyz0
 		self.h = h
 		self.a = a
 		self.b = b
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -2472,16 +2478,17 @@ class REC(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, color=LIME, label_base=False, label_center=False):
+			self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector, red by default
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		length = self.get_len_h
 		width = self.get_len_a * 2
 		height = self.get_len_b * 2
@@ -2526,12 +2533,11 @@ class REC(Surface):
 
 
 class WED(Surface):
-	# TODO: Wedge
 	symbol = "WED"
 
 	def __init__(
 			self, xyz0: list, a: list, b: list, h: list,
-			name="WED", trn="", matn=1):
+			name="WED", trn="", material=WATER):
 		"""
 		Define WED (wedge) surface, note that only right triangle can be used as
 		bottom
@@ -2542,14 +2548,14 @@ class WED(Surface):
 		:param h: height vector from base vertex [Hx, Hy, Hz]
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param matn: material number, specifies the number of material
+		:param material: material associated with surface
 		"""
 		self.xyz0 = xyz0
 		self.a = a
 		self.b = b
 		self.h = h
 
-		Surface.__init__(self, name, trn, matn)
+		Surface.__init__(self, name, trn, material)
 		created_surfaces.append(self)
 
 	@property
@@ -2788,16 +2794,17 @@ class WED(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, color=ORANGE, label_base=False, label_center=False):
+			self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
 		:param opacity: set opacity, where 1.0 is fully visible
-		:param color: set surface color as vpython.vector
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
+		color = ANGEL_COLORS[self.material.color]
+
 		x0, y0, z0 = self.x0, self.y0, self.z0
 
 		ax, ay, az = self.a[0], self.a[1], self.a[2]
