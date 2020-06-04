@@ -115,10 +115,10 @@ px1.draw(size=ax_l)
 py1.draw(size=ax_l)
 pz1.draw(size=ax_l)
 
-box_l.draw(opacity=0.5, label_base=True, label_center=True)
-box_r.draw(opacity=0.5, label_base=False, label_center=False)
+box_l.draw(label_base=True, label_center=True)
+box_r.draw(label_base=False, label_center=False)
 table.draw(label_center=True)
-ball.draw(opacity=0.5, label_center=True)
+ball.draw(label_center=True)
 cyl.draw(label_base=True, label_center=True)
 cone.draw(label_base=True, label_center=True)
 

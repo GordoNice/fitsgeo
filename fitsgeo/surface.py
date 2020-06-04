@@ -99,19 +99,27 @@ def notation(f: float):
 
 
 class Surface:  # superclass with common properties/methods for all surfaces
-	def __init__(self, name="Surface", trn="", material=WATER):
+
+	def __init__(self, name="Surface", trn="", material=WATER, opacity=1.0):
 		"""
 		Define surface
 
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
+		:param opacity: set surface opacity, where 1.0 is fully visible
 		"""
 		self.name = name
 		self.trn = trn
 		self.material = material
 
 		self.sn = next(surface_counter)
+		self.color = ANGEL_COLORS[self.material.color]
+
+		if self.material.gas and opacity == 1.0:
+			self.opacity = 0.3
+		else:
+			self.opacity = opacity
 
 	@property
 	def name(self):
@@ -184,6 +192,24 @@ class Surface:  # superclass with common properties/methods for all surfaces
 		:param material: material
 		"""
 		self.__material = material
+
+	@property
+	def color(self):
+		"""
+		Get surface color
+
+		:return: color of surface
+		"""
+		return self.__color
+
+	@color.setter
+	def color(self, color: vpython.vector):
+		"""
+		Set surface color
+
+		:param color: color
+		"""
+		self.__color = color
 
 
 class P(Surface):
@@ -643,19 +669,17 @@ class SPH(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_center=False, label_base=False):
+	def draw(self, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_center: if True create label for object
 		:param label_base: dummy flag, same as label_center for sphere
 		:return: vpython.sphere object
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
 		sph = vpython.sphere(
-			pos=vector(self.x0, self.y0, self.z0), color=color, opacity=opacity,
+			pos=vector(self.x0, self.y0, self.z0),
+			color=self.color, opacity=self.opacity,
 			radius=self.r)
 
 		lbl = None
@@ -947,18 +971,14 @@ class BOX(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(
-			self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.box and vpython.label objects
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
 		z0 = self.get_center[2]
@@ -967,7 +987,8 @@ class BOX(Surface):
 		direction = vector(self.c[0], self.c[1], self.c[2])
 
 		box = vpython.box(
-			color=color, opacity=opacity, pos=vector(x0, y0, z0),
+			color=self.color, opacity=self.opacity,
+			pos=vector(x0, y0, z0),
 			length=self.get_len_c,
 			height=self.get_len_b,
 			width=self.get_len_a,
@@ -1198,22 +1219,20 @@ class RPP(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_center=False):
+	def draw(self, label_center=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_center: if True create label for object
 		:return: vpython.box and vpython.label objects
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
 		z0 = self.get_center[2]
 
 		box = vpython.box(
-			pos=vector(x0, y0, z0), color=color, opacity=opacity,
+			color=self.color, opacity=self.opacity,
+			pos=vector(x0, y0, z0),
 			length=self.get_width,  # x and z swap
 			height=self.get_height,
 			width=self.get_length)  # x and z swap
@@ -1489,18 +1508,14 @@ class RCC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(
-			self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
 		x0 = self.xyz0[0]
 		y0 = self.xyz0[1]
 		z0 = self.xyz0[2]
@@ -1508,9 +1523,8 @@ class RCC(Surface):
 		direction = vector(self.h[0], self.h[1], self.h[2])
 
 		cyl = vpython.cylinder(
+			color=self.color, opacity=self.opacity,
 			pos=vector(x0, y0, z0),
-			color=color,
-			opacity=opacity,
 			axis=direction,
 			radius=self.r)
 
@@ -1848,20 +1862,17 @@ class TRC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(
-			self, opacity=1.0,
-			label_base=False, label_center=False, truncated=True):
+	def draw(self, label_base=False, label_center=False, truncated=True):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:param truncated: if True draw as truncated, otherwise simple cone
 		:return: vpython.cylinder object
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
+		color = self.color
+		opacity = self.opacity
 		position = vector(self.x0, self.y0, self.z0)
 		direction = vector(self.h[0], self.h[1], self.h[2])
 
@@ -2174,18 +2185,14 @@ class T(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(
-			self, opacity=1.0, label_center=False, label_base=False):
+	def draw(self, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: Set opacity, where 1.0 is fully visible
 		:param label_center: If True create label for object
 		:param label_base: Dummy, same as label_center
 		:return: vpython.ring object
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
 		width = self.b
 		height = self.c
 
@@ -2203,7 +2210,8 @@ class T(Surface):
 			up=rot_axis, radius=self.r)
 
 		s = vpython.shapes.ellipse(width=width, height=height)
-		tor = vpython.extrusion(path=p, shape=s, color=color, opacity=opacity)
+		tor = vpython.extrusion(
+			path=p, shape=s, color=self.color, opacity=self.opacity)
 
 		lbl = None
 		if label_center or label_base:
@@ -2477,18 +2485,14 @@ class REC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(
-			self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
-		color = ANGEL_COLORS[self.material.color]
-
 		length = self.get_len_h
 		width = self.get_len_a * 2
 		height = self.get_len_b * 2
@@ -2497,7 +2501,7 @@ class REC(Surface):
 
 		el_cyl = vpython.cylinder(
 			pos=vector(self.x0, self.y0, self.z0),
-			color=color, opacity=opacity,
+			color=self.color, opacity=self.opacity,
 			size=vector(length, width, height), axis=direction)
 
 		lbl_c, lbl_b = None, None
@@ -2793,17 +2797,16 @@ class WED(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(
-			self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
-		:param opacity: set opacity, where 1.0 is fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
-		color = ANGEL_COLORS[self.material.color]
+		color = self.color
+		opacity = self.opacity
 
 		x0, y0, z0 = self.x0, self.y0, self.z0
 
