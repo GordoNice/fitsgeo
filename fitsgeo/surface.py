@@ -100,14 +100,13 @@ def notation(f: float):
 
 class Surface:  # superclass with common properties/methods for all surfaces
 
-	def __init__(self, name="Surface", trn="", material=WATER, opacity=1.0):
+	def __init__(self, name="Surface", trn="", material=WATER):
 		"""
 		Define surface
 
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
-		:param opacity: set surface opacity, where 1.0 is fully visible
 		"""
 		self.name = name
 		self.trn = trn
@@ -116,10 +115,7 @@ class Surface:  # superclass with common properties/methods for all surfaces
 		self.sn = next(surface_counter)
 		self.color = ANGEL_COLORS[self.material.color]
 
-		if self.material.gas and opacity == 1.0:
-			self.opacity = 0.3
-		else:
-			self.opacity = opacity
+		self.opacity = 1.0
 
 	@property
 	def name(self):
@@ -210,6 +206,27 @@ class Surface:  # superclass with common properties/methods for all surfaces
 		:param color: color
 		"""
 		self.__color = color
+
+	@property
+	def opacity(self):
+		"""
+		Get surface opacity
+
+		:return: opacity of surface
+		"""
+		return self.__opacity
+
+	@opacity.setter
+	def opacity(self, opacity: float):
+		"""
+		Set surface opacity
+
+		:param opacity: opacity
+		"""
+		if self.material.gas and opacity == 1.0:
+			self.__opacity = 0.3
+		else:
+			self.__opacity = opacity
 
 
 class P(Surface):
@@ -653,6 +670,18 @@ class SPH(Surface):
 		"""
 		self.__r = c/(2*PI)
 
+	def print_properties(self):
+		prefix = f"SPH '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} radius:", self.r)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} diameter:", self.diameter)
+		print(f"{prefix} volume:", self.volume)
+		print(f"{prefix} surface area:", self.get_surface_area)
+		print(f"{prefix} cross section:", self.cross_section)
+		print(f"{prefix} circumference:", self.circumference)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -669,14 +698,16 @@ class SPH(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_center=False, label_base=False):
+	def draw(self, opacity=1.0, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 is fully visible
 		:param label_center: if True create label for object
 		:param label_base: dummy flag, same as label_center for sphere
 		:return: vpython.sphere object
 		"""
+		self.opacity = opacity
 		sph = vpython.sphere(
 			pos=vector(self.x0, self.y0, self.z0),
 			color=self.color, opacity=self.opacity,
@@ -951,6 +982,26 @@ class BOX(Surface):
 		"""
 		return 2 * (self.get_ab_area + self.get_ac_area + self.get_bc_area)
 
+	def print_properties(self):
+		prefix = f"BOX '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} a:", self.a)
+		print(f"{prefix} a length:", self.get_len_a)
+		print(f"{prefix} b:", self.b)
+		print(f"{prefix} b length:", self.get_len_b)
+		print(f"{prefix} c:", self.c)
+		print(f"{prefix} c length:", self.get_len_c)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} center:", self.get_center)
+		print(f"{prefix} diagonal:", self.get_diagonal)
+		print(f"{prefix} diagonal length:", self.get_diagonal_length)
+		print(f"{prefix} volume:", self.get_volume)
+		print(f"{prefix} AB area:", self.get_ab_area)
+		print(f"{prefix} AC area:", self.get_ac_area)
+		print(f"{prefix} BC area:", self.get_bc_area)
+		print(f"{prefix} full area:", self.get_full_area)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -971,14 +1022,17 @@ class BOX(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_base=False, label_center=False):
+	def draw(self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.box and vpython.label objects
 		"""
+		self.opacity = opacity
+
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
 		z0 = self.get_center[2]
@@ -1200,6 +1254,24 @@ class RPP(Surface):
 		"""
 		return 2 * (self.get_wh_area + self.get_wl_area + self.get_hl_area)
 
+	def print_properties(self):
+		prefix = f"RPP '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} x:", self.x)
+		print(f"{prefix} y:", self.y)
+		print(f"{prefix} z:", self.z)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} width:", self.get_width)
+		print(f"{prefix} heigth:", self.get_height)
+		print(f"{prefix} length:", self.get_length)
+		print(f"{prefix} center:", self.get_center)
+		print(f"{prefix} diagonal length:", self.get_diagonal_length)
+		print(f"{prefix} volume:", self.get_volume)
+		print(f"{prefix} width*height area:", self.get_wh_area)
+		print(f"{prefix} width*length area:", self.get_wl_area)
+		print(f"{prefix} height*length area:", self.get_hl_area)
+		print(f"{prefix} full area:", self.get_full_area)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -1219,13 +1291,16 @@ class RPP(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_center=False):
+	def draw(self, opacity=1.0, label_center=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_center: if True create label for object
 		:return: vpython.box and vpython.label objects
 		"""
+		self.opacity = opacity
+
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
 		z0 = self.get_center[2]
@@ -1491,6 +1566,22 @@ class RCC(Surface):
 		"""
 		return 2 * self.bottom_area + self.get_side_area
 
+	def print_properties(self):
+		prefix = f"RCC '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} h:", self.h)
+		print(f"{prefix} radius:", self.r)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} diameter:", self.diameter)
+		print(f"{prefix} circumference:", self.circumference)
+		print(f"{prefix} bottom area:", self.bottom_area)
+		print(f"{prefix} center:", self.get_center)
+		print(f"{prefix} H length:", self.get_len_h)
+		print(f"{prefix} volume:", self.get_volume)
+		print(f"{prefix} side area:", self.get_side_area)
+		print(f"{prefix} full area:", self.get_full_area)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -1508,14 +1599,17 @@ class RCC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_base=False, label_center=False):
+	def draw(self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
+		self.opacity = opacity
+
 		x0 = self.xyz0[0]
 		y0 = self.xyz0[1]
 		z0 = self.xyz0[2]
@@ -1844,6 +1938,25 @@ class TRC(Surface):
 		"""
 		return self.bottom_area + self.top_area + self.get_side_area
 
+	def print_properties(self):
+		prefix = f"TRC '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} h:", self.h)
+		print(f"{prefix} radius of bottom face (r_1):", self.r_1)
+		print(f"{prefix} radius of top face (r_2):", self.r_2)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} bottom diameter:", self.bottom_diameter)
+		print(f"{prefix} top diameter:", self.top_diameter)
+		print(f"{prefix} bottom area:", self.bottom_area)
+		print(f"{prefix} top area:", self.top_area)
+		print(f"{prefix} center:", self.get_center)
+		print(f"{prefix} H length:", self.get_len_h)
+		print(f"{prefix} forming L:", self.get_forming)
+		print(f"{prefix} volume:", self.get_volume)
+		print(f"{prefix} side area:", self.get_side_area)
+		print(f"{prefix} full area:", self.get_full_area)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -1862,15 +1975,19 @@ class TRC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_base=False, label_center=False, truncated=True):
+	def draw(
+			self, opacity=1.0, label_base=False, label_center=False, truncated=True):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:param truncated: if True draw as truncated, otherwise simple cone
 		:return: vpython.cylinder object
 		"""
+		self.opacity = opacity
+
 		color = self.color
 		opacity = self.opacity
 		position = vector(self.x0, self.y0, self.z0)
@@ -1938,8 +2055,8 @@ class T(Surface):
 
 		:param xyz0: xyz0 [x0, y0, z0] - the center of the torus surface
 		:param r: distance between xyz0 (rotational axis) and ellipse center
-		:param b: ellipse "height" (half)
-		:param c: ellipse "width" (half)
+		:param b: semi-minor axis (ellipse half "height")
+		:param c: semi-major axis (ellipse half "width")
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
 		:param rot: rotational axis ("x", "y", "z")
@@ -2166,6 +2283,20 @@ class T(Surface):
 		"""
 		return 2 * power(PI, 2) * self.b * self.c * self.r
 
+	def print_properties(self):
+		prefix = f"T '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} radius:", self.r)
+		print(f"{prefix} semi-minor axis:", self.b)
+		print(f"{prefix} semi-major axis:", self.c)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} rotational axis:", self.rot)
+		print(f"{prefix} circumference:", self.circumference)
+		print(f"{prefix} cross section:", self.get_cross_section)
+		print(f"{prefix} full area:", self.get_full_area)
+		print(f"{prefix} volume:", self.get_volume)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -2185,14 +2316,17 @@ class T(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_center=False, label_base=False):
+	def draw(self, opacity=1.0, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_center: If True create label for object
 		:param label_base: Dummy, same as label_center
 		:return: vpython.ring object
 		"""
+		self.opacity = opacity
+
 		width = self.b
 		height = self.c
 
@@ -2241,8 +2375,8 @@ class REC(Surface):
 
 		:param xyz0: center coordinate of bottom face [x0, y0, z0]
 		:param h: height vector from center of bottom face [Hx, Hy, Hz]
-		:param a: major axis vector of ellipse orthogonal to H [Ax, Ay, Az]
-		:param b: minor axis vector of ellipse orthogonal to H and A [Bx, By, Bz]
+		:param a: semi-major axis vector of ellipse orthogonal to H [Ax, Ay, Az]
+		:param b: semi-minor axis vector of ellipse orthogonal to H and A [Bx, By, Bz]
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
@@ -2406,7 +2540,7 @@ class REC(Surface):
 	@property
 	def get_len_a(self):
 		"""
-		Get major axis vector A
+		Get semi-major axis vector A
 
 		:return: float length of major axis A
 		"""
@@ -2415,7 +2549,7 @@ class REC(Surface):
 	@property
 	def get_len_b(self):
 		"""
-		Get minor axis vector B
+		Get semi-minor axis vector B
 
 		:return: float length of minor axis B
 		"""
@@ -2464,6 +2598,24 @@ class REC(Surface):
 		"""
 		return self.get_bottom_area * self.get_len_h
 
+	def print_properties(self):
+		prefix = f"REC '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} center:", self.get_center)
+		print(f"{prefix} height vector:", self.h)
+		print(f"{prefix} height vector length:", self.get_len_h)
+		print(f"{prefix} semi-major axis vector of ellipse orthogonal to H:", self.a)
+		print(f"{prefix} length of semi-major axis vector A:", self.get_len_a)
+		print(
+			f"{prefix} semi-minor axis vector of ellipse orthogonal to H and A:", self.b)
+		print(f"{prefix} length of semi-minor axis vector B:", self.get_len_b)
+		print(f"{prefix} bottom area:", self.get_bottom_area)
+		print(f"{prefix} side area:", self.get_side_area)
+		print(f"{prefix} full area:", self.get_full_area)
+		print(f"{prefix} volume:", self.get_volume)
+		print(f"{prefix} trn:", self.trn)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -2485,14 +2637,17 @@ class REC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_base=False, label_center=False):
+	def draw(self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
+		self.opacity = opacity
+
 		length = self.get_len_h
 		width = self.get_len_a * 2
 		height = self.get_len_b * 2
@@ -2776,6 +2931,23 @@ class WED(Surface):
 		"""
 		return 2*self.get_ab_area + self.get_ah_area + self.get_bh_area
 
+	def print_properties(self):
+		prefix = f"WED '{self.name}' sn={self.sn}"
+		print(f"{prefix} material name:", self.material.name)
+		print(f"{prefix} xyz0:", self.xyz0)
+		print(f"{prefix} vector A to first side of triangle:", self.a)
+		print(f"{prefix} vector A length:", self.get_len_a)
+		print(f"{prefix} vector B to second side of triangle:", self.b)
+		print(f"{prefix} vector B length:", self.get_len_b)
+		print(f"{prefix} height vector H from base vertex:", self.h)
+		print(f"{prefix} length of height vector H:", self.get_len_h)
+		print(f"{prefix} center:", self.get_center)
+		print(f"{prefix} volume:", self.get_volume)
+		print(f"{prefix} AB base vertex triangle surface area:", self.get_ab_area)
+		print(f"{prefix} AH side rectangle surface area:", self.get_ah_area)
+		print(f"{prefix} BH side rectangle surface area:", self.get_bh_area)
+		print(f"{prefix} full area:", self.get_full_area)
+
 	def phits_print(self):
 		"""
 		Print PHITS surface definition
@@ -2797,14 +2969,17 @@ class WED(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, label_base=False, label_center=False):
+	def draw(self, opacity=1.0, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
+		:param opacity: set surface opacity, where 1.0 - fully visible
 		:param label_base: if True create label for object base
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
+		self.opacity = opacity
+
 		color = self.color
 		opacity = self.opacity
 

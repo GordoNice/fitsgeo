@@ -2,6 +2,7 @@ import numpy
 import vpython
 from fitsgeo.material import Material
 
+
 def rgb_to_vector(r: float, g: float, b: float):
 	"""
 	Make vpython.vector color from rgb values
@@ -116,6 +117,9 @@ ANGEL_COLORS = {
 	"pastelviolet": PASTELVIOLET
 }
 
+# TODO: pre-defined surfaces
+
+# TODO: more pre-defined materials
 # Pre-defined materials
 WATER = Material([[0, 1, 2], [0, 8, 1]], name="WATER", color="blue")
 VAPOR = Material(

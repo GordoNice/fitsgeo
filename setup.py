@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as f:
 
 setuptools.setup(
 	name="FitsGeo",
-	version="0.2.1",
+	version="0.2.2",
 	author="Ivan Gordeev",
 	author_email="gordeev@jinr.ru",
 	description="FitsGeo: package for PHITS geometry development",
@@ -19,7 +19,6 @@ setuptools.setup(
 	packages=setuptools.find_packages(),
 	classifiers=[
 		"Programming Language :: Python :: 3.7",
-		"Programming Language :: Python :: 3.6",
 		# How mature is this project? Common values are
 		#   3 - Alpha
 		#   4 - Beta

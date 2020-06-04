@@ -131,83 +131,10 @@ tabletop.draw(label_center=True)
 wedge_l.draw(label_base=True, label_center=True)
 wedge_r.draw(label_base=True, label_center=True)
 
-# Export all drawn surfaces to PHITS as [ Surface ] section
+# Export sections to PHITS input file
 fitsgeo.phits_export(to_file=True, inp_name="example1")
 
-# Properties of BOX
-print()
-print(f"BOX Area ab: {box_l.get_ab_area}")
-print(f"BOX Area bc: {box_l.get_bc_area}")
-print(f"BOX Area ac: {box_l.get_ac_area}")
-print(f"BOX Length a: {box_l.get_len_a}")
-print(f"BOX Length b: {box_l.get_len_b}")
-print(f"BOX Length c: {box_l.get_len_c}")
-print(f"BOX Volume: {box_l.get_volume}")
-print(f"BOX Center: {box_l.get_center}")
-print(f"BOX Diagonal vector: {box_l.get_diagonal}")
-print(f"BOX Diagonal length: {box_l.get_diagonal_length}")
-print()
-
-# Properties of RPP
-print()
-print(f"RPP Center: {table.get_center}")
-print(f"RPP Area wl: {table.get_wl_area}")
-print(f"RPP Area hl: {table.get_hl_area}")
-print(f"RPP Area wh: {table.get_wh_area}")
-print(f"RPP Full Area: {table.get_full_area}")
-print(f"RPP Height: {table.get_height}")
-print(f"RPP Width: {table.get_width}")
-print(f"RPP Length: {table.get_length}")
-print(f"RPP Volume: {table.get_volume}")
-print()
-
-# Properties of sphere
-print()
-print(f"SPH Center: {ball.xyz0}")
-print(f"SPH Diameter: {ball.diameter}")
-print(f"SPH Area: {ball.get_surface_area}")
-print(f"SPH Cross section area: {ball.cross_section}")
-print(f"SPH Volume: {ball.volume}")
-print()
-
-# Properties of cylinder
-print()
-print(f"RCC Height: {cyl.get_len_h}")
-print(f"RCC Diameter: {cyl.diameter}")
-print(f"RCC Center: {cyl.get_center}")
-print(f"RCC Full Area: {cyl.get_full_area}")
-print(f"RCC Side Area: {cyl.get_side_area}")
-print(f"RCC Bottom Area: {cyl.bottom_area}")
-print(f"RCC Volume: {cyl.get_volume}")
-print()
-
-# Properties of cone
-print()
-print(f"TRC Center: {cone.get_center}")
-print(f"TRC Forming: {cone.get_forming}")
-print(f"TRC Height: {cone.get_len_h}")
-print(f"TRC Bottom Diameter: {cone.bottom_diameter}")
-print(f"TRC Center: {cone.top_diameter}")
-print(f"TRC Full Area: {cone.get_full_area}")
-print(f"TRC Side Area: {cone.get_side_area}")
-print(f"TRC Bottom Area: {cone.bottom_area}")
-print(f"TRC Top Area: {cone.top_area}")
-print(f"TRC Volume: {cone.get_volume}")
-print()
-
-# Properties of torus
-print()
-print(f"TX Center: {hoop.xyz0}")
-print(f"TX Circumference: {hoop.circumference}")
-print(f"TX Full Area: {hoop.get_full_area}")
-print(f"TX Volume: {hoop.get_volume}")
-print()
-
-# Properties of elliptical cylinder
-print()
-print(f"REC Height: {tabletop.get_len_h}")
-print(f"REC Major axis: {tabletop.get_len_a}")
-print(f"REC Minor axis: {tabletop.get_len_b}")
-print(f"REC Center: {tabletop.get_center}")
-print(f"REC Bottom Area: {tabletop.get_bottom_area}")
-print()
+# Print all properties of defined surfaces
+for s in [box_l, box_r, table, ball, cyl, cone, hoop, tabletop]:
+	s.print_properties()
+	print()
