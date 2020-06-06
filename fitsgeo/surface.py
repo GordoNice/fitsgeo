@@ -37,7 +37,7 @@ Look at README.md for more information\n"""
 
 def create_scene(
 		axis=True, width=1500, height=800, resizable=True,
-		ax_length=10, ax_opacity=0.2, background=GRAY_SCALE[3]):
+		ax_length=2, ax_opacity=0.2, background=GRAY_SCALE[3]):
 	"""
 	Create vpython.canvas with some default settings (axis etc)
 
@@ -235,8 +235,7 @@ class P(Surface):
 
 	def __init__(
 			self,
-			a: float, b: float, c: float, d: float,
-			name="P", trn="", vert=""):
+			a=1.0, b=-1.0, c=-1.0, d=4.0, name="P", trn="", vert=""):
 		"""
 		Define plane surfaces: P (general), PX (vertical to x), PY (vertical to y),
 		PZ (vertical to z)
@@ -491,7 +490,8 @@ class SPH(Surface):
 	symbol = "SPH"
 
 	def __init__(
-			self, xyz0: list, r: float, name="SPH", trn="", material=WATER):
+			self, xyz0: list = None, r=1.0,
+			name="SPH", trn="", material=WATER):
 		"""
 		Define SPH (sphere) surface
 
@@ -501,6 +501,10 @@ class SPH(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default value
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+
 		self.xyz0 = xyz0
 		self.r = r
 
@@ -752,7 +756,8 @@ class BOX(Surface):
 	symbol = "BOX"
 
 	def __init__(
-			self, xyz0: list, a: list, b: list, c: list,
+			self,
+			xyz0: list = None, a: list = None, b: list = None, c: list = None,
 			name="BOX", trn="", material=WATER):
 		"""
 		Define BOX surface (all angles are 90deg)
@@ -765,6 +770,16 @@ class BOX(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default values
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+		if a is None:
+			a = [1.0, 0.0, 0.0]
+		if b is None:
+			b = [0.0, 1.0, 0.0]
+		if c is None:
+			c = [0.0, 0.0, 1.0]
+
 		self.xyz0 = xyz0
 		self.a = a
 		self.b = b
@@ -1104,7 +1119,9 @@ class RPP(Surface):
 	symbol = "RPP"
 
 	def __init__(
-			self, x: list, y: list, z: list, name="RPP", trn="", material=WATER):
+			self,
+			x: list = None, y: list = None, z: list = None,
+			name="RPP", trn="", material=WATER):
 		"""
 		Define RPP (Rectangular solid) similar to BOX, but which each surface is
 		vertical with x, y, z axes
@@ -1116,6 +1133,14 @@ class RPP(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default values
+		if x is None:
+			x = [-1.0, 1.0]
+		if y is None:
+			y = [-1.0, 1.0]
+		if z is None:
+			z = [-1.0, 1.0]
+
 		self.x = x
 		self.y = y
 		self.z = z
@@ -1353,7 +1378,9 @@ class RCC(Surface):
 	symbol = "RCC"
 
 	def __init__(
-			self, xyz0: list, h: list, r: float, name="RCC", trn="", material=WATER):
+			self,
+			xyz0: list = None, h: list = None, r=0.5,
+			name="RCC", trn="", material=WATER):
 		"""
 		Define RCC (cylinder)
 
@@ -1364,6 +1391,12 @@ class RCC(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default values
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+		if h is None:
+			h = [0.0, 1.0, 0.0]
+
 		self.xyz0 = xyz0
 		self.h = h
 		self.r = r
@@ -1676,7 +1709,8 @@ class TRC(Surface):
 	symbol = "TRC"
 
 	def __init__(
-			self, xyz0: list, h: list, r_1: float, r_2: float,
+			self,
+			xyz0: list = None, h: list = None, r_1=0.5, r_2=0.1,
 			name="RCC", trn="", material=WATER):
 		"""
 		Define TRC (truncated right-angle cone) surface
@@ -1689,6 +1723,12 @@ class TRC(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default values
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+		if h is None:
+			h = [0.0, 1.0, 0.0]
+
 		self.xyz0 = xyz0
 		self.h = h
 		self.r_1 = r_1
@@ -2064,8 +2104,8 @@ class T(Surface):
 	symbol_tx, symbol_ty, symbol_tz = "TX", "TY", "TZ"
 
 	def __init__(
-			self, xyz0: list,
-			r: float, b: float, c: float, name="T", trn="", material=WATER, rot="y"):
+			self, xyz0: list = None, r=0.5, b=0.08, c=0.1,
+			name="T", trn="", material=WATER, rot="y"):
 		"""
 		Define T (torus) surface: TX (with x rotational axis),
 		TY (with y rotational axis), TZ (with z rotational axis)
@@ -2078,6 +2118,10 @@ class T(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param rot: rotational axis ("x", "y", "z")
 		"""
+		# Default value
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+
 		self.xyz0 = xyz0
 		self.r = r
 		self.b = b
@@ -2393,8 +2437,9 @@ class REC(Surface):
 	symbol = "REC"
 
 	def __init__(
-			self, xyz0: list, h: list, a: list, b: list,
-			name="RCC", trn="", material=WATER):
+			self,
+			xyz0: list = None, h: list = None, a: list = None, b: list = None,
+			name="REC", trn="", material=WATER):
 		"""
 		Define REC (right elliptical cylinder) surface
 
@@ -2406,6 +2451,16 @@ class REC(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default values
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+		if h is None:
+			h = [0.0, 1.0, 0.0]
+		if a is None:
+			a = [0.7, 0.0, 0.0]
+		if b is None:
+			b = [0.0, 0.0, 1.0]
+
 		self.xyz0 = xyz0
 		self.h = h
 		self.a = a
@@ -2720,7 +2775,8 @@ class WED(Surface):
 	symbol = "WED"
 
 	def __init__(
-			self, xyz0: list, a: list, b: list, h: list,
+			self, xyz0: list = None,
+			a: list = None, b: list = None, h: list = None,
 			name="WED", trn="", material=WATER):
 		"""
 		Define WED (wedge) surface, note that only right triangle can be used as
@@ -2734,6 +2790,16 @@ class WED(Surface):
 		:param trn: transform number, specifies the number n of TRn
 		:param material: material associated with surface
 		"""
+		# Default values
+		if xyz0 is None:
+			xyz0 = [0.0, 0.0, 0.0]
+		if a is None:
+			a = [1.0, 0.0, 0.0]
+		if b is None:
+			b = [0.0, 0.0, 1.0]
+		if h is None:
+			h = [0.0, 1.0, 0.0]
+
 		self.xyz0 = xyz0
 		self.a = a
 		self.b = b
