@@ -230,14 +230,13 @@ class Surface:  # superclass with common properties/methods for all surfaces
 
 
 class P(Surface):
-
 	symbol_p = "P"
 	symbol_px, symbol_py, symbol_pz = "PX", "PY", "PZ"
 
 	def __init__(
 			self,
 			a: float, b: float, c: float, d: float,
-			name="P", trn="", material=WATER, vert=""):
+			name="P", trn="", vert=""):
 		"""
 		Define plane surfaces: P (general), PX (vertical to x), PY (vertical to y),
 		PZ (vertical to z)
@@ -256,7 +255,6 @@ class P(Surface):
 		:param d: D
 		:param name: name for object
 		:param trn: transform number, specifies the number n of TRn
-		:param material: material associated with surface
 		:param vert: axis to which plane is vertical
 		"""
 		self.a = a
@@ -264,7 +262,7 @@ class P(Surface):
 		self.c = c
 		self.d = d
 
-		Surface.__init__(self, name, trn, material)
+		Surface.__init__(self, name, trn)
 		self.vert = vert
 		created_surfaces.append(self)
 
@@ -375,6 +373,16 @@ class P(Surface):
 		:return: string with vertical plane equation
 		"""
 		return f"{self.vert} = {self.d}"
+
+	def print_properties(self):
+		prefix = f"P '{self.name}' sn={self.sn}"
+
+		print(f"{prefix} A parameter:", self.a)
+		print(f"{prefix} B parameter:", self.b)
+		print(f"{prefix} C parameter:", self.c)
+		print(f"{prefix} D parameter:", self.d)
+		print(f"{prefix} trn:", self.trn)
+		print(f"{prefix} axis to which plane is vertical:", self.vert)
 
 	def phits_print(self):
 		"""
@@ -626,13 +634,22 @@ class SPH(Surface):
 		self.__r = power((3 * volume)/(4 * PI), 1/3)
 
 	@property
-	def get_surface_area(self):
+	def surface_area(self):
 		"""
 		Get full surface area as 4 * pi * R^2
 
 		:return: float full surface area
 		"""
 		return 4 * PI * power(self.r, 2)
+
+	@surface_area.setter
+	def surface_area(self, area: float):
+		"""
+		Set radius according to full surface area as r = sqrt(area/(4*pi))
+
+		:param area: float area
+		"""
+		self.__r = sqrt(area/(4*PI))
 
 	@property
 	def cross_section(self):
@@ -678,7 +695,7 @@ class SPH(Surface):
 		print(f"{prefix} trn:", self.trn)
 		print(f"{prefix} diameter:", self.diameter)
 		print(f"{prefix} volume:", self.volume)
-		print(f"{prefix} surface area:", self.get_surface_area)
+		print(f"{prefix} surface area:", self.surface_area)
 		print(f"{prefix} cross section:", self.cross_section)
 		print(f"{prefix} circumference:", self.circumference)
 
@@ -2053,7 +2070,7 @@ class T(Surface):
 		Define T (torus) surface: TX (with x rotational axis),
 		TY (with y rotational axis), TZ (with z rotational axis)
 
-		:param xyz0: xyz0 [x0, y0, z0] - the center of the torus surface
+		:param xyz0: the center of the torus surface [x0, y0, z0]
 		:param r: distance between xyz0 (rotational axis) and ellipse center
 		:param b: semi-minor axis (ellipse half "height")
 		:param c: semi-major axis (ellipse half "width")
@@ -2270,10 +2287,18 @@ class T(Surface):
 		"""
 		if self.b == self.c:
 			return 4 * power(PI, 2) * self.r * self.b  # or self.c
+
 		else:
-			e = sqrt(1 - (power(self.b, 2)/power(self.c, 2)))
+			b = self.b
+			a = self.c
+
+			if self.b > self.c:  # To avoid negative value in e
+				b = self.c
+				a = self.b
+
+			e = sqrt(1 - (power(b, 2)/power(a, 2)))
 			e2 = power(e, 2)
-			return 8 * PI * self.c * self.r * ellipk(e2)
+			return 8 * PI * a * self.r * ellipk(e2)
 
 	@property
 	def get_volume(self):

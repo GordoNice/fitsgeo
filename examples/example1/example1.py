@@ -110,10 +110,8 @@ wedge_l.h[0] = -table.get_width
 wedge_l.b[2] = -wedge_l.b[2]
 
 # Draw objects on scene
-p1.draw(size=ax_l)  # Plane will be sized according to axis
-px1.draw(size=ax_l)
-py1.draw(size=ax_l)
-pz1.draw(size=ax_l)
+for p in [p1, px1, py1, pz1]:
+	p.draw(size=ax_l)  # Plane will be sized according to axis
 
 box_l.draw(label_base=True, label_center=True)
 box_r.draw(label_base=False, label_center=False)

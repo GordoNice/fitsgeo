@@ -14,38 +14,36 @@
 [ Material ]
     mat[1] H 2 O 1  GAS=0 $ name: 'WATER'
     mat[2] H 2 O 1  GAS=1 $ name: 'VAPOR'
-    mat[3] 27Al 1  GAS=0 $ name: 'Metal'
+    mat[3] H 2 O 1  GAS=0 $ name: 'Snow'
     mat[4] C 1  GAS=0 $ name: 'Carbon'
-    mat[5] Be 1  GAS=0 $ name: 'Beryllium'
-    mat[6] C 2 H 4  GAS=0 $ name: 'Polyethylene'
+    mat[5] C 2 H 4  GAS=0 $ name: 'Polyethylene'
 
 [ Mat Name Color ]
-	mat	name	size	color
-	1	WATER	1.00	blue
-	2	VAPOR	1.00	pastelblue
-	3	Metal	1.00	white
-	4	Carbon	1.00	black
-	5	Beryllium	1.00	orange
-	6	Polyethylene	1.00	purple
+    mat name    size    color
+    1   WATER   1.00    blue
+    2   VAPOR   1.00    pastelblue
+    3   Snow    1.00    lightgray
+    4   Carbon  1.00    black
+    5   Polyethylene    1.00    orange
 
 [ Cell ]
-    1    -1    (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)	$ 'outer world'
+    1    -1    (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)    $ 'outer world'
 
-    2    3    -2.69    (-1)		$ name: 'bottom'
-    3    3    -2.69    (-2)		$ name: 'middle'
-    4    3    -2.69    (-3)		$ name: 'top'
-    5    5    -1.85    (-4)		$ name: 'RCC'
-    6    4    -1.8    (-5)		$ name: 'hat'
-    7    4    -1.8    (-6)		$ name: 'hat'
-    8    4    -1.8    (-7)		$ name: 'eye'
-    9    4    -1.8    (-8)		$ name: 'eye'
-    10    4    -1.8    (-9)		$ name: 'Button1'
-    11    4    -1.8    (-10)		$ name: 'Button2'
-    12    4    -1.8    (-11)		$ name: 'Mouth'
-    13    4    -1.8    (-12)		$ name: 'Mouth'
-    14    4    -1.8    (-13)		$ name: 'Mouth'
-    15    4    -1.8    (-14)		$ name: 'Mouth'
-    16    4    -1.8    (-15)		$ name: 'Mouth'
+    2    3    -1.0    (-1)      $ name: 'bottom'
+    3    3    -1.0    (-2)      $ name: 'middle'
+    4    3    -1.0    (-3)      $ name: 'top'
+    5    5    -0.94    (-4)     $ name: 'RCC'
+    6    4    -1.8    (-5)      $ name: 'hat'
+    7    4    -1.8    (-6)      $ name: 'hat'
+    8    4    -1.8    (-7)      $ name: 'eye'
+    9    4    -1.8    (-8)      $ name: 'eye'
+    10    4    -1.8    (-9)     $ name: 'Button1'
+    11    4    -1.8    (-10)        $ name: 'Button2'
+    12    4    -1.8    (-11)        $ name: 'Mouth'
+    13    4    -1.8    (-12)        $ name: 'Mouth'
+    14    4    -1.8    (-13)        $ name: 'Mouth'
+    15    4    -1.8    (-14)        $ name: 'Mouth'
+    16    4    -1.8    (-15)        $ name: 'Mouth'
 
 [ Surface ]
     1   SPH  0 0 0  1 $ name: 'bottom' (sphere) x0 y0 z0 R

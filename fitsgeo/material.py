@@ -24,7 +24,9 @@ class Material:
 		"""
 		Define material
 
-		:param elements: every element in [[A1, Z1, Q1], [A2, Z2, Q2]] format
+		:param elements: every element in [[A1, Z1, Q1], [A2, Z2, Q2]] format,
+		where A - mass number, Z - atomic number, Q - quantity of ratio
+
 		:param name: name for material object
 		:param ratio_type: type of ratio: "atomic" (by default) or "mass"
 		:param density: density for material

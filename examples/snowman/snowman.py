@@ -4,39 +4,35 @@
 import fitsgeo
 
 # Create main scene, with axis
-scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(
-	ax_length=10, background=fitsgeo.WHITE)
+fitsgeo.create_scene(ax_length=5, background=fitsgeo.WHITE)
 
 # Define materials
-metal = fitsgeo.Material(
-	[[27, 13, 1]], name="Metal", density=2.69, color="white")
+ice = fitsgeo.Material([[0, 1, 2], [0, 8, 1]], name="Snow", color="lightgray")
 carbon = fitsgeo.Material(
 	[[0, 6, 1]], name="Carbon", density=1.8, color="black")
-beryllium = fitsgeo.Material(
-	[[0, 4, 1]], density=1.85, name="Beryllium", color="orange")
 poly = fitsgeo.Material(
-	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="purple")
+	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="orange")
 
 # Create all objects for snowman
-bottom = fitsgeo.SPH([0, 0, 0], 1, material=metal, name="bottom")
+bottom = fitsgeo.SPH([0, 0, 0], 1, material=ice, name="bottom")
 
 middle = fitsgeo.SPH(
 	[bottom.x0, bottom.y0+bottom.r, bottom.z0],
-	bottom.r/1.5, material=metal, name="middle")
+	bottom.r/1.5, material=ice, name="middle")
 
 top = fitsgeo.SPH(
 	[
 		middle.x0,
 		middle.y0+middle.r*1.2,
 		middle.z0],
-	middle.r/1.5, material=metal, name="top")
+	middle.r/1.5, material=ice, name="top")
 
 carrot = fitsgeo.TRC(
 	[
 		top.x0,
 		top.y0+top.r/4,
 		top.z0+top.r/2],
-	[0, 0, top.diameter*0.8], top.r/6, 1e-3, material=beryllium)
+	[0, 0, top.diameter*0.8], top.r/6, 1e-3, material=poly)
 
 hat_bottom = fitsgeo.RCC(
 	[top.x0, top.y0+top.r, top.z0],
@@ -124,7 +120,7 @@ for s in [bottom, middle, top]:
 	s.draw(label_center=True)
 
 carrot.draw(truncated=True)
-hat_bottom.draw(label_base=False)
+hat_bottom.draw()
 hat_top.draw(label_base=True)
 
 for s in [
