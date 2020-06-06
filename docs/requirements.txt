@@ -1,2 +1,3 @@
 sphinx>=3.0.4
 fitsgeo>=0.1.1
+sphinx-math-dollar>=1.1.1
