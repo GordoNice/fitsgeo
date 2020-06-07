@@ -1,5 +1,5 @@
-from fitsgeo.surface import created_surfaces, P
-from fitsgeo.material import created_materials
+from .surface import created_surfaces, P
+from .material import created_materials
 
 
 def phits_export(
@@ -26,7 +26,9 @@ def phits_export(
 			text_materials += mat.phits_print() + "\n"
 		text_materials += "\n[ Mat Name Color ]\n\tmat\tname\tsize\tcolor\n"
 		for mat in created_materials:
-			text_materials += f"\t{mat.matn}\t{mat.name}\t1.00\t{mat.color}\n"
+			mat_name = "{"+mat.name.replace('_', '\\_')+"}"
+			text_materials += \
+				f"\t{mat.matn}\t{mat_name}\t1.00\t{mat.color}\n"
 
 	# TODO: better export of [ Cell ] section
 	text_cells = "\n[ Cell ]\n"
@@ -38,7 +40,7 @@ def phits_export(
 	for s in created_surfaces:
 		if not isinstance(s, P):  # Add if not plane
 			text_cells +=\
-				f"    {s.sn+1}    {s.material.matn}    -{s.material.density}" + \
+				f"    {s.sn+1}    {s.material.matn}    {-s.material.density}" + \
 				f"    ({-s.sn})		$ name: '{s.name}'\n"
 
 	text_surfaces = ""
@@ -60,3 +62,9 @@ def phits_export(
 				f.write(text_cells)
 			if export_surfaces:
 				f.write(text_surfaces)
+
+
+if __name__ == "__main__":
+	print(
+		"--- Welcome to FitsGeo! ---\n" +
+		"This is a module for FitsGeo!\nImport FitsGeo to use.")

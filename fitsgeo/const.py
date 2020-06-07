@@ -1,6 +1,5 @@
 import numpy
 import vpython
-from fitsgeo.material import Material
 
 
 def rgb_to_vector(r: float, g: float, b: float):
@@ -76,6 +75,7 @@ DARKVIOLET = rgb_to_vector(148, 0, 211)
 VIOLET = rgb_to_vector(238, 130, 238)
 PASTELPURPLE = rgb_to_vector(238, 130, 238)
 PASTELVIOLET = rgb_to_vector(204, 153, 255)
+PASTELBROWN = rgb_to_vector(131, 105, 83)
 
 # Dictionary with ANGEL colors in correspondence to VPython colors
 ANGEL_COLORS = {
@@ -92,7 +92,7 @@ ANGEL_COLORS = {
 	"orange": DARKORANGE,
 	"brown": SADDLEBROWN,
 	"darkbrown": DARKBROWN,
-	"pastelbrown": DARKGOLDENROD,
+	"pastelbrown": PASTELBROWN,
 	"orangeyellow": GOLD,
 	"camel": OLIVE,
 	"pastelyellow": PASTELYELLOW,
@@ -117,12 +117,7 @@ ANGEL_COLORS = {
 	"pastelviolet": PASTELVIOLET
 }
 
-# TODO: pre-defined surfaces
-
-# TODO: more pre-defined materials
-# Pre-defined materials
-
-
-WATER = Material([[0, 1, 2], [0, 8, 1]], name="WATER", color="blue")
-VAPOR = Material(
-	[[0, 1, 2], [0, 8, 1]], gas=True, name="VAPOR", color="pastelblue")
+if __name__ == "__main__":
+	print(
+		"--- Welcome to FitsGeo! ---\n" +
+		"This is a module for FitsGeo!\nImport FitsGeo to use.")

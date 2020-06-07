@@ -4,14 +4,12 @@
 import fitsgeo
 
 # Create main scene, with axis
-scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(
-	ax_length=12, background=fitsgeo.WHITE)
+scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(ax_length=10)
 
-poly = fitsgeo.Material(
-	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="yellow")
+gold = fitsgeo.Material.database("MAT_AU", color="yellow")
+bronze = fitsgeo.Material.database("MAT_BRONZE", color="pastelbrown")
 
-balls = []
-hats = []
+balls, hats = [], []
 
 n = 3  # Number of objects along each axis
 
@@ -22,7 +20,7 @@ for z in range(n):
 			balls.append(
 				fitsgeo.SPH(
 					[x + (1 * x), y + (1 * y), z + (1 * z)],
-					0.5, material=fitsgeo.WATER))
+					0.5, material=bronze))
 
 			hat_h = balls[i].r
 			hat_r = balls[i].diameter/2
@@ -34,7 +32,7 @@ for z in range(n):
 			hats.append(
 				fitsgeo.TRC(
 					[hat_x0, hat_y0, hat_z0],
-					[0, hat_h, 0], hat_r, hat_r/2, material=poly))
+					[0, hat_h, 0], hat_r, hat_r/2, material=gold))
 			i += 1
 
 for i in range(n**3):

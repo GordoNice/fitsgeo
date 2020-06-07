@@ -1,19 +1,54 @@
-# TODO: Improve Material class
 import itertools
 import pandas as pd
+from random import choice
+
+from .const import ANGEL_COLORS
+
 
 # Counter for objects, every new object will have n+1 material number
 material_counter = itertools.count(1)
 
 created_materials = []  # All objects after initialisation go here
 
-# Periodic table
-df_ptable = pd.read_csv(
-	"fitsgeo/data/PeriodicTable.dat",
+
+# Periodic table database
+DF_PTABLE = pd.read_csv(
+	"fitsgeo/data/PTABLE.dat",
 	sep="\t", skiprows=0,
 	names=[
 		"symbol", "name", "atomic_number",
 		"atomic_weight", "density", "description"])
+
+# Database for single materials from Periodic Table
+DF_PT = pd.read_csv("fitsgeo/data/PTDATABASE.dat", sep="\t", comment="#")
+
+# Database adopted from SRIM
+DF_S = pd.read_csv("fitsgeo/data/SDATABASE.dat", sep="\t", comment="#")
+
+# Database adopted from GEANT4
+DF_G = pd.read_csv("fitsgeo/data/GDATABASE.dat", sep="\t", comment="#")
+
+MAT_DB = pd.concat([DF_PT, DF_S, DF_G])
+# To avoid duplicates
+MAT_DB = MAT_DB.drop_duplicates(subset="Name").reset_index(drop=True)
+# print(MAT_DB)
+
+
+def list_all_materials():
+	text = ""
+	print("List with all available materials:")
+	text += "List with all available materials:\n"
+	i = 1
+	for name in MAT_DB["Name"].tolist():
+		print(f"{i}\t-\t'{name}'")
+		text += f"{i}\t-\t'{name}'\n"
+		i += 1
+	print(
+		"To use pre-defined materials:" +
+		" mat = fitsgeo.Material.database(\"MAT_NAME\")")
+	text += "To use pre-defined materials:" + \
+		" mat = fitsgeo.Material.database(\"MAT_NAME\")\n"
+	return text
 
 
 class Material:
@@ -29,7 +64,7 @@ class Material:
 
 		:param name: name for material object
 		:param ratio_type: type of ratio: "atomic" (by default) or "mass"
-		:param density: density for material
+		:param density: density for material (g/cm^2)
 		:param gas: True if gas (False by default)
 		:param color: color for material for PHITS ANGEL visualization
 		"""
@@ -42,6 +77,45 @@ class Material:
 
 		self.matn = next(material_counter)
 		created_materials.append(self)
+
+	@classmethod
+	def database(
+			cls, name, gas=False, color=choice(list(ANGEL_COLORS.keys()))):
+		"""
+		Initialize material from databases
+
+		:param name: name of material in database
+		:param gas: True if gas (False by default)
+		:param color: ANGEL color for visualization
+		:return:
+		"""
+		row_id = MAT_DB.index[MAT_DB["Name"] == name].tolist()
+
+		if row_id:  # If row_id not empty
+			n = int(MAT_DB.iloc[row_id[0]]["N"])
+			density = float(MAT_DB.iloc[row_id[0]]["Density(g/cm^3)"])
+			formula = MAT_DB.iloc[row_id[0]]["Formula (Z Q)"].split()
+
+			elements =\
+				[
+					[0,
+					 int(formula[i]),
+					 float(formula[i+1])] for i in range(0, n*2, 2)]
+
+			# Sum all ratios
+			total_sum = 0
+			for i in range(n):
+				total_sum += elements[i][2]
+
+			# If total will be greater than 1.0 it is atomic
+			if total_sum > 1.0 or total_sum == 1.0 and n == 1:
+				ratio_type = "atomic"
+			else:
+				ratio_type = "mass"
+
+			return cls(elements, name, ratio_type, density, gas, color)
+		else:
+			raise NameError(f"No '{name}' name in database!\nPlease try again!")
 
 	@property
 	def elements(self):
@@ -168,7 +242,7 @@ class Material:
 				a.append("")
 			else:
 				a.append(element[0])
-			el.append(df_ptable.iloc[element[1]-1]["symbol"])
+			el.append(DF_PTABLE.iloc[element[1] - 1]["symbol"])
 			q.append(element[2])
 
 		if self.ratio_type == "atomic":
@@ -176,7 +250,18 @@ class Material:
 				text_elrat += "".join(f"{a[i]}{el[i]} {q[i]} ")
 		else:
 			for i in range(len(self.elements)):
-				text_elrat += "".join(f"{a[i]}{el[i]} -{round(q[i], ndigits=6)} ")
+				text_elrat += "".join(f"{a[i]}{el[i]} -{q[i]} ")
 
 		txt = f"    mat[{self.matn}] {text_elrat} {gas} $ name: '{self.name}'"
 		return txt
+
+
+# Pre-defined materials as constants for default surface material
+# MAT_OUTER = TODO: special material for outer world
+# MAT_VOID = TODO: special material for void
+MAT_WATER = Material.database("MAT_WATER", color="blue")
+
+if __name__ == "__main__":
+	print(
+		"--- Welcome to FitsGeo! ---\n" +
+		"This is a module for FitsGeo!\nImport FitsGeo to use.")

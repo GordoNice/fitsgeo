@@ -10,13 +10,13 @@ scene, ax_x, ax_y, ax_z = fitsgeo.create_scene(ax_length=ax_l)
 # Change scene background
 scene.background = fitsgeo.rgb_to_vector(192, 192, 192)
 
-# Define materials
-metal = fitsgeo.Material(
-	[[27, 13, 1]], name="Metal", density=2.69, color="brown")
-carbon = fitsgeo.Material(
-	[[0, 6, 1]], name="Carbon", density=1.8, color="purple")
-beryllium = fitsgeo.Material(
-	[[0, 4, 1]], density=1.85, name="Beryllium", color="green")
+# Define materials from pre-defined database
+epoxy = fitsgeo.Material.database("MAT_EPOXY", color="pastelblue")
+al = fitsgeo.Material.database("MAT_AL", color="brown")
+carbon = fitsgeo.Material.database("MAT_CARBON", color="purple")
+
+# Define material by hand
+beryllium = fitsgeo.Material.database("MAT_BE", color="green")
 poly = fitsgeo.Material(
 	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="yellow")
 
@@ -30,17 +30,17 @@ pz1 = fitsgeo.P(0, 0, 0, -2, vert="z")
 # BOX definition
 box_l = fitsgeo.BOX(
 	[-1, -1, -2],
-	[1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l", material=fitsgeo.VAPOR)
+	[1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_l", material=epoxy)
 box_r = fitsgeo.BOX(
 	[-1, -1, -2],
-	[1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r", material=fitsgeo.VAPOR)
+	[1, 0, 0], [0, 1, 0], [0, 0, 1], name="Box_r", material=epoxy)
 
 # RPP definition
 table = fitsgeo.RPP(
-	[-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table", material=metal)
+	[-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table", material=al)
 
 # SPH definition
-ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", material=fitsgeo.WATER)
+ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", material=fitsgeo.MAT_WATER)
 
 # RCC definition
 cyl = fitsgeo.RCC(
@@ -65,12 +65,12 @@ tabletop = fitsgeo.REC(
 	[0, 0.9, 0],
 	[0, 0.1, 0],
 	[1, 0, 0],
-	[0, 2, 0], name="Table Top", material=metal)
+	[0, 2, 0], name="Table Top", material=al)
 
 wedge_r = fitsgeo.WED(
-	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge R", material=metal)
+	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge R", material=al)
 wedge_l = fitsgeo.WED(
-	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge L", material=metal)
+	[0, 0, 0], [0, -1, 0], [0, 0, 1], [1, 0, 0], name="Wedge L", material=al)
 
 # Redefine properties
 box_l.xyz0 = [box_l.x0+0.5, box_l.y0+2, box_l.z0+0.1]

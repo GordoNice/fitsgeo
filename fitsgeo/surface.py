@@ -5,7 +5,9 @@ from numpy import format_float_positional, abs, power, sqrt, sum, random, \
 from scipy.special import ellipe, ellipk
 from vpython import canvas, arrow, vertex, vector
 
-from fitsgeo.const import *
+from .const import *
+from .material import Material, MAT_WATER
+
 # Counter for objects, every new object will have n+1 surface number
 surface_counter = itertools.count(1)
 
@@ -100,7 +102,8 @@ def notation(f: float):
 
 class Surface:  # superclass with common properties/methods for all surfaces
 
-	def __init__(self, name="Surface", trn="", material=WATER):
+	def __init__(
+			self, name="Surface", trn="", material=MAT_WATER):
 		"""
 		Define surface
 
@@ -199,7 +202,7 @@ class Surface:  # superclass with common properties/methods for all surfaces
 		return self.__color
 
 	@color.setter
-	def color(self, color: vpython.vector):
+	def color(self, color: vector):
 		"""
 		Set surface color
 
@@ -491,7 +494,7 @@ class SPH(Surface):
 
 	def __init__(
 			self, xyz0: list = None, r=1.0,
-			name="SPH", trn="", material=WATER):
+			name="SPH", trn="", material=MAT_WATER):
 		"""
 		Define SPH (sphere) surface
 
@@ -758,7 +761,7 @@ class BOX(Surface):
 	def __init__(
 			self,
 			xyz0: list = None, a: list = None, b: list = None, c: list = None,
-			name="BOX", trn="", material=WATER):
+			name="BOX", trn="", material=MAT_WATER):
 		"""
 		Define BOX surface (all angles are 90deg)
 
@@ -1121,7 +1124,7 @@ class RPP(Surface):
 	def __init__(
 			self,
 			x: list = None, y: list = None, z: list = None,
-			name="RPP", trn="", material=WATER):
+			name="RPP", trn="", material=MAT_WATER):
 		"""
 		Define RPP (Rectangular solid) similar to BOX, but which each surface is
 		vertical with x, y, z axes
@@ -1380,7 +1383,7 @@ class RCC(Surface):
 	def __init__(
 			self,
 			xyz0: list = None, h: list = None, r=0.5,
-			name="RCC", trn="", material=WATER):
+			name="RCC", trn="", material=MAT_WATER):
 		"""
 		Define RCC (cylinder)
 
@@ -1711,7 +1714,7 @@ class TRC(Surface):
 	def __init__(
 			self,
 			xyz0: list = None, h: list = None, r_1=0.5, r_2=0.1,
-			name="RCC", trn="", material=WATER):
+			name="RCC", trn="", material=MAT_WATER):
 		"""
 		Define TRC (truncated right-angle cone) surface
 
@@ -2105,7 +2108,7 @@ class T(Surface):
 
 	def __init__(
 			self, xyz0: list = None, r=0.5, b=0.08, c=0.1,
-			name="T", trn="", material=WATER, rot="y"):
+			name="T", trn="", material=MAT_WATER, rot="y"):
 		"""
 		Define T (torus) surface: TX (with x rotational axis),
 		TY (with y rotational axis), TZ (with z rotational axis)
@@ -2409,7 +2412,7 @@ class T(Surface):
 			height = self.b
 
 		p = vpython.paths.circle(
-			pos=vpython.vector(self.x0, self.y0, self.z0),
+			pos=vector(self.x0, self.y0, self.z0),
 			up=rot_axis, radius=self.r)
 
 		s = vpython.shapes.ellipse(width=width, height=height)
@@ -2439,7 +2442,7 @@ class REC(Surface):
 	def __init__(
 			self,
 			xyz0: list = None, h: list = None, a: list = None, b: list = None,
-			name="REC", trn="", material=WATER):
+			name="REC", trn="", material=MAT_WATER):
 		"""
 		Define REC (right elliptical cylinder) surface
 
@@ -2777,7 +2780,7 @@ class WED(Surface):
 	def __init__(
 			self, xyz0: list = None,
 			a: list = None, b: list = None, h: list = None,
-			name="WED", trn="", material=WATER):
+			name="WED", trn="", material=MAT_WATER):
 		"""
 		Define WED (wedge) surface, note that only right triangle can be used as
 		bottom
@@ -3147,5 +3150,6 @@ class ELL:
 
 if __name__ == "__main__":
 	print(
-		"--- Welcome to FitsGeo! ---\nThis module must be imported!\n")
+		"--- Welcome to FitsGeo! ---\n" +
+		"This is a module for FitsGeo!\nImport FitsGeo to use.")
 	list_all_surfaces()
