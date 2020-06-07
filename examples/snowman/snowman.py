@@ -7,11 +7,10 @@ import fitsgeo
 fitsgeo.create_scene(ax_length=5, background=fitsgeo.WHITE)
 
 # Define materials
-ice = fitsgeo.Material([[0, 1, 2], [0, 8, 1]], name="Snow", color="lightgray")
-carbon = fitsgeo.Material(
-	[[0, 6, 1]], name="Carbon", density=1.8, color="black")
-poly = fitsgeo.Material(
-	[[0, 6, 2], [0, 1, 4]], density=0.94, name="Polyethylene", color="orange")
+fitsgeo.MAT_WATER.color = "white"
+ice = fitsgeo.MAT_WATER
+carbon = fitsgeo.Material.database("MAT_CARBON", color="black")
+poly = fitsgeo.Material.database("MAT_PARAFFIN", color="orange")
 
 # Create all objects for snowman
 bottom = fitsgeo.SPH([0, 0, 0], 1, material=ice, name="bottom")
