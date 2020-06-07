@@ -1,3 +1,4 @@
+import pkg_resources
 import itertools
 import pandas as pd
 from random import choice
@@ -13,20 +14,26 @@ created_materials = []  # All objects after initialisation go here
 
 # Periodic table database
 DF_PTABLE = pd.read_csv(
-	"fitsgeo/data/PTABLE.dat",
+	pkg_resources.resource_filename("data", "PTABLE.dat"),
 	sep="\t", skiprows=0,
 	names=[
 		"symbol", "name", "atomic_number",
 		"atomic_weight", "density", "description"])
 
 # Database for single materials from Periodic Table
-DF_PT = pd.read_csv("fitsgeo/data/PTDATABASE.dat", sep="\t", comment="#")
+DF_PT = pd.read_csv(
+	pkg_resources.resource_filename("data", "PTDATABASE.dat"),
+	sep="\t", comment="#")
 
 # Database adopted from SRIM
-DF_S = pd.read_csv("fitsgeo/data/SDATABASE.dat", sep="\t", comment="#")
+DF_S = pd.read_csv(
+	pkg_resources.resource_filename("data", "SDATABASE.dat"),
+	sep="\t", comment="#")
 
 # Database adopted from GEANT4
-DF_G = pd.read_csv("fitsgeo/data/GDATABASE.dat", sep="\t", comment="#")
+DF_G = pd.read_csv(
+	pkg_resources.resource_filename("data", "GDATABASE.dat"),
+	sep="\t", comment="#")
 
 MAT_DB = pd.concat([DF_PT, DF_S, DF_G])
 # To avoid duplicates

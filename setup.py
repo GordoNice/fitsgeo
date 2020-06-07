@@ -8,7 +8,7 @@ with open("requirements.txt", "r", encoding="utf-8") as f:
 
 setuptools.setup(
 	name="FitsGeo",
-	version="0.3.0",
+	version="0.3.1",
 	author="Ivan Gordeev",
 	author_email="gordeev@jinr.ru",
 	description="FitsGeo: package for PHITS geometry development",
@@ -17,6 +17,9 @@ setuptools.setup(
 	long_description_content_type="text/markdown",
 	url="https://github.com/GordoNice/fitsgeo",
 	packages=setuptools.find_packages(),
+	package_data={
+		'fitsgeo': ['data/*.dat'],
+	},
 	classifiers=[
 		"Programming Language :: Python :: 3.7",
 		# How mature is this project? Common values are

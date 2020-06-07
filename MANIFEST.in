@@ -2,6 +2,7 @@ recursive-include fitsgeo *.py
 recursive-exclude fitsgeo transform.py
 exclude *.sh *.yml *.ini *.txt *.spec .git
 graft examples
+graft fitsgeo/data
 prune docs
 prune .idea
 prune tests
