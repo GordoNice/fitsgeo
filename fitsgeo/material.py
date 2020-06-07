@@ -14,7 +14,7 @@ created_materials = []  # All objects after initialisation go here
 
 # Periodic table database
 DF_PTABLE = pd.read_csv(
-	pkg_resources.resource_filename("data", "PTABLE.dat"),
+	pkg_resources.resource_filename("fitsgeo", "data/PTABLE.dat"),
 	sep="\t", skiprows=0,
 	names=[
 		"symbol", "name", "atomic_number",
@@ -22,17 +22,17 @@ DF_PTABLE = pd.read_csv(
 
 # Database for single materials from Periodic Table
 DF_PT = pd.read_csv(
-	pkg_resources.resource_filename("data", "PTDATABASE.dat"),
+	pkg_resources.resource_filename("fitsgeo", "data/PTDATABASE.dat"),
 	sep="\t", comment="#")
 
 # Database adopted from SRIM
 DF_S = pd.read_csv(
-	pkg_resources.resource_filename("data", "SDATABASE.dat"),
+	pkg_resources.resource_filename("fitsgeo", "data/SDATABASE.dat"),
 	sep="\t", comment="#")
 
 # Database adopted from GEANT4
 DF_G = pd.read_csv(
-	pkg_resources.resource_filename("data", "GDATABASE.dat"),
+	pkg_resources.resource_filename("fitsgeo", "data/GDATABASE.dat"),
 	sep="\t", comment="#")
 
 MAT_DB = pd.concat([DF_PT, DF_S, DF_G])
