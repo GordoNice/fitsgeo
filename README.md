@@ -39,4 +39,4 @@ All modules listed in `requirements.txt`.
 
 ### Documentation
 
-Please visit https://fitsgeo.readthedocs.io/ for documentation.
+Please visit https://fitsgeo.readthedocs.io/en/master/ for documentation.
