@@ -120,6 +120,19 @@ class Surface:  # superclass with common properties/methods for all surfaces
 
 		self.opacity = 1.0
 
+	# Overload operators
+	# Positive sign
+	def __pos__(self):
+		return str(self.sn) + " "
+
+	# Negative sign
+	def __neg__(self):
+		return str(-self.sn) + " "
+
+	# str operator returns sn
+	def __str__(self):
+		return f"{self.sn}"
+
 	@property
 	def name(self):
 		"""

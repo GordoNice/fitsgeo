@@ -12,6 +12,7 @@ scene.background = fitsgeo.rgb_to_vector(192, 192, 192)
 
 # Define materials from pre-defined database
 epoxy = fitsgeo.Material.database("MAT_EPOXY", color="pastelblue")
+glass = fitsgeo.Material.database("MAT_GLASS_PB", color="gray")
 al = fitsgeo.Material.database("MAT_AL", color="brown")
 carbon = fitsgeo.Material.database("MAT_CARBON", color="purple")
 
@@ -40,14 +41,14 @@ table = fitsgeo.RPP(
 	[-0.3, 0.3], [-1, 1], [-0.8, 0.8], name="Table", material=al)
 
 # SPH definition
-ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", material=fitsgeo.MAT_WATER)
+ball = fitsgeo.SPH([0, 1.5, 0], 0.5, name="Ball", material=glass)
 
 # RCC definition
 cyl = fitsgeo.RCC(
 	[0, 0, 0], [1, 1, 1], 0.2, name="Cylinder", material=beryllium)
 
 # TRC definition
-cone = fitsgeo.TRC([0, 2, 0], [0, 0.5, 0], 0.5, 0.2, name="Hat", material=poly)
+hat = fitsgeo.TRC([0, 2, 0], [0, 0.5, 0], 0.5, 0.2, name="Hat", material=poly)
 
 # TX definition
 hoop = fitsgeo.T(
@@ -113,26 +114,30 @@ wedge_l.b[2] = -wedge_l.b[2]
 for p in [p1, px1, py1, pz1]:
 	p.draw(size=ax_l)  # Plane will be sized according to axis
 
-box_l.draw(label_base=True, label_center=True)
-box_r.draw(label_base=False, label_center=False)
-table.draw(label_center=True)
-ball.draw(label_center=True)
-cyl.draw(label_base=True, label_center=True)
-cone.draw(label_base=True, label_center=True)
-
+box_l.draw(label_base=True, label_center=False, opacity=0.8)
+box_r.draw(label_base=False, label_center=True, opacity=0.8)
+ball.draw(label_center=True, opacity=0.6)
 hoop.draw(label_center=True)
-ring.draw(label_center=True)
-donut.draw(label_center=True)
 
-tabletop.draw(label_center=True)
+for s in [table, cyl, hat, ring, donut, tabletop, wedge_l, wedge_r]:
+	s.draw()
 
-wedge_l.draw(label_base=True, label_center=True)
-wedge_r.draw(label_base=True, label_center=True)
+# Create cells
+cells = []
+for s in [
+	box_l, box_r,
+	table, tabletop, ball, cyl, hat, hoop, ring, donut, wedge_l, wedge_r]:
+	cells.append(fitsgeo.Cell([-s], name=f"{s.name} Cell", material=s.material))
+
+# Redefine cells
+cells[0].cell_def = [-box_l + +cyl]
+cells[1].cell_def = [-box_r + +cyl]
+cells[4].cell_def = [-ball + +cyl]
+
+# Print all properties of defined surfaces
+for s in fitsgeo.created_surfaces:
+	s.print_properties()
+	print()
 
 # Export sections to PHITS input file
 fitsgeo.phits_export(to_file=True, inp_name="example1")
-
-# Print all properties of defined surfaces
-for s in [box_l, box_r, table, ball, cyl, cone, hoop, tabletop]:
-	s.print_properties()
-	print()

@@ -61,8 +61,8 @@ def list_all_materials():
 class Material:
 
 	def __init__(
-			self, elements: list, name="",
-			ratio_type="atomic", density=1.0, gas=False, color="black"):
+			self, elements: list, name="", ratio_type="atomic", density=1.0,
+			gas=False, color="black", matn: int = None):
 		"""
 		Define material
 
@@ -74,6 +74,7 @@ class Material:
 		:param density: density for material (g/cm^2)
 		:param gas: True if gas (False by default)
 		:param color: color for material for PHITS ANGEL visualization
+		:param matn: material number
 		"""
 		self.elements = elements
 		self.name = name
@@ -82,7 +83,10 @@ class Material:
 		self.gas = gas
 		self.color = color
 
-		self.matn = next(material_counter)
+		if matn is None:
+			self.matn = next(material_counter)
+		else:
+			self.matn = matn
 		created_materials.append(self)
 
 	@classmethod
@@ -241,35 +245,39 @@ class Material:
 
 		:return: string with PHITS definition
 		"""
-		gas = "GAS=0"
-		if self.gas:
-			gas = "GAS=1"
-
-		text_elrat = ""
-		a, el, q = [], [], []
-		for element in self.elements:
-			if element[0] == 0:
-				a.append("")
-			else:
-				a.append(element[0])
-			el.append(DF_PTABLE.iloc[element[1] - 1]["symbol"])
-			q.append(element[2])
-
-		if self.ratio_type == "atomic":
-			for i in range(len(self.elements)):
-				text_elrat += "".join(f"{a[i]}{el[i]} {q[i]} ")
+		if self.matn < 1:
+			return ""
 		else:
-			for i in range(len(self.elements)):
-				text_elrat += "".join(f"{a[i]}{el[i]} -{q[i]} ")
+			gas = "GAS=0"
+			if self.gas:
+				gas = "GAS=1"
 
-		txt = f"    mat[{self.matn}] {text_elrat} {gas} $ name: '{self.name}'"
-		return txt
+			text_elrat = ""
+			a, el, q = [], [], []
+			for element in self.elements:
+				if element[0] == 0:
+					a.append("")
+				else:
+					a.append(element[0])
+				el.append(DF_PTABLE.iloc[element[1] - 1]["symbol"])
+				q.append(element[2])
+
+			if self.ratio_type == "atomic":
+				for i in range(len(self.elements)):
+					text_elrat += "".join(f"{a[i]}{el[i]} {q[i]} ")
+			else:
+				for i in range(len(self.elements)):
+					text_elrat += "".join(f"{a[i]}{el[i]} -{q[i]} ")
+
+			txt = f"    mat[{self.matn}] {text_elrat} {gas} $ name: '{self.name}'"
+			return txt
 
 
 # Pre-defined materials as constants for default surface material
-# MAT_OUTER = TODO: special material for outer world
-# MAT_VOID = TODO: special material for void
+MAT_OUTER = Material([], matn=-1)  # special material for outer world
+MAT_VOID = Material([], matn=0)  # special material for void
 MAT_WATER = Material.database("MAT_WATER", color="blue")
+
 
 if __name__ == "__main__":
 	print(
