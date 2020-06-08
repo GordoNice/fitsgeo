@@ -15,7 +15,7 @@ created_materials = []  # All objects after initialisation go here
 # Periodic table database
 DF_PTABLE = pd.read_csv(
 	pkg_resources.resource_filename("fitsgeo", "data/PTABLE.dat"),
-	sep="\t", skiprows=0,
+	sep="\t", comment="#",
 	names=[
 		"symbol", "name", "atomic_number",
 		"atomic_weight", "density", "description"])
@@ -87,7 +87,7 @@ class Material:
 
 	@classmethod
 	def database(
-			cls, name, gas=False, color=choice(list(ANGEL_COLORS.keys()))):
+			cls, name, gas=False, color: str = None):
 		"""
 		Initialize material from databases
 
@@ -96,6 +96,9 @@ class Material:
 		:param color: ANGEL color for visualization
 		:return:
 		"""
+		if color is None:
+			color = choice(list(ANGEL_COLORS.keys()))
+
 		row_id = MAT_DB.index[MAT_DB["Name"] == name].tolist()
 
 		if row_id:  # If row_id not empty

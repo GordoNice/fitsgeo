@@ -83,11 +83,6 @@ This line creates box object as BOX class at P (0, 0, 0) (base point) coordinate
 
 Other objects can be created in the same manner. All parameters for all implemented classes listed in the table below.
 
-.. math::
-
-	Ax + By + Cz - D = 0
-
-
 +----------------------+----------------+--------------------------------------+
 | ``surface`` class    | Parameter      | Explanation                          |
 +======================+================+======================================+
@@ -315,3 +310,19 @@ Example 3: Snowman
 
 Advanced
 ========
+
+.. literalinclude:: examples/example1.py
+	:linenos:
+	:lineno-start: 3
+	:emphasize-lines: 1, 2
+	:lines: 3-5
+	:language: python
+
+.. literalinclude:: examples/example2.py
+	:linenos:
+	:language: python
+
+.. literalinclude:: examples/snowman.py
+	:linenos:
+	:lines: 1-10
+	:language: python

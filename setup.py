@@ -8,10 +8,10 @@ with open("requirements.txt", "r", encoding="utf-8") as f:
 
 setuptools.setup(
 	name="FitsGeo",
-	version="0.3.3",
+	version="0.3.4",
 	author="Ivan Gordeev",
 	author_email="gordeev@jinr.ru",
-	description="FitsGeo: package for PHITS geometry development",
+	description="FitsGeo: Python package for PHITS geometry development",
 	keywords='Python VPython PHITS geometry visualization development',
 	long_description=long_description,
 	long_description_content_type="text/markdown",

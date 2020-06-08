@@ -1,3 +1,12 @@
+# Periodic Table
+# Format: Name	N	Density(g/cm^3)	Formula (Z Q)
+# symbol - symbol of element
+# name - name of element
+# atomic_number - Z of element
+# atomic_weight - A of element
+# density - density of simple material with element
+# description - some comments to element
+# ------------------------------------------------------------------------------
 H	Hydrogen	1	1.008	0.0708	Colourless, odourless gaseous chemical element. Lightest and most abundant element in the universe. Present in water and in all organic compounds. Chemically reacts with most elements. Discovered by Henry Cavendish in 1776.
 He	Helium	2	4.002602	0.147	Colourless, odourless gaseous nonmetallic element. Belongs to group 18 of the periodic table. Lowest boiling point of all elements and can only be solidified under pressure. Chemically inert, no known compounds. Discovered in the solar spectrum in 1868 by Lockyer.
 Li	Lithium	3	6.94	0.534	Socket silvery metal. First member of group 1 of the periodic table. Lithium salts are used in psychomedicine.

@@ -10,15 +10,15 @@ def phits_export(
 	Function for printing defined sections in PHITS format, uses created_surfaces,
 	created_materials lists which contain all defined objects
 
-	:param export_surfaces: True for export [ Surface ] section
-	:param export_materials: True for export [ Material ] section
-	:param export_cells: True for export [ Cell ] section
+	:param export_surfaces: True for export [ Surface ] section in file
+	:param export_materials: True for export [ Material ] section in file
+	:param export_cells: True for export [ Cell ] section in file
 	:param to_file: if True, input file with PHTIS sections will be created
 	:param inp_name: name for PHITS input file
 	"""
 	text_materials = ""
 	if not created_materials:
-		print("No materials defined!\ncreated_materials list is empty!")
+		print("No material is defined!\ncreated_materials list is empty!")
 		export_materials = False
 	else:
 		text_materials = "\n[ Material ]\n"
@@ -45,7 +45,7 @@ def phits_export(
 
 	text_surfaces = ""
 	if not created_surfaces:
-		print("No materials defined!\ncreated_materials list is empty!")
+		print("No surface is defined!\ncreated_surfaces list is empty!")
 		export_surfaces = False
 	else:
 		text_surfaces = "\n[ Surface ]\n"

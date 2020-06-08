@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 import vpython
 
 
@@ -15,7 +15,7 @@ def rgb_to_vector(r: float, g: float, b: float):
 
 
 # Math constants
-PI = numpy.pi
+PI = np.pi
 
 # Define basic colors as constants
 RED = vpython.color.red
