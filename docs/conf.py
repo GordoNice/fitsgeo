@@ -137,11 +137,11 @@ html_theme = 'alabaster'
 html_theme_options = {
     'description': 'Python package for PHITS geometry development',
     'sidebar_collapse': True,
-    # 'fixed_sidebar': True,
-    'github_button': True,
+    'fixed_sidebar': True,
+    # 'github_button': True,
     # 'github_banner': True,
-    'github_user': 'GordoNice',
-    'github_repo': 'fitsgeo',
+    # 'github_user': 'GordoNice',
+    # 'github_repo': 'fitsgeo',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
