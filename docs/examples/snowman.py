@@ -7,7 +7,7 @@ import fitsgeo
 fitsgeo.create_scene(ax_length=5, background=fitsgeo.WHITE)
 
 # Define materials
-fitsgeo.MAT_WATER.color = "white"
+fitsgeo.MAT_WATER.color = "lightgray"
 ice = fitsgeo.MAT_WATER
 carbon = fitsgeo.Material.database("MAT_CARBON", color="black")
 poly = fitsgeo.Material.database("MAT_PARAFFIN", color="orange")

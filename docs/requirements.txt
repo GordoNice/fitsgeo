@@ -1,3 +1,4 @@
 sphinx>=3.0.4
-fitsgeo>=0.1.1
+fitsgeo>=0.3.3
 sphinx-math-dollar>=1.1.1
+sphinxcontrib-contentui>=0.2.5

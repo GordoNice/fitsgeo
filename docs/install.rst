@@ -1,19 +1,15 @@
-.. highlight:: bash
-
 Installation Guide
 ==================
 
-.. rubric:: Guide covers almost all features and FitsGeo capabilities
-
 **FitsGeo** works under any operating system with **Python 3** interpreter and **pip** tool.
 
-If you are familiar with Python and pip tool, simply type following command to install the package::
+If you are familiar with Python and pip tool, simply type following command to install the FitsGeo package::
 
-	$ pip install FitsGeo
+	$ pip install fitsgeo
 
 or::
 
-	$ pip3 install FitsGeo
+	$ pip3 install fitsgeo
 
 If you have both Python 2 and Python 3 versions.
 
@@ -31,9 +27,9 @@ First user need to check if Python interpreter is already installed. Try if one 
 
 Command ``python`` invokes either Python 2 or 3, while ``python3`` invokes only Python 3.
 
-**FitsGeo** supports only modern Python 3 versions starting from *version 3.6*. Please check if interpreter version is supported.
+**FitsGeo** supports only modern Python 3 versions starting from *version 3.7*. Please check if interpreter version is supported.
 
-If none of ``python`` and ``python3`` commands are present, then Python interpreter has to be installed. It is better to use the newest available version (starting from 3.6).
+If none of ``python`` and ``python3`` commands are present, then Python interpreter has to be installed. It is better to use the newest available version.
 
 Python 3 installation
 ~~~~~~~~~~~~~~~~~~~~~
@@ -61,7 +57,7 @@ In a similar way to Python interpreter pip is a tool for Python 2 or 3, while pi
 pip installation
 ~~~~~~~~~~~~~~~~
 
-Follow the package installation for your Linux system. On some systems instructions mentioned below have to be prefixed with `sudo` command.
+Follow the package installation for your Linux system. On some systems instructions mentioned below have to be prefixed with ``sudo`` command.
 
 * ``apt-get install python3-pip`` (Python 3) for Debian and Ubuntu
 * ``dnf install python3-pip`` (Python 3) for Fedora
@@ -72,43 +68,41 @@ For Windows and macOS please visit official `Python webpage <https://www.python.
 Installation FitsGeo via pip
 ----------------------------
 
-After you get Python and pip tool **FitsGeo** package can be installed. On some systems commands mentioned below have to be prefixed with `sudo` command::
+After you get Python and pip tool **FitsGeo** package can be installed. On some systems commands mentioned below have to be prefixed with ``sudo`` command::
 
-    $ pip install FitsGeo
+    $ pip install fitsgeo
 
 To upgrade the **FitsGeo** to newer version, simply type::
 
-    $ pip install --upgrade FitsGeo
+    $ pip install --upgrade fitsgeo
 
 To completely remove **FitsGeo** from your system, use following command::
 
-    $ pip uninstall FitsGeo
+    $ pip uninstall fitsgeo
 
 Now **FitsGeo** package should be installed for all users and can be invoked in Python script by typing::
 
-    $ import fitsgeo
+    import fitsgeo
 
 
 Getting FitsGeo via GitHub
 --------------------------
 
-Alternative way of getting **FitsGeo** is to clone repository from `GitHub FitsGeo repository <https://github.com/GordoNice/FitsGeo>`_.
+Alternative way of getting **FitsGeo** is to clone repository from `GitHub FitsGeo repository <https://github.com/GordoNice/fitsgeo>`_.
 
 **FitsGeo** can be downloaded directly from github webpage using the web browser or via command line::
 
-    $ git clone https://github.com/GordoNice/FitsGeo.git
+    $ git clone https://github.com/GordoNice/fitsgeo.git
 
-Make sure that `git`_ is installed.
+Make sure that `git <https://git-scm.com//>`_ is installed.
 
 After downloading, **FitsGeo** can be installed from command line from root directory::
 
     $ pip install .
 
-Still, it is recommended to use installation using **pip** tool, described above. It makes it easy upgrade and uninstallation procedures.
+Still, it is recommended to use installation using pip tool, described above. It makes it easy upgrade and uninstallation procedures.
 
 Getting FitsGeo examples
 ------------------------
 
-All scripts with examples located in ``examples`` directory of `GitHub FitsGeo repository <https://github.com/GordoNice/FitsGeo>`_.
-
-.. _git: https://git-scm.com//
+All scripts with examples located in ``examples`` directory of `GitHub FitsGeo repository <https://github.com/GordoNice/fitsgeo>`_. Detailed explanation of examples' code provided in `User's Guide <user_guide.html>`_. 

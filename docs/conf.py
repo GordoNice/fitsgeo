@@ -22,22 +22,24 @@ sys.path.insert(0, project_root)
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.inheritance_diagram',
-    'sphinx.ext.coverage',
-    'sphinx.ext.graphviz',
-    'sphinx_math_dollar',
-    'sphinx.ext.mathjax'
+	'sphinx.ext.autodoc',
+	'sphinx.ext.autosummary',
+	'sphinx.ext.todo',
+	'sphinx.ext.viewcode',
+	'sphinx.ext.inheritance_diagram',
+	'sphinx.ext.coverage',
+	'sphinx.ext.graphviz',
+	'sphinx.ext.mathjax',
+	'sphinx_math_dollar',
+	# 'sphinx.ext.imgconverter',
+	'sphinxcontrib.contentui'
 ]
 
 mathjax_config = {
-    'tex2jax': {
-        'inlineMath': [ ["\\(","\\)"] ],
-        'displayMath': [["\\[","\\]"] ],
-    },
+	'tex2jax': {
+		'inlineMath': [ ["\\(","\\)"] ],
+		'displayMath': [["\\[","\\]"] ],
+	},
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -65,15 +67,15 @@ author = 'Ivan Gordeev'
 
 import pkg_resources
 try:
-    release = pkg_resources.get_distribution('FitsGeo').version
+	release = pkg_resources.get_distribution('FitsGeo').version
 except pkg_resources.DistributionNotFound:
-    print('FitsGeo must be installed to build the documentation.')
-    print('Install from source using `pip install -e .` in a virtualenv.')
-    sys.exit(1)
+	print('FitsGeo must be installed to build the documentation.')
+	print('Install from source using `pip install -e .` in a virtualenv.')
+	sys.exit(1)
 del pkg_resources
 
 if 'dev' in release:
-    release = release.split('dev')[0] + 'dev'
+	release = release.split('dev')[0] + 'dev'
 version = '.'.join(release.split('.')[:2])
 
 # hard coded
@@ -135,13 +137,14 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    'description': 'Python package for PHITS geometry development',
-    'sidebar_collapse': True,
-    'fixed_sidebar': True,
-    # 'github_button': True,
-    # 'github_banner': True,
-    # 'github_user': 'GordoNice',
-    # 'github_repo': 'fitsgeo',
+	'description': 'Python package for PHITS geometry development and visualization',
+	'sidebar_collapse': True,
+	'fixed_sidebar': True,
+	'logo': 'logo.svg'
+	# 'github_button': True,
+	# 'github_banner': True,
+	# 'github_user': 'GordoNice',
+	# 'github_repo': 'fitsgeo',
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
@@ -156,17 +159,17 @@ html_theme_options = {
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-#html_logo = None
+# html_logo = 'images/logo.svg'
 
 # The name of an image file (relative to this directory) to use as a favicon of
-# the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
+# the docs. This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-#html_favicon = None
+html_favicon = 'images/favicon.svg'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = []
+html_static_path = ['_static']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -183,7 +186,13 @@ html_static_path = []
 #html_use_smartypants = True
 
 # Custom sidebar templates, maps document names to template names.
-#html_sidebars = {}
+html_sidebars = {
+	'**': [
+		'about.html',
+		'navigation.html',
+		'searchbox.html',
+	]
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -200,12 +209,6 @@ html_static_path = []
 
 # If true, links to the reST sources are added to the pages.
 #html_show_sourcelink = True
-
-# If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
-html_show_sphinx = True
-
-# If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
-html_show_copyright = True
 
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
@@ -242,8 +245,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'FitsGeo.tex', 'FitsGeo Documentation',
-     author, 'manual'),
+	(master_doc, 'FitsGeo.tex', 'FitsGeo Documentation',
+	 author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -272,8 +275,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, project, project + ' Documentation',
-     [author], 1)
+	(master_doc, project, project + ' Documentation',
+	 [author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -286,9 +289,9 @@ man_show_urls = True
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, project, project + ' Documentation',
-     author, project, 'One line description of project.',
-     'Miscellaneous'),
+	(master_doc, project, project + ' Documentation',
+	 author, project, 'One line description of project.',
+	 'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
