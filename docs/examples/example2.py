@@ -41,4 +41,4 @@ for i in range(n**3):
 	hats[i].draw(truncated=True)
 
 # Export all drawn surfaces to PHITS as [ Surface ] section and basic [ Cell ]
-fitsgeo.phits_export(to_file=True, inp_name="example2")
+fitsgeo.phits_export(to_file=True, inp_name="example2a")

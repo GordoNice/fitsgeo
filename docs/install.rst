@@ -20,7 +20,7 @@ Installation guide is divided in two parts: prerequisites (mainly Python install
 Prerequisites --- Python interpreter
 ------------------------------------
 
-First user need to check if Python interpreter is already installed. Try if one of following commands (printing Python version) works::
+First user need to check if Python interpreter is already installed. Try if one of the following commands (printing Python version) works::
 
     $ python --version
     $ python3 --version
@@ -34,11 +34,13 @@ If none of ``python`` and ``python3`` commands are present, then Python interpre
 Python 3 installation
 ~~~~~~~~~~~~~~~~~~~~~
 
-The best way to install Python under Linux is to use package manager.
+The best way to install Python under Linux is to use package manager:
 
 * ``apt-get install python3`` for Debian and Ubuntu
 * ``dnf install python3`` for Fedora
 * ``yum install python3`` for CentOS and SLC
+
+On some systems instructions mentioned above have to be prefixed with ``sudo`` command.
 
 For Windows or macOS please visit official `Python webpage <https://www.python.org/>`_ for installation instructions.
 
@@ -57,11 +59,11 @@ In a similar way to Python interpreter pip is a tool for Python 2 or 3, while pi
 pip installation
 ~~~~~~~~~~~~~~~~
 
-Follow the package installation for your Linux system. On some systems instructions mentioned below have to be prefixed with ``sudo`` command.
+Follow the package installation for your Linux system. On some systems instructions mentioned below have to be prefixed with ``sudo`` command:
 
-* ``apt-get install python3-pip`` (Python 3) for Debian and Ubuntu
-* ``dnf install python3-pip`` (Python 3) for Fedora
-* ``yum install python3-pip`` (Python 3) for CentOS and SLC
+* ``apt-get install python3-pip`` for Debian and Ubuntu
+* ``dnf install python3-pip`` for Fedora
+* ``yum install python3-pip`` for CentOS and SLC
 
 For Windows and macOS please visit official `Python webpage <https://www.python.org/>`_ for installation instructions.
 
@@ -88,7 +90,7 @@ Now **FitsGeo** package should be installed for all users and can be invoked in 
 Getting FitsGeo via GitHub
 --------------------------
 
-Alternative way of getting **FitsGeo** is to clone repository from `GitHub FitsGeo repository <https://github.com/GordoNice/fitsgeo>`_.
+Alternative way of getting **FitsGeo** is to clone repository from `GitHub <https://github.com/GordoNice/fitsgeo>`_.
 
 **FitsGeo** can be downloaded directly from github webpage using the web browser or via command line::
 
@@ -96,7 +98,7 @@ Alternative way of getting **FitsGeo** is to clone repository from `GitHub FitsG
 
 Make sure that `git <https://git-scm.com//>`_ is installed.
 
-After downloading, **FitsGeo** can be installed from command line from root directory::
+Now one can use FitsGeo from root directory, or, **FitsGeo** can be installed from command line from root directory via pip::
 
     $ pip install .
 

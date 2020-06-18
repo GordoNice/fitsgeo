@@ -1,8 +1,8 @@
-# Example 0: column
+# Example 0: The Column
 # Very basic example of how to use FitsGeo
-import fitsgeo as fg
+import fitsgeo as fg  # Alias to make it shorter
 
-# Define materials from pre-defined databases
+# Define materials from predefined databases
 concrete = fg.Material.database("MAT_CONCRETE", color="gray")
 bronze = fg.Material.database("MAT_BRONZE", color="pastelbrown")
 
@@ -17,13 +17,20 @@ platform = fg.RPP(
 	[-cone.r_2, cone.r_2],
 	[cone.y0+cone.h[1], cone.y0+cone.h[1]+cone.get_len_h/2],
 	[-cone.r_2, cone.r_2], name="Platform", material=concrete)
-
 ball = fg.SPH(
 	[platform.get_center[0],
 	 platform.get_center[1]+cone.r_2/1.4+platform.get_height/2,
 	 platform.get_center[2]], r=cone.r_2/1.4, material=bronze)
 
-# Draw all surfaces with default settings
+outer_c = fg.Cell(
+	[+base + +cone + +platform + +ball], "Outer Void", fg.MAT_OUTER)
+base_c = fg.Cell([-base], "Base Cell", base.material, base.get_volume)
+cone_c = fg.Cell([-cone], "Cone Cell", cone.material, cone.get_volume)
+platform_c = fg.Cell(
+	[-platform], "Platform Cell", platform.material, platform.get_volume)
+ball_c = fg.Cell([-ball], "Ball Cell", ball.material, ball.volume)
+
+# Draw all surfaces with labels on centers
 for s in fg.created_surfaces:
 	s.draw(label_center=True)
 

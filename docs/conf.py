@@ -249,6 +249,8 @@ latex_documents = [
 	 author, 'manual'),
 ]
 
+latex_engine = 'lualatex'
+
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
 #latex_logo = None

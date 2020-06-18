@@ -1,6 +1,6 @@
-=====================
-Pre-defined Materials
-=====================
+====================
+Predefined Materials
+====================
 
 All available materials (from `GDATABASE.dat <https://github.com/GordoNice/fitsgeo/blob/master/fitsgeo/data/GDATABASE.dat>`_ and `SDATABASE.dat <https://github.com/GordoNice/fitsgeo/blob/master/fitsgeo/data/SDATABASE.dat>`_ databases) are listed below. These databases are based on GEANT4 and SRIM  material databases, see `License section <license.html>`_. 
 
@@ -10,13 +10,13 @@ Format of table:
 * **n el** --- number of elements in compound
 * **Elements (Z Q...)** --- string of elements in "Z1 Q1 Z2 Q2 Z3 Q3 ..." format, where Z --- atomic number, Q --- quantity (atomic or mass ratio)
 
-To use pre-defined materials in FitsGeo define new material object as::
+To use predefined materials in FitsGeo define new material object as::
 
 	mat = fitsgeo.Material.database("Name")
 
 .. tabularcolumns:: |p{0.4cm}|p{12cm}|p{0.3cm}|p{1.5cm}|p{1.8cm}|
 
-.. table:: **Pre-defined Materials Table**
+.. table:: **Predefined Materials Table**
 	:class: longtable
 
 	+---+------------------------------------------------------------+--+----------+---------------------------------------------------------------------------------------------------+

@@ -1,0 +1,97 @@
+[ Title ]
+	Example 1: general illustrative example of FitsGeo
+	Illustrative example of FitsGeo usage
+	Covers all implemented surfaces and features
+
+[ Parameters ]
+	icntl = 11		# (D=0) 3:ECH 5:ALL VOID 6:SRC 7,8:GSH 11:DSH 12:DUMP
+
+[ Source ]
+	s-type = 2		# mono-energetic rectangular source
+	e0 = 1			# energy of beam [MeV]
+	proj = proton	# kind of incident particle
+
+[ Material ]
+    mat[1] H 2.0 O 1.0  GAS=0 $ name: 'MAT_WATER'
+    mat[2] H 19.0 C 18.0 O 3.0  GAS=0 $ name: 'MAT_EPOXY'
+    mat[3] O 59.0 Si 24.0 Pb 5.0 Na 7.0 K 4.0  GAS=0 $ name: 'MAT_GLASS_PB'
+    mat[4] Al 1.0  GAS=0 $ name: 'MAT_AL'
+    mat[5] C 6.0  GAS=0 $ name: 'MAT_CARBON'
+    mat[6] Be 1.0  GAS=0 $ name: 'MAT_BE'
+    mat[7] C 2 H 4  GAS=0 $ name: 'Polyethylene'
+
+[ Mat Name Color ]
+        mat     name    size    color
+        1       {MAT\_WATER}    1.00    blue
+        2       {MAT\_EPOXY}    1.00    pastelblue
+        3       {MAT\_GLASS\_PB}        1.00    gray
+        4       {MAT\_AL}       1.00    brown
+        5       {MAT\_CARBON}   1.00    purple
+        6       {MAT\_BE}       1.00    green
+        7       {Polyethylene}  1.00    yellow
+
+[ Surface ]
+    1   P  1 -1 -1  4 $ name: 'P' (Plane) 1x + -1y + -1z − 4 = 0
+    2   PX      1 $ name: 'P' (Plane) x = 1
+    3   PY      -1 $ name: 'P' (Plane) y = -1
+    4   PZ      -2 $ name: 'P' (Plane) z = -2
+    5   BOX  -0.5 1 -1.9  1 0 0  0 1 0  0 0 1 $ name: 'Box_l' (box, all angles are 90deg) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Cx Cy Cz]
+    6   BOX  -0.5 1 0.8999999999999999  1 0 0  0 1 0  0 0 1 $ name: 'Box_r' (box, all angles are 90deg) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Cx Cy Cz]
+    7   RPP  -0.3 0.3  -1 0.9  -0.8 0.8 $ name: 'Table' (Rectangular solid) [x_min x_max] [y_min y_max] [z_min z_max]
+    8   SPH  0 1.5 0  0.5 $ name: 'Ball' (sphere) x0 y0 z0 R
+    9   RCC  0.0 1.5 1.4  0.0 0.0 -2.8  0.2 $ name: 'Cylinder' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+    10   TRC  0 2 0  0 0.5 0  0.5  0.2 $ name: 'Hat' (truncated right-angle cone) [x0 y0 z0] [Hx Hy Hz] R_b R_t
+    11   TX  -0.35 0 0  0.7  0.05  0.08 $ name: 'Hoop' (torus, with x rotational axis) [x0 y0 z0] A(R) B C
+    12   TY  -0.6666666666666666 1.02 -0.6666666666666666  0.03  0.02  0.01 $ name: 'Ring' (torus, with y rotational axis) [x0 y0 z0] A(R) B C
+    13   TZ  0.0 1.5 0.7  0.30000000000000004  0.1  0.1 $ name: 'Donut' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    14   REC  0 0.9 0  0 0.1 0  1 0 0  0 2 0 $ name: 'Table Top' (elliptical cylinder) [x0 y0 z0] [Hx Hy Hz] [Ax Ay Az] [Bx By Bz]
+    15   WED  -0.3 0.8999999999999999 0.8  0 -1 0  0 0 1  0.6 0 0 $ name: 'Wedge R' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
+    16   WED  0.3 0.8999999999999999 -0.8  0 -1 0  0 0 -1  -0.6 0 0 $ name: 'Wedge L' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
+    17   RCC  0 -1.5 0  0 5 0  3 $ name: 'RCC' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+
+[ Cell ]
+    100 -1  (17) $ name: 'Outer Void' 
+
+    101 0  (-17) (5 6 7 14 8 9 10 11 12 13 16 15) $ name: 'Void' 
+
+    102 2  1.18  (-5 9)   $ name: 'Box_l Cell' 
+    103 2  1.18  (-6 9)   $ name: 'Box_r Cell' 
+    104 4  2.6989  (-7)   $ name: 'Table Cell' 
+    105 4  2.6989  (-14)   $ name: 'Table Top Cell' 
+    106 3  4.8  (-8 9)   $ name: 'Ball Cell' 
+    107 6  1.848  (-9)   $ name: 'Cylinder Cell' 
+    108 7  0.94  (-10)   $ name: 'Hat Cell' 
+    109 5  2.0  (-11)   $ name: 'Hoop Cell' 
+    110 7  0.94  (-12)   $ name: 'Ring Cell' 
+    111 5  2.0  (-13)   $ name: 'Donut Cell' 
+    112 4  2.6989  (-16)   $ name: 'Wedge L Cell' 
+    113 4  2.6989  (-15)   $ name: 'Wedge R Cell' 
+
+[ T-3Dshow ]
+	title = Geometry 3D
+	x0 = 0
+	y0 = 1
+	z0 = 0
+
+	w-wdt = 4
+	w-hgt = 4
+	w-dst = 10
+
+	w-mnw = 400			# Number of meshes in horizontal direction.
+	w-mnh = 400			# Number of meshes in vertical direction.
+	w-ang = 0
+
+	e-the = -80
+	e-phi = 0
+	e-dst = 100
+
+	l-the = 80
+	l-phi = 140
+	l-dst = 200*100
+
+	file = example1_3D
+	output = 3			# (D=3) Region boundary + color
+	width = 0.5			# (D=0.5) The option defines the line thickness.
+	epsout = 1
+
+[ E n d ]
