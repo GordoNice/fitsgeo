@@ -1,7 +1,7 @@
 [ Title ]
-	Example1: General illustrative example of use FitsGeo module
+	Example 1: general illustrative example of FitsGeo
 	Illustrative example of FitsGeo usage
-	Covers almost all implemented features 
+	Covers all implemented surfaces and features
 
 [ Parameters ]
 	icntl = 11		# (D=0) 3:ECH 5:ALL VOID 6:SRC 7,8:GSH 11:DSH 12:DUMP
@@ -21,30 +21,14 @@
     mat[7] C 2 H 4  GAS=0 $ name: 'Polyethylene'
 
 [ Mat Name Color ]
-    mat name    size    color
-    1   {MAT\_WATER}    1.00    blue
-    2   {MAT\_EPOXY}    1.00    pastelblue
-    3   {MAT\_GLASS\_PB}    1.00    gray
-    4   {MAT\_AL}   1.00    brown
-    5   {MAT\_CARBON}   1.00    purple
-    6   {MAT\_BE}   1.00    green
-    7   {Polyethylene}  1.00    yellow
-
-[ Cell ]
-    1    -1    (5 6 7 8 9 10 11 12 13 14 15 16) $ 'OUTER WORLD'
-
-    2 2  -1.18  (-5 9)   $ name: 'Box_l Cell' 
-    3 2  -1.18  (-6 9)   $ name: 'Box_r Cell' 
-    4 4  -2.6989  (-7)   $ name: 'Table Cell' 
-    5 4  -2.6989  (-14)   $ name: 'Table Top Cell' 
-    6 3  -4.8  (-8 9)   $ name: 'Ball Cell' 
-    7 6  -1.848  (-9)   $ name: 'Cylinder Cell' 
-    8 7  -0.94  (-10)   $ name: 'Hat Cell' 
-    9 5  -2.0  (-11)   $ name: 'Hoop Cell' 
-    10 7  -0.94  (-12)   $ name: 'Ring Cell' 
-    11 5  -2.0  (-13)   $ name: 'Donut Cell' 
-    12 4  -2.6989  (-16)   $ name: 'Wedge L Cell' 
-    13 4  -2.6989  (-15)   $ name: 'Wedge R Cell' 
+        mat     name    size    color
+        1       {MAT\_WATER}    1.00    blue
+        2       {MAT\_EPOXY}    1.00    pastelblue
+        3       {MAT\_GLASS\_PB}        1.00    gray
+        4       {MAT\_AL}       1.00    brown
+        5       {MAT\_CARBON}   1.00    purple
+        6       {MAT\_BE}       1.00    green
+        7       {Polyethylene}  1.00    yellow
 
 [ Surface ]
     1   P  1 -1 -1  4 $ name: 'P' (Plane) 1x + -1y + -1z − 4 = 0
@@ -63,6 +47,25 @@
     14   REC  0 0.9 0  0 0.1 0  1 0 0  0 2 0 $ name: 'Table Top' (elliptical cylinder) [x0 y0 z0] [Hx Hy Hz] [Ax Ay Az] [Bx By Bz]
     15   WED  -0.3 0.8999999999999999 0.8  0 -1 0  0 0 1  0.6 0 0 $ name: 'Wedge R' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
     16   WED  0.3 0.8999999999999999 -0.8  0 -1 0  0 0 -1  -0.6 0 0 $ name: 'Wedge L' (wedge) [x0 y0 z0] [Ax Ay Az] [Bx By Bz] [Hx Hy Hz]
+    17   RCC  0 -1.5 0  0 5 0  3 $ name: 'RCC' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+
+[ Cell ]
+    100 -1  (17) $ name: 'Outer Void' 
+
+    101 0  (-17) (5 6 7 14 8 9 10 11 12 13 16 15) $ name: 'Void' 
+
+    102 2  1.18  (-5 9)   $ name: 'Box_l Cell' 
+    103 2  1.18  (-6 9)   $ name: 'Box_r Cell' 
+    104 4  2.6989  (-7)   $ name: 'Table Cell' 
+    105 4  2.6989  (-14)   $ name: 'Table Top Cell' 
+    106 3  4.8  (-8 9)   $ name: 'Ball Cell' 
+    107 6  1.848  (-9)   $ name: 'Cylinder Cell' 
+    108 7  0.94  (-10)   $ name: 'Hat Cell' 
+    109 5  2.0  (-11)   $ name: 'Hoop Cell' 
+    110 7  0.94  (-12)   $ name: 'Ring Cell' 
+    111 5  2.0  (-13)   $ name: 'Donut Cell' 
+    112 4  2.6989  (-16)   $ name: 'Wedge L Cell' 
+    113 4  2.6989  (-15)   $ name: 'Wedge R Cell' 
 
 [ T-3Dshow ]
 	title = Geometry 3D
