@@ -1,5 +1,5 @@
 [ Title ]
-	Example 0: column
+	Example 0: The Column
 	Illustrative example of FitsGeo usage
 	Very basic example of how to use FitsGeo
 
@@ -17,24 +17,24 @@
     mat[3] Cu 89.0 Zn 9.0 Pb 2.0  GAS=0 $ name: 'MAT_BRONZE'
 
 [ Mat Name Color ]
-    mat name    size    color
-    1   {MAT\_WATER}    1.00    blue
-    2   {MAT\_CONCRETE} 1.00    gray
-    3   {MAT\_BRONZE}   1.00    pastelbrown
-
-[ Cell ]
-    1    -1    (1 2 3 4)    $ 'OUTER WORLD'
-
-    2    2    -2.34    (-1)     $ name: 'Base'
-    3    2    -2.34    (-2)     $ name: 'Cone'
-    4    2    -2.34    (-3)     $ name: 'Platform'
-    5    3    -8.82    (-4)     $ name: 'SPH'
+        mat     name    size    color
+        1       {MAT\_WATER}    1.00    blue
+        2       {MAT\_CONCRETE} 1.00    gray
+        3       {MAT\_BRONZE}   1.00    pastelbrown
 
 [ Surface ]
     1   RCC  0 0 0  0 2 0  0.5 $ name: 'Base' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
     2   TRC  0 2 0  0.0 0.5 0.0  0.5  1.0 $ name: 'Cone' (truncated right-angle cone) [x0 y0 z0] [Hx Hy Hz] R_b R_t
     3   RPP  -1.0 1.0  2.5 2.75  -1.0 1.0 $ name: 'Platform' (Rectangular solid) [x_min x_max] [y_min y_max] [z_min z_max]
     4   SPH  0.0 3.4642857142857144 0.0  0.7142857142857143 $ name: 'SPH' (sphere) x0 y0 z0 R
+
+[ Cell ]
+    100 -1  (1 2 3 4) $ name: 'Outer Void' 
+
+    101 2  2.34  (-1)  VOL=1.5707963267948966 $ name: 'Base Cell' 
+    102 2  2.34  (-2)  VOL=0.916297857297023 $ name: 'Cone Cell' 
+    103 2  2.34  (-3)  VOL=1.0 $ name: 'Platform Cell' 
+    104 3  8.82  (-4)  VOL=1.526527042560638 $ name: 'Ball Cell' 
 
 [ T-3Dshow ]
 	title = Geometry 3D
