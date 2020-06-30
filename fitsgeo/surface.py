@@ -18,19 +18,18 @@ def list_all_surfaces():
 	"""
 	List with all implemented surfaces for now
 
-	:return:
 	"""
 	text = """\nList with all implemented surfaces
 
 P (PX, PY, PZ) - multi-purpose planes (as well as vertical with x, y, z axes);
 BOX - optional box (all angles are 90deg);
-RPP - rectangular solid (Each surface is vertical with x, y, z axes);
+RPP - rectangular solid (each surface is vertical with x, y, z axes);
 SPH - general sphere;
 RCC - cylinder;
-TRC - cone (may be unstable in visualization, when r_1 not comparable with r_2);
-T (TX, TY, TZ) - general torus (consists of rotational x, y, z axes);
+TRC - cone (may be unstable in visualization, use truncated=False flag);
+T (TX, TY, TZ) - general torus (rotational x, y, z axes);
 REC - Right elliptical cylinder (careful, because A and B vectors have only 
-magnitude meaning for visualization);
+magnitude meaning for visualization, direction of vectors is meaningless);
 WED - wedge surface, note that only right triangle can be used as bottom;
 ...
 Look at README.md for more information\n"""
@@ -38,32 +37,32 @@ Look at README.md for more information\n"""
 
 
 def create_scene(
-		axis=True, width=1500, height=800, resizable=True,
-		ax_length=2, ax_opacity=0.2, background=GRAY_SCALE[3]):
+		axes=True, width=1200, height=800, resizable=True,
+		ax_length=2.0, ax_opacity=0.2, background=GRAY_SCALE[1]):
 	"""
-	Create vpython.canvas with some default settings (axis etc)
+	Create vpython.canvas with some default settings (axes etc)
 
-	zoom: mouse wheel
+		*zoom:* mouse wheel
 
-	rotate: right mouse button (ctrl+left mouse button)
+		*rotate:* right mouse button (ctrl+left mouse button)
 
-	pan: shift+left mouse button
+		*pan:* shift+left mouse button
 
-	:param axis: add axis to scene if True
+	:param axes: add axes to scene if True
 	:param width: set width for visualization window in pixels
 	:param height: set height for visualization window in pixels
 	:param resizable: if True makes window resizable
-	:param ax_length: Axis length, better set as maximum size of whole geometry
-	:param ax_opacity: Set axis opacity, where 1.0 is fully visible
-	:param background: Set background color for scene
-	:return: vpython.canvas object (axis xyz, or None if axis=False)
+	:param ax_length: axis length, better set as maximum size of whole geometry
+	:param ax_opacity: set axis opacity, where 1.0 is fully visible
+	:param background: set background color for scene
+	:return: vpython.canvas object
 	"""
 	scene = canvas(
-		width=width, height=height, resizable=resizable, background=background)
+		width=width, height=height,
+		resizable=resizable, background=background)
 
-	ax_x, ax_y, ax_z = None, None, None
-	if axis:  # Create axis
-		shaft_width = 0.001 * ax_length
+	if axes:  # Create axis
+		shaft_width = 0.003 * ax_length
 
 		ax_x = arrow(axis=vector(ax_length, 0, 0), color=RED)
 		ax_y = arrow(axis=vector(0, ax_length, 0), color=GREEN)
@@ -87,7 +86,7 @@ def create_scene(
 			pos=ax_z.axis, text="Z", font="monospace", box=False, opacity=0.2,
 			xoffset=0, yoffset=0, space=0, height=14, border=6)
 
-	return scene, ax_x, ax_y, ax_z
+	return scene
 
 
 def notation(f: float):
@@ -239,10 +238,13 @@ class Surface:  # superclass with common properties/methods for all surfaces
 
 		:param opacity: opacity
 		"""
-		if self.material.gas and opacity == 1.0:
-			self.__opacity = 0.3
+		if self.material.gas:
+			self.__opacity = 0.2  # Gas should be transparent
 		else:
 			self.__opacity = opacity
+
+		if self.material.matn == 0:  # For vacuum even more transparent
+			self.__opacity = 0.02
 
 
 class P(Surface):
@@ -426,7 +428,7 @@ class P(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, size=10, opacity=0.2, label=True):
+	def draw(self, size: float = 10, opacity=0.2, label=True):
 		"""
 		Draw surface using vpython
 
@@ -633,7 +635,7 @@ class SPH(Surface):
 
 		:param diameter: diameter
 		"""
-		self.__r = diameter/2
+		self.r = diameter/2
 
 	@property
 	def volume(self):
@@ -651,7 +653,7 @@ class SPH(Surface):
 
 		:param volume: float volume
 		"""
-		self.__r = power((3 * volume)/(4 * PI), 1/3)
+		self.r = power((3 * volume)/(4 * PI), 1/3)
 
 	@property
 	def surface_area(self):
@@ -669,7 +671,7 @@ class SPH(Surface):
 
 		:param area: float area
 		"""
-		self.__r = sqrt(area/(4*PI))
+		self.r = sqrt(area/(4*PI))
 
 	@property
 	def cross_section(self):
@@ -687,7 +689,7 @@ class SPH(Surface):
 
 		:param s: cross section area
 		"""
-		self.__r = sqrt(s/PI)
+		self.r = sqrt(s/PI)
 
 	@property
 	def circumference(self):
@@ -705,7 +707,7 @@ class SPH(Surface):
 
 		:param c: circumference
 		"""
-		self.__r = c/(2*PI)
+		self.r = c/(2*PI)
 
 	def print_properties(self):
 		prefix = f"SPH '{self.name}' sn={self.sn}"
@@ -735,7 +737,7 @@ class SPH(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_center=False, label_base=False):
+	def draw(self, opacity: float = None, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
@@ -744,7 +746,11 @@ class SPH(Surface):
 		:param label_base: dummy flag, same as label_center for sphere
 		:return: vpython.sphere object
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
+
 		sph = vpython.sphere(
 			pos=vector(self.x0, self.y0, self.z0),
 			color=self.color, opacity=self.opacity,
@@ -1070,7 +1076,7 @@ class BOX(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, opacity: float = None, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
@@ -1079,7 +1085,10 @@ class BOX(Surface):
 		:param label_center: if True create label for object center
 		:return: vpython.box and vpython.label objects
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
 
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
@@ -1349,7 +1358,7 @@ class RPP(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_center=False):
+	def draw(self, opacity: float = None, label_center=False):
 		"""
 		Draw surface using vpython
 
@@ -1357,7 +1366,10 @@ class RPP(Surface):
 		:param label_center: if True create label for object
 		:return: vpython.box and vpython.label objects
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
 
 		x0 = self.get_center[0]
 		y0 = self.get_center[1]
@@ -1581,7 +1593,7 @@ class RCC(Surface):
 
 		:param b_area: bottom face area of cylinder
 		"""
-		self.__r = sqrt(b_area/PI)
+		self.r = sqrt(b_area/PI)
 
 	@property
 	def get_center(self):
@@ -1665,7 +1677,7 @@ class RCC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, opacity: float = None, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
@@ -1674,7 +1686,10 @@ class RCC(Surface):
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
 
 		x0 = self.xyz0[0]
 		y0 = self.xyz0[1]
@@ -1889,13 +1904,13 @@ class TRC(Surface):
 		return self.r_1 * 2
 
 	@bottom_diameter.setter
-	def bottom_diameter(self, b_diameter: float):
+	def bottom_diameter(self, bottom_diameter: float):
 		"""
 		Set bottom face diameter (change radius to make specified diameter)
 
-		:param b_diameter: bottom face diameter
+		:param bottom_diameter: bottom face diameter
 		"""
-		self.r_1 = b_diameter/2
+		self.r_1 = bottom_diameter/2
 
 	@property
 	def top_diameter(self):
@@ -1907,13 +1922,51 @@ class TRC(Surface):
 		return self.r_2 * 2
 
 	@top_diameter.setter
-	def top_diameter(self, t_diameter: float):
+	def top_diameter(self, top_diameter: float):
 		"""
 		Set top face diameter (change radius to make specified diameter)
 
-		:param t_diameter: top face diameter
+		:param top_diameter: top face diameter
 		"""
-		self.r_2 = t_diameter/2
+		self.r_2 = top_diameter/2
+
+	@property
+	def bottom_circumference(self):
+		"""
+		Get cone bottom face circumference
+
+		:return: float circumference
+		"""
+		return 2 * PI * self.r_1
+
+	@bottom_circumference.setter
+	def bottom_circumference(self, b_c: float):
+		"""
+		Set circumference of cone bottom face
+		(change radius to make specified circumference)
+
+		:param b_c: circumference
+		"""
+		self.r_1 = b_c/(2*PI)
+
+	@property
+	def top_circumference(self):
+		"""
+		Get cone top face circumference
+
+		:return: float circumference
+		"""
+		return 2 * PI * self.r_2
+
+	@top_circumference.setter
+	def top_circumference(self, t_c: float):
+		"""
+		Set circumference of cone top face
+		(change radius to make specified circumference)
+
+		:param t_c: circumference
+		"""
+		self.r_2 = t_c/(2*PI)
 
 	@property
 	def bottom_area(self):
@@ -1936,7 +1989,7 @@ class TRC(Surface):
 	@property
 	def top_area(self):
 		"""
-		Get top face area of cylinder
+		Get top face area of cone
 
 		:return: float bottom face area
 		"""
@@ -2049,7 +2102,8 @@ class TRC(Surface):
 		return txt
 
 	def draw(
-			self, opacity=1.0, label_base=False, label_center=False, truncated=True):
+			self, opacity: float = None,
+			label_base=False, label_center=False, truncated=True):
 		"""
 		Draw surface using vpython
 
@@ -2059,7 +2113,10 @@ class TRC(Surface):
 		:param truncated: if True draw as truncated, otherwise simple cone
 		:return: vpython.cylinder object
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
 
 		color = self.color
 		opacity = self.opacity
@@ -2069,13 +2126,14 @@ class TRC(Surface):
 		if truncated:
 			# TODO: should work for every case (truncated or not),
 			#  but may be unstable in visualization and takes more time to draw
+			#  Sometimes works not as expected!
 			r1 = self.r_1
 			r2 = self.r_2
 			r_min = amin([r1, r2])
 			h = self.get_len_h
 
 			s = [[-r1, 0], [-r2, h], [r2, h], [r1, 0], [-r1, 0]]  # Shape
-			p = vpython.paths.circle(pos=position, up=direction, radius=r_min/10)
+			p = vpython.paths.circle(pos=position, up=direction, radius=r_min/1e3)
 
 			cone = vpython.extrusion(
 				path=p, shape=s, opacity=opacity, color=color, up=direction)
@@ -2301,13 +2359,13 @@ class T(Surface):
 		return 2 * PI * self.r
 
 	@circumference.setter
-	def circumference(self, c: float):
+	def circumference(self, circumference: float):
 		"""
 		Set torus circumference (change radius to make specified circumference)
 
-		:param c: circumference
+		:param circumference: circumference
 		"""
-		self.__r = c/(2*PI)
+		self.r = circumference/(2*PI)
 
 	@property
 	def symbol(self):
@@ -2401,7 +2459,7 @@ class T(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_center=False, label_base=False):
+	def draw(self, opacity: float = None, label_center=False, label_base=False):
 		"""
 		Draw surface using vpython
 
@@ -2410,7 +2468,10 @@ class T(Surface):
 		:param label_base: Dummy, same as label_center
 		:return: vpython.ring object
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
 
 		width = self.b
 		height = self.c
@@ -2636,7 +2697,7 @@ class REC(Surface):
 	@property
 	def get_len_a(self):
 		"""
-		Get semi-major axis vector A
+		Get semi-major axis length (vector A)
 
 		:return: float length of major axis A
 		"""
@@ -2645,7 +2706,7 @@ class REC(Surface):
 	@property
 	def get_len_b(self):
 		"""
-		Get semi-minor axis vector B
+		Get semi-minor axis length (vector B)
 
 		:return: float length of minor axis B
 		"""
@@ -2733,7 +2794,7 @@ class REC(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, opacity: float = None, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
@@ -2742,7 +2803,10 @@ class REC(Surface):
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			pass
+		else:
+			self.opacity = opacity
 
 		length = self.get_len_h
 		width = self.get_len_a * 2
@@ -2990,6 +3054,19 @@ class WED(Surface):
 		return la.norm(self.h)
 
 	@property
+	def get_len_c(self):
+		"""
+		Get length of hypotenuse C of AB triangle,
+		where C = sqrt(|A|^2 + |B|^2)
+
+		:return: float length of hypotenuse C
+		"""
+		a2 = power(self.get_len_a, 2)
+		b2 = power(self.get_len_b, 2)
+
+		return sqrt(a2 + b2)
+
+	@property
 	def get_volume(self):
 		"""
 		Get volume of defined wedge as half of absolute value of mixed product
@@ -3030,13 +3107,26 @@ class WED(Surface):
 		return la.norm(cross(self.b, self.h))
 
 	@property
+	def get_ch_area(self):
+		"""
+		Get CH side rectangle surface area (opposite to H)
+		as product of H length and C, where C = sqrt(|A|^2 + |B|^2)
+
+		:return: CH face rectangle surface area
+		"""
+
+		return self.get_len_h * self.get_len_c
+
+	@property
 	def get_full_area(self):
 		"""
 		Get full wedge surface area
 
 		:return: full wedge surface area
 		"""
-		return 2*self.get_ab_area + self.get_ah_area + self.get_bh_area
+		return \
+			2*self.get_ab_area + \
+			self.get_ah_area + self.get_bh_area + self.get_ch_area
 
 	def print_properties(self):
 		prefix = f"WED '{self.name}' sn={self.sn}"
@@ -3076,7 +3166,7 @@ class WED(Surface):
 			txt += f" with tr{self.trn}"
 		return txt
 
-	def draw(self, opacity=1.0, label_base=False, label_center=False):
+	def draw(self, opacity: float = None, label_base=False, label_center=False):
 		"""
 		Draw surface using vpython
 
@@ -3085,10 +3175,12 @@ class WED(Surface):
 		:param label_center: if True create label for object center
 		:return: vpython.cylinder object
 		"""
-		self.opacity = opacity
+		if opacity is None:
+			opacity = self.opacity
+		else:
+			pass
 
 		color = self.color
-		opacity = self.opacity
 
 		x0, y0, z0 = self.x0, self.y0, self.z0
 

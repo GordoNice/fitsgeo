@@ -67,13 +67,13 @@ class Material:
 		Define material
 
 		:param elements: every element in [[A1, Z1, Q1], [A2, Z2, Q2]] format,
-		where A - mass number, Z - atomic number, Q - quantity of ratio
+			where A - mass number, Z - atomic number, Q - quantity of ratio
 
 		:param name: name for material object
 		:param ratio_type: type of ratio: "atomic" (by default) or "mass"
-		:param density: density for material (g/cm^2)
+		:param density: density for material (g/cm^3)
 		:param gas: True if gas (False by default)
-		:param color: color for material for PHITS ANGEL visualization
+		:param color: one of colors for material visualization via ANGEL
 		:param matn: material number
 		"""
 		self.elements = elements
@@ -95,9 +95,9 @@ class Material:
 		"""
 		Initialize material from databases
 
-		:param name: name of material in database
+		:param name: name of material from databases
 		:param gas: True if gas (False by default)
-		:param color: ANGEL color for visualization
+		:param color: one of colors for material visualization via ANGEL
 		:return:
 		"""
 		if color is None:
@@ -274,8 +274,8 @@ class Material:
 
 
 # Pre-defined materials as constants for default surface material
-MAT_OUTER = Material([], matn=-1)  # special material for outer world
-MAT_VOID = Material([], matn=0)  # special material for void
+MAT_OUTER = Material([], matn=-1)  # Special material for outer void
+MAT_VOID = Material([], matn=0, color="gray")  # Special material for void
 MAT_WATER = Material.database("MAT_WATER", color="blue")
 
 

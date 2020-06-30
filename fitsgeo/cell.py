@@ -2,7 +2,7 @@ import itertools
 from .material import Material, MAT_WATER
 
 # Counter for objects, every new object will have n+1 surface number
-cell_counter = itertools.count(2)  # 1 reserved for default outer
+cell_counter = itertools.count(100)
 
 created_cells = []  # All objects after initialisation go here
 
@@ -15,9 +15,9 @@ class Cell:  # superclass with common properties/methods for all surfaces
 		"""
 		Define cell
 
-		:param cell_def: list with surfaces groups and the Boolean operators,
+		:param cell_def: list with regions and the Boolean operators,
 			⊔(blank)(AND), :(OR), and #(NOT). Parentheses ( and ) will be added
-			automatically for surfaces groups
+			automatically for regions
 
 		:param name: name for object
 		:param material: material associated with cell
@@ -129,25 +129,20 @@ class Cell:  # superclass with common properties/methods for all surfaces
 		"""
 		# ⊔(blank)(AND), :(OR), and #(NOT) must be used to treat the regions.
 		cell_def = ""
-		for group in self.cell_def:
-			if group == " " or group == ":" or group == "#":
-				cell_def += group
-			elif group != " " or group != ":" or group != "#":
-				cell_def += f"({group[:-1]})"
+		for regions in self.cell_def:
+			if regions == " " or regions == ":" or regions == "#":
+				cell_def += regions
+			elif regions != " " or regions != ":" or regions != "#":
+				cell_def += f"({regions[:-1]})"
 			else:
 				raise ValueError("cell_def incorrect!")
 
-		if self.material.matn == -1:
+		if self.material.matn < 1:  # For void and outer
 			txt = \
-				f"    1 {self.material.matn}  " + \
+				f"    {self.cn} {self.material.matn}  " + \
 				f"{cell_def}" + \
-				f" $ name: 'OUTER WORLD' \n"
+				f" $ name: '{self.name}' \n"
 			return txt
-
-		if self.material.matn < 1:  # for void or outer
-			density = ""
-		else:
-			density = str(-self.material.density)
 
 		if self.volume is None:
 			volume = ""
@@ -156,6 +151,6 @@ class Cell:  # superclass with common properties/methods for all surfaces
 
 		txt = \
 			f"    {self.cn} {self.material.matn}  " + \
-			f"{density}  {cell_def}  {volume}" + \
+			f"{self.material.density}  {cell_def}  {volume}" + \
 			f" $ name: '{self.name}' "
 		return txt
