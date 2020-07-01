@@ -56,8 +56,8 @@ fg.create_scene(ax_length=5)  # Create scene before draw
 
 # Draw snake
 for s in snake:
-	s.draw(label_center=True)
+	s.draw()
 hat.draw(truncated=False)  # Difficulties with truncated cone =(
 void.draw()
 
-fg.phits_export()  # Export sections
+fg.phits_export(to_file=True, inp_name="snake")  # Export sections
