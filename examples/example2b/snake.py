@@ -35,9 +35,8 @@ void = fg.RCC(
 		snake[0].y0,
 		snake[0].z0], h=[4, 0, 0], r=3, material=fg.MAT_VOID)
 
-outer_void = fg.Cell([+void], material=fg.MAT_OUTER)
-
 # Define cells
+outer_void = fg.Cell([+void], material=fg.MAT_OUTER)
 cells = []
 for i in range(len(snake)):
 	cells.append(
