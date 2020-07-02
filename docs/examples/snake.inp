@@ -1,0 +1,179 @@
+[ Title ]
+    Example2b: Snake!
+    Illustrative example of FitsGeo usage
+    Shows how to create multiple (repeating) objects with some math laws
+
+[ Parameters ]
+	icntl = 11		# (D=0) 3:ECH 5:ALL VOID 6:SRC 7,8:GSH 11:DSH 12:DUMP
+    #icntl = 0      # (D=0) 3:ECH 5:ALL VOID 6:SRC 7,8:GSH 11:DSH 12:DUMP
+    itall = 1
+    istdev = -1     # (D=0) Control parameter for statistical uncertainty calculation type and restart mode.
+    negs = 1
+
+    maxcas = 1000    # (D=10) number of particles per one batch
+    maxbch = 100000     # (D=10) number of batches
+
+[ Source ]
+	s-type = 9		
+	proj = proton
+    x0 = 2
+    y0 = 0
+    z0 = 0.132
+	e0 = 100.0	         
+    r0 = 0.0      
+    dir = all            
+
+[ Material ]
+    mat[1] H 2.0 O 1.0  GAS=0 $ name: 'MAT_WATER'
+    mat[2] H -0.1 C -0.204 N -0.042 O -0.645 Na -0.002 P -0.001 S -0.002 Cl -0.003 K -0.001  GAS=0 $ name: 'MAT_SKIN_ICRP'
+    mat[3] H 4.0 C 2.0  GAS=0 $ name: 'MAT_POLYETHYLENE'
+
+[ Mat Name Color ]
+    mat name    size    color
+    1   {MAT\_WATER}    1.00    blue
+    2   {MAT\_SKIN\_ICRP}   1.00    green
+    3   {MAT\_POLYETHYLENE} 1.00    blue
+
+[ Surface ]
+    1   SPH  -1.3673469387755102 0 -0.7672719285390251  0.027723013645953594 $ name: 'SPH' (sphere) x0 y0 z0 R
+    2   SPH  -1.2653061224489797 0 -0.6606685327429188  0.02829460213179771 $ name: 'SPH' (sphere) x0 y0 z0 R
+    3   SPH  -1.163265306122449 0 -0.502391908191501  0.02887797553400489 $ name: 'SPH' (sphere) x0 y0 z0 R
+    4   SPH  -1.0612244897959182 0 -0.31087406445720084  0.029473376832021225 $ name: 'SPH' (sphere) x0 y0 z0 R
+    5   SPH  -0.9591836734693877 0 -0.10612250568576122  0.03008105401500263 $ name: 'SPH' (sphere) x0 y0 z0 R
+    6   SPH  -0.8571428571428572 0 0.09222119831628449  0.0307012601851042 $ name: 'SPH' (sphere) x0 y0 z0 R
+    7   SPH  -0.7551020408163263 0 0.26663740363716293  0.031334253662899186 $ name: 'SPH' (sphere) x0 y0 z0 R
+    8   SPH  -0.6530612244897958 0 0.4031539294877735  0.031980298094971465 $ name: 'SPH' (sphere) x0 y0 z0 R
+    9   SPH  -0.5510204081632653 0 0.49233751776643636  0.032639662563726336 $ name: 'SPH' (sphere) x0 y0 z0 R
+    10   SPH  -0.44897959183673475 0 0.5297951558796689  0.033312621699465396 $ name: 'SPH' (sphere) x0 y0 z0 R
+    11   SPH  -0.34693877551020424 0 0.516178133105813  0.03399945579477215 $ name: 'SPH' (sphere) x0 y0 z0 R
+    12   SPH  -0.2448979591836733 0 0.4567274424263816  0.03470045092125597 $ name: 'SPH' (sphere) x0 y0 z0 R
+    13   SPH  -0.1428571428571428 0 0.36043778735561943  0.035415899048703105 $ name: 'SPH' (sphere) x0 y0 z0 R
+    14   SPH  -0.04081632653061229 0 0.23894605136204328  0.03614609816668431 $ name: 'SPH' (sphere) x0 y0 z0 R
+    15   SPH  0.06122448979591866 0 0.10526682529176924  0.03689135240866978 $ name: 'SPH' (sphere) x0 y0 z0 R
+    16   SPH  0.16326530612244916 0 -0.027498125343700826  0.03765197217870301 $ name: 'SPH' (sphere) x0 y0 z0 R
+    17   SPH  0.26530612244897966 0 -0.1473571496828118  0.03842827428068646 $ name: 'SPH' (sphere) x0 y0 z0 R
+    18   SPH  0.36734693877551017 0 -0.2444312783541894  0.03922058205033278 $ name: 'SPH' (sphere) x0 y0 z0 R
+    19   SPH  0.46938775510204067 0 -0.3116862365829553  0.040029225489836576 $ name: 'SPH' (sphere) x0 y0 z0 R
+    20   SPH  0.5714285714285716 0 -0.34534859980043214  0.040854541405322846 $ name: 'SPH' (sphere) x0 y0 z0 R
+    21   SPH  0.6734693877551021 0 -0.34499303885518234  0.04169687354712925 $ name: 'SPH' (sphere) x0 y0 z0 R
+    22   SPH  0.7755102040816326 0 -0.31331851066930916  0.04255657275298077 $ name: 'SPH' (sphere) x0 y0 z0 R
+    23   SPH  0.8775510204081636 0 -0.2556581135852169  0.04343399709411627 $ name: 'SPH' (sphere) x0 y0 z0 R
+    24   SPH  0.9795918367346941 0 -0.1792880209486128  0.04432951202442788 $ name: 'SPH' (sphere) x0 y0 z0 R
+    25   SPH  1.0816326530612246 0 -0.09261403493598512  0.04524349053267528 $ name: 'SPH' (sphere) x0 y0 z0 R
+    26   SPH  1.183673469387755 0 -0.004319265460356921  0.04617631329783845 $ name: 'SPH' (sphere) x0 y0 z0 R
+    27   SPH  1.2857142857142856 0 0.07744657465511029  0.04712836884767322 $ name: 'SPH' (sphere) x0 y0 z0 R
+    28   SPH  1.387755102040816 0 0.1457658580616131  0.04810005372053611 $ name: 'SPH' (sphere) x0 y0 z0 R
+    29   SPH  1.4897959183673475 0 0.1954850113560298  0.049091772630545545 $ name: 'SPH' (sphere) x0 y0 z0 R
+    30   SPH  1.591836734693878 0 0.22354449689276956  0.05010393863614837 $ name: 'SPH' (sphere) x0 y0 z0 R
+    31   SPH  1.6938775510204085 0 0.22909265869423243  0.051136973312161764 $ name: 'SPH' (sphere) x0 y0 z0 R
+    32   SPH  1.795918367346939 0 0.21339003096231585  0.052191306925362425 $ name: 'SPH' (sphere) x0 y0 z0 R
+    33   SPH  1.8979591836734695 0 0.17952922947672972  0.05326737861369591 $ name: 'SPH' (sphere) x0 y0 z0 R
+    34   SPH  2.0 0 0.1320103335494828  0.054365636569180906 $ name: 'SPH' (sphere) x0 y0 z0 R
+    35   TRC  2.0 0.054365636569180906 0.1320103335494828  0 0.07248751542557454 0  0.03624375771278727  1e-09 $ name: 'RCC' (truncated right-angle cone) [x0 y0 z0] [Hx Hy Hz] R_b R_t
+    36   RCC  -1.4673469387755103 0 -0.7672719285390251  4 0 0  3 $ name: 'RCC' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+
+[ Cell ]
+    100 -1  (36) $ name: 'Cell' 
+
+    101 2  1.09  (-1)   $ name: 'Snake Part 0' 
+    102 2  1.09  (-2)   $ name: 'Snake Part 1' 
+    103 2  1.09  (-3)   $ name: 'Snake Part 2' 
+    104 2  1.09  (-4)   $ name: 'Snake Part 3' 
+    105 2  1.09  (-5)   $ name: 'Snake Part 4' 
+    106 2  1.09  (-6)   $ name: 'Snake Part 5' 
+    107 2  1.09  (-7)   $ name: 'Snake Part 6' 
+    108 2  1.09  (-8)   $ name: 'Snake Part 7' 
+    109 2  1.09  (-9)   $ name: 'Snake Part 8' 
+    110 2  1.09  (-10)   $ name: 'Snake Part 9' 
+    111 2  1.09  (-11)   $ name: 'Snake Part 10' 
+    112 2  1.09  (-12)   $ name: 'Snake Part 11' 
+    113 2  1.09  (-13)   $ name: 'Snake Part 12' 
+    114 2  1.09  (-14)   $ name: 'Snake Part 13' 
+    115 2  1.09  (-15)   $ name: 'Snake Part 14' 
+    116 2  1.09  (-16)   $ name: 'Snake Part 15' 
+    117 2  1.09  (-17)   $ name: 'Snake Part 16' 
+    118 2  1.09  (-18)   $ name: 'Snake Part 17' 
+    119 2  1.09  (-19)   $ name: 'Snake Part 18' 
+    120 2  1.09  (-20)   $ name: 'Snake Part 19' 
+    121 2  1.09  (-21)   $ name: 'Snake Part 20' 
+    122 2  1.09  (-22)   $ name: 'Snake Part 21' 
+    123 2  1.09  (-23)   $ name: 'Snake Part 22' 
+    124 2  1.09  (-24)   $ name: 'Snake Part 23' 
+    125 2  1.09  (-25)   $ name: 'Snake Part 24' 
+    126 2  1.09  (-26)   $ name: 'Snake Part 25' 
+    127 2  1.09  (-27)   $ name: 'Snake Part 26' 
+    128 2  1.09  (-28)   $ name: 'Snake Part 27' 
+    129 2  1.09  (-29)   $ name: 'Snake Part 28' 
+    130 2  1.09  (-30)   $ name: 'Snake Part 29' 
+    131 2  1.09  (-31)   $ name: 'Snake Part 30' 
+    132 2  1.09  (-32)   $ name: 'Snake Part 31' 
+    133 2  1.09  (-33)   $ name: 'Snake Part 32' 
+    134 2  1.09  (-34)   $ name: 'Snake Part 33' 
+    135 3  0.93  (-35)   $ name: 'Hat!' 
+    136 0  (-36) (1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35) $ name: 'Vacuum' 
+
+[ T-Track ]
+    title = Track Detection in xyz mesh
+    
+    mesh =  xyz             # mesh type is xyz scoring mesh
+        x-type = 2          # x-mesh is linear given by xmin, xmax and nx
+        nx = 240            # number of x-mesh points
+        xmin = -3.0         # minimum value of x-mesh points
+        xmax = 3.0          # maximum value of x-mesh points
+
+        y-type = 1          # y-mesh is given by the below data
+        ny = 1              # number of y-mesh points
+        -0.7 0.7            # 
+
+        z-type = 2          # z-mesh is linear given by zmin, zmax and nz
+        nz = 240            # number of z-mesh points
+        zmin = -2.0         # minimum value of z-mesh points
+        zmax = 2.0          # maximum value of z-mesh points
+
+        axis = xz           # axis of output
+
+        e-type = 1          # e-mesh is given by the below data
+        ne = 1              # number of e-mesh points
+        0.0 50.0            # number of l-mesh points
+
+    unit = 1                # unit is [1/cm^2/source] fluence
+    file = track_xyz-xz.out # file name of output for the above axis
+    
+    part = all         
+    part = electron    
+    part = proton      
+    part = neutron     
+    part = photon          
+    
+    gshow = 1               # 0: no 1:bnd, 2:bnd+mat, 3:bnd+reg 4:bnd+lat
+    epsout = 1              # (D=0) generate eps file by ANGEL
+
+
+[ T-3Dshow ]
+	title = Geometry 3D
+	x0 = 0
+	y0 = 0
+	z0 = 0
+
+	w-wdt = 1
+	w-hgt = 1
+	w-dst = 20
+
+	w-mnw = 400			# Number of meshes in horizontal direction.
+	w-mnh = 400			# Number of meshes in vertical direction.
+	w-ang = 0
+
+	e-the = 90
+	e-phi = 20
+	e-dst = 50
+
+	l-the = 80
+	l-phi = 140
+	l-dst = 200*100
+
+	file = snake_3D
+	output = 3			# (D=3) Region boundary + color
+	width = 0.5			# (D=0.5) The option defines the line thickness.
+	epsout = 1
+
+[ E n d ]

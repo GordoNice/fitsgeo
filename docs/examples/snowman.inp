@@ -1,0 +1,92 @@
+[ Title ]
+	Snowman (Example3): one more example of how to use FitsGeo module
+	Illustrative example of FitsGeo usage
+	Shows general workflow
+
+[ Parameters ]
+	icntl = 11			# (D=0) 3:ECH 5:ALL VOID 6:SRC 7,8:GSH 11:DSH 12:DUMP
+
+[ Source ]
+	s-type = 2			# mono-energetic rectangular source 
+	e0 = 1				# energy of beam [MeV]
+	proj = proton		# kind of incident particle
+
+[ Material ]
+    mat[1] H 2.0 O 1.0  GAS=0 $ name: 'MAT_WATER'
+    mat[2] C 6.0  GAS=0 $ name: 'MAT_CARBON'
+    mat[3] H 2.0 C 1.0  GAS=0 $ name: 'MAT_PARAFFIN'
+
+[ Mat Name Color ]
+    mat name    size    color
+    1   {MAT\_WATER}    1.00    lightgray
+    2   {MAT\_CARBON}   1.00    black
+    3   {MAT\_PARAFFIN} 1.00    orange
+
+[ Surface ]
+    1   SPH  0 0 0  1 $ name: 'bottom' (sphere) x0 y0 z0 R
+    2   SPH  0 1 0  0.6666666666666666 $ name: 'middle' (sphere) x0 y0 z0 R
+    3   SPH  0 1.7999999999999998 0  0.4444444444444444 $ name: 'top' (sphere) x0 y0 z0 R
+    4   TRC  0 1.911111111111111 0.2222222222222222  0 0 0.7111111111111111  0.07407407407407407  0.001 $ name: 'RCC' (truncated right-angle cone) [x0 y0 z0] [Hx Hy Hz] R_b R_t
+    5   RCC  0 2.2444444444444445 0  0 0.09523809523809523 0  0.2962962962962963 $ name: 'Hat bottom' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+    6   RCC  0.0 2.3396825396825394 0.0  0.0 0.38095238095238093 0.0  0.19753086419753085 $ name: 'Hat top' (cylinder) [x0 y0 z0] [Hx Hy Hz] R
+    7   SPH  -0.13333333333333333 2.022222222222222 0.35555555555555557  0.04444444444444444 $ name: 'Left Eye' (sphere) x0 y0 z0 R
+    8   SPH  0.13333333333333333 2.022222222222222 0.35555555555555557  0.04444444444444444 $ name: 'Right Eye' (sphere) x0 y0 z0 R
+    9   SPH  0 1.2666666666666666 0.6  0.05333333333333332 $ name: 'Button1' (sphere) x0 y0 z0 R
+    10   SPH  0 1 0.6666666666666666  0.05866666666666666 $ name: 'Button2' (sphere) x0 y0 z0 R
+    11   TZ  0 1.7099999999999997 0.4444444444444444  0.014814814814814814  0.006349206349206348  0.008888888888888887 $ name: 'Mouth 1' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    12   TZ  0.04444444444444444 1.726296296296296 0.4444444444444444  0.014814814814814814  0.006349206349206348  0.008888888888888887 $ name: 'Mouth 2' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    13   TZ  -0.04444444444444444 1.726296296296296 0.4444444444444444  0.014814814814814814  0.006349206349206348  0.008888888888888887 $ name: 'Mouth 3' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    14   TZ  -0.08888888888888888 1.7485185185185181 0.4444444444444444  0.014814814814814814  0.006349206349206348  0.008888888888888887 $ name: 'Mouth 4' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    15   TZ  0.08888888888888888 1.7485185185185181 0.4444444444444444  0.014814814814814814  0.006349206349206348  0.008888888888888887 $ name: 'Mouth 5' (torus, with z rotational axis) [x0 y0 z0] A(R) B C
+    16   SPH  0.0 0.0 0.0  3 $ name: 'Outer edge' (sphere) x0 y0 z0 R
+
+[ Cell ]
+    100 -1  (16) $ name: 'Outer Void' 
+
+    101 0  (-16 1 2 3 5 6 4 7 8 9 10 11 12 13 14 15) $ name: 'Inner Cell' 
+
+    102 1  1.0  (-1 2)   $ name: 'Bottom Cell' 
+    103 1  1.0  (-2 9 10 3)   $ name: 'Middle Cell' 
+    104 1  1.0  (-3 4 7 8)   $ name: 'Top Cell' 
+    105 2  2.0  (-9)  VOL=0.0006354549881038906 $ name: 'Button1 Cell' 
+    106 2  2.0  (-10)  VOL=0.0008457905891662785 $ name: 'Button2 Cell' 
+    107 2  2.0  (-11)  VOL=1.6504139569396266e-05 $ name: 'Mouth 1 Cell' 
+    108 2  2.0  (-12)  VOL=1.6504139569396266e-05 $ name: 'Mouth 2 Cell' 
+    109 2  2.0  (-13)  VOL=1.6504139569396266e-05 $ name: 'Mouth 3 Cell' 
+    110 2  2.0  (-14)  VOL=1.6504139569396266e-05 $ name: 'Mouth 4 Cell' 
+    111 2  2.0  (-15)  VOL=1.6504139569396266e-05 $ name: 'Mouth 5 Cell' 
+    112 2  2.0  (-7)  VOL=0.00036774015515271454 $ name: 'Left Eye Cell' 
+    113 2  2.0  (-8)  VOL=0.00036774015515271454 $ name: 'Right Eye Cell' 
+    114 3  0.89  (-4)  VOL=0.004141907421006144 $ name: 'Carrot Cell' 
+    115 2  2.0  (-5)  VOL=0.026267153939479614 $ name: 'Hat bottom Cell' 
+    116 2  2.0  (-6)  VOL=0.04669716255907488 $ name: 'Hat top Cell' 
+
+[ T-3Dshow ]
+	title = Geometry 3D
+	x0 = 0
+	y0 = 1
+	z0 = 0
+
+	w-wdt = 4
+	w-hgt = 4
+	w-dst = 10
+
+	w-mnw = 400		# Number of meshes in horizontal direction.
+	w-mnh = 400		# Number of meshes in vertical direction.
+	w-ang = 0
+
+	e-the = 40
+	e-phi = 120
+	e-dst = 100
+
+	l-the = 80
+	l-phi = 140
+	l-dst = 200*100
+
+	file = snowman_3D
+	output = 3		# (D=3) Region boundary + color
+	width = 0.5		# (D=0.5) The option defines the line thickness.
+
+	epsout = 1
+
+[ E n d ]

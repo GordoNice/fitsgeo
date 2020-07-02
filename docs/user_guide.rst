@@ -1051,7 +1051,7 @@ Example 0: The Column
 		:linenos:
 		:language: python		
 
-In this example we will create column as shown on the picture above. The full FitsGeo code for this example is also shown above.
+In this example we will create the column as it shown on the picture above. The full FitsGeo code for this example is also shown above.
 
 In the begining we need to import FitsGeo:
 
@@ -1060,7 +1060,7 @@ In the begining we need to import FitsGeo:
 	:lines: 3
 	:language: python		
 
-Here we import FitsGeo with alias ``fg`` just to make it shorter.
+Here we import FitsGeo with ``fg`` alias to make it shorter. Thus, to get the FitsGeo functionality we will use ``fg``, not ``fitsgeo``.
 
 First stage of geometry setup is to understand which materials we will need. In this example we only need 2 materials, which can be easily obtained through the predefined databases:
 
@@ -1069,7 +1069,7 @@ First stage of geometry setup is to understand which materials we will need. In 
 	:lines: 5-7
 	:language: python
 
-This is concrete for column base and bronze for sphere on top. The main workflow can be as follows: find the desired materials in the `Predefined Materials <material.html>`_ section, see if all properties in the database are ok, and define this material, or if something is not as you would like, define this material manually, or change some property (e.g. density) in predefined material just after initialization.
+This is concrete for column base and bronze for sphere on top. The main workflow can be as follows: find the desired materials in the `Predefined Materials <material.html>`_ section, see if all properties in the database are ok, and define this material, if something is not as you expect, define this material manually, or change some property (e.g. density) in predefined material just after initialization.
 
 After that we can create default scene as:
 
@@ -1087,7 +1087,7 @@ Next part of code defines surfaces for geometry: cylinder, truncated cone and pl
 	:lines: 11-23
 	:language: python
 
-Here, the advantage of FitsGeo use getting more clear: we don't need to operate with absolute values of every surface. We can just define our "base" surface and place every other surface relatively from it (or from any another surface). Only the ``base`` has absolute values in parameters, the other surfaces are placed and sized relative to other surfaces. For example: base point of ``cone`` set as ``base.h``, base radius of ``cone`` set as radius of ``base`` and so on. In this case, if we change any parameter of ``base`` other surfaces changes accordingly. 
+Here, the advantage of FitsGeo use getting more clear: we don't need to operate with absolute values of every surface. We can just define our "base" surface and place every other surface relatively from it (or from any other surface). Only the ``base`` has absolute values in parameters, the other surfaces are placed and sized relative to other surfaces. For example: base point of ``cone`` set as ``base`` height vector coordinates, base radius of ``cone`` set as radius of ``base`` and so on. In this case, if we change any parameter of ``base`` other surfaces changes accordingly. 
 
 After surfaces are defined, we need to define cells:
 
@@ -1143,7 +1143,6 @@ In this example, we can see almost all the implemented features and aspects of w
 		:linenos:
 		:language: python
 
-
 First of all, we need to import FitsGeo:
 
 .. literalinclude:: examples/example1.py
@@ -1153,6 +1152,11 @@ First of all, we need to import FitsGeo:
 
 In line **6**, we call the command to display all implemented surface classes in the console:
 
+.. literalinclude:: examples/example1.py
+	:lineno-start: 6
+	:lines: 6
+	:language: python
+
 The part of the code below shows how to create and configure the scene:
 
 .. literalinclude:: examples/example1.py
@@ -1160,9 +1164,14 @@ The part of the code below shows how to create and configure the scene:
 	:lines: 8-12
 	:language: python
 
-Here we use special ``ax_l`` variable for axes length. We can change background of scene through VPython ``background`` parameter. This is a VPython vector with color. For convenience, defined through ``rgb_to_vector`` function with RGB colors.
+Here we use special ``ax_l`` variable for axes length. We can also change background of scene through VPython ``background`` parameter. This is a VPython color vector. In this case, background defined through ``rgb_to_vector`` function with RGB colors.
 
-In the lines **14-23** we define materials for future geometry in two ways: from databases and manually for Polyethylene.
+In the lines **14-23** we define materials for future geometry in two ways: from databases and manually for Polyethylene:
+
+.. literalinclude:: examples/example1.py
+	:lineno-start: 14
+	:lines: 14-23
+	:language: python
 
 Starting from line **25** we define surfaces. Following part of code defines planes:
 
@@ -1171,9 +1180,9 @@ Starting from line **25** we define surfaces. Following part of code defines pla
 	:lines: 26-30
 	:language: python
 
-Here, ``p1`` is a general plane: a plane that is not vertical with axes. ``px1``, ``py1``, ``pz1`` --- special cases of planes vertical with $X$, $Y$ and $Z$ axis accordingly. If we provide ``vert`` parameter with vertical axis, only ``d`` parameter for plane equation has meaning, and other parameters in plane equation can be any. We can also define these special cases only using the general plane, not providing ``vert``. In this example we need planes only for visualization purposes and we don’t use them for cells definitions, but, as any other surface, plane can be used for cells definitions as well. Also, unlike to other surfaces, we don’t need to pass materials to planes, colors are set depending on vertical axis and for general plane it is a mix of colors.
+Here, ``p1`` is a general plane: a plane that is not vertical with any axis. ``px1``, ``py1``, ``pz1`` --- special cases of planes vertical with $X$, $Y$ and $Z$ axis accordingly. If we provide ``vert`` parameter with vertical axis, only ``d`` parameter for plane equation has meaning, and other parameters in plane equation can be any. We can also define these special cases only using the general plane, not providing ``vert``. In this example we need planes only for demonstration of feature and we don’t use them for cells definitions, but, as any other surface, plane can be used for cells definitions as well. Also, unlike to other surfaces, we don’t need to pass materials to planes, colors are set depending on vertical axis and for general plane it is a mix of colors.
 
-In the lines **32--75** we define surfaces from every class of ``surface`` module of FitsGeo. Every surface has common with other surfaces parameters and specific ones. One more ``void`` surface is defined:
+In the lines **32--75** we define surfaces from every class of ``surface`` module of FitsGeo. Every surface has common with other surfaces parameters and specific ones. After that, one more ``void`` surface is defined:
 
 .. literalinclude:: examples/example1.py
 	:lineno-start: 77
@@ -1182,7 +1191,7 @@ In the lines **32--75** we define surfaces from every class of ``surface`` modul
 
 We need this surface to contain all our surfaces inside. Later we will assign cell with it (this can be filled with vacuum or air material).
 
-All defined parameters of surfaces can be changed later as it shown on the lines **80--115**. These lines demonstrate how we can easily define new positions or sizes for our objects relative to other objects. This is the advantage of OOP way of geometry creation.
+All defined parameters of surfaces can be changed later as shown in lines **80--115**. These lines demonstrate how we can easily define new positions or sizes for our objects relative to other objects. This is the advantage of OOP way of geometry creation.
 
 After that, we can draw all surfaces. We can use different approaches for that. Next part of code shows how to draw planes:
 
@@ -1191,9 +1200,9 @@ After that, we can draw all surfaces. We can use different approaches for that. 
 	:lines: 117-119
 	:language: python
 
-Because plane have infinite sizes, we need to pass special ``size`` parameter to the ``draw`` method. This parameter limits plane and allows to draw this plane as square (if plane is vertical) or as parallelogram for general case.
+Since the plane has infinite dimensions, we need to pass a special ``size`` parameter to the ``draw`` method. This parameter limits plane and allows to draw this plane as square (if plane is vertical) or as parallelogram for general case.
 
-We can draw every surface separately as on the code:
+We can draw every surface separately as it shown below:
 
 .. literalinclude:: examples/example1.py
 	:lineno-start: 121
@@ -1209,9 +1218,9 @@ Alternatively, we can define surfaces through for cycle:
 	:lines: 127-129
 	:language: python
 
-This works if we don't need to provide additional parameters to the ``draw`` method.
+This works if we don't need to provide specific additional parameters to the ``draw`` method.
 
-The following image shows another advantage: interactive visualization. We can see even really small parts of created geometry, like the ring on the table. And it is not so easy to obtain using only ANGEL visualization in PHITS.
+The following image shows another advantage: interactive visualization. We can see even really small parts of created geometry, like the ring on the table. And it is not so easy to obtain using only ANGEL visualization in PHITS, because we will need to change camera settings accordingly. 
 
 .. figure:: images/example1_fitsgeo_closeshot.png
 	:align: center
@@ -1246,23 +1255,23 @@ After that, we need to define cells for inner spaces of surfaces:
 
 Here, we can simply define empty ``cells`` list and append it using for loop through surfaces in list. But, this will not work for some of them: cells with ``box_l``, ``box_l`` and ``ball`` surfaces must exclude ``cyl`` surface. Thus, we need to reconfigure cells ``0``, ``1``, ``4`` in ``cells`` list. Again, this is really flexible and not a problem.
 
-The part of code below, shows how we can print all properties of surfaces in console:
+The part of the code below shows how we can print all properties of surfaces in the console:
 
 .. literalinclude:: examples/example1.py
 	:lineno-start: 155
 	:lines: 155-158
 	:language: python
 
-We use ``created_surfaces`` list for that. Every surface has a ``print_properties`` method, which prints all properties of surface in console.
+We use the ``created_surfaces`` list for that. Every surface has a ``print_properties`` method, which prints all properties of surface in the console.
 
-And the final part exports all defined sections to PHITS:
+And the final part of code exports all defined sections to PHITS:
 
 .. literalinclude:: examples/example1.py
 	:lineno-start: 160
 	:lines: 160-161
 	:language: python
 
-The full code of the PHITS input file, as well as the PHITS visualization, are shown below. Note that the sections exported from FitsGeo are on the **14--68** lines.
+The full code of the PHITS input file, as well as the PHITS visualization, are shown below. Note that the sections exported from FitsGeo are located on the **14--68** lines.
 
 .. figure:: images/example1_3D.png
 	:align: center
@@ -1312,14 +1321,14 @@ Create scene with 10 cm of axes length:
 	:lines: 6-7
 	:language: python
 
-Define 2 materials from predefined databases with ``"yellow"`` and ``"pastelbrown"`` colors for future spheres and "hats":
+Define 2 materials from predefined databases with ``"yellow"`` and ``"pastelbrown"`` colors for future spheres and their "hats":
 
 .. literalinclude:: examples/example2a.py
 	:lineno-start: 9
 	:lines: 9-11
 	:language: python
 
-So, after these preparation steps, let’s say we need some structure with repeating parts. In this example it is spheres and “hats” on top of these spheres. With the help of Python and object-oriented way of geometry development, this will be easy. First, let’s create empty lists for future surfaces and cells and set how many objects we need along each axis:
+After these preparation steps, let's say we need some structure with repeating parts. In this example, these are spheres and “hats” on top of these spheres. With the help of Python and object-oriented way of geometry development, this will be easy. First, let's create empty lists for future surfaces and cells and set how many objects we need along each axis:
 
 .. literalinclude:: examples/example2a.py
 	:lineno-start: 13
@@ -1333,11 +1342,11 @@ The next part of code have 3 for loops:
 	:lines: 18-40
 	:language: python
 
-On each step we define one more sphere with hat: surface and cell objects for each of them. Parameters for every new hat are set according to sphere parameters. 
+On each iteration we define one more sphere with hat: surface and cell objects for each of them. Parameters for every new hat are set according to sphere parameters. 
 
-The rest part of the code defines last cell objects for void and “outer void”, draws all surfaces and exports sections to PHITS input. Similarly, we can easily create more repeating objects depending on our needs.
+The rest part of the code (lines **42--62**) defines last cell objects for void and “outer void”, draws all surfaces and exports sections to PHITS input, just like it was done in the examples discussed previously. Similarly, we can easily create more repeating objects depending on our needs.
 
-Full PHITS input file and Visualization of geometry via ANGEL are below. The highlighted part of code --- exported sections from FitsGeo.
+Full PHITS input file and visualization of geometry via ANGEL are shown below. The highlighted part of the code --- exported sections from FitsGeo.
 
 .. toggle-header::
 	:header: **Example 2(a): PHITS input**
@@ -1356,7 +1365,7 @@ Full PHITS input file and Visualization of geometry via ANGEL are below. The hig
 Example 2(b): Snake!
 ====================
 
-.. rubric:: Illustrative example of FitsGeo usage. Shows how to create multiple (repeating) objects with some math laws
+.. rubric:: Illustrative example of FitsGeo usage. Shows how to create multiple (repeating) objects according to some math laws
 
 .. figure:: images/fitsgeo_snake.png
 	:align: center
@@ -1364,12 +1373,111 @@ Example 2(b): Snake!
 
 	**Example 2(b): Snake! FitsGeo visualization**
 
+This example shows how we can define multiple surface objects according to some math laws. The final result of visualization via FitsGeo is in the picture above. The full code of the example is shown below.
+
 .. toggle-header::
 	:header: **Example 2(b): Snake!**
 
 	.. literalinclude:: examples/snake.py
 		:linenos:
 		:language: python
+
+Just like in the previous examples, we need to import FitsGeo first:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 4
+	:lines: 4
+	:language: python
+
+After that, we need to import some additional functions from numpy package:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 5
+	:lines: 5
+	:language: python
+
+This gives us some mathematical functions with which we can define mathematical expressions later.
+
+So, let's say we need to define geometry of snake (why not?). This snake will have some number of body segments --- spheres. Also, to make this example a bit more harder (and funnier), let's say that we want to put a small hat on the snake's head.
+
+Segments of the snake's body will be placed and sized according to the defined mathematical laws. Equation for positions of sphere segments on the $xz$-plane:
+
+	$z(x) = 5\cdot\sin(3x)\cdot0.3\exp(-0.4x)$
+
+And on the $y$ coordinate it is 0 everywhere (but we can define some law for this coordinate as well). The graph for this equation is in the figure below.
+
+.. figure:: images/Graph_pos.png
+	:align: center
+	:figclass: align-center
+
+	**Math law for positions of snake's segments (spheres)**
+
+The law for radius of spheres:
+
+	$r(x) = 0.02\exp(0.2x)$
+
+This law will give us slow exponential (almost linear) increase in the radius of spheres depending on the $x$ coordinate. The graph for this law is on the figure below.
+
+.. figure:: images/Graph_r.png
+	:align: center
+	:figclass: align-center
+
+	**Math law for radiuses of snake's segments (spheres)**
+
+Part of the Python code for math expressions:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 7
+	:lines: 7-11
+	:language: python
+
+Here, we create 50 evenly spaced $x$ values from 0 to 5. And define laws according to the equations above.
+
+In the lines **13--15** we define materials for snake:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 13
+	:lines: 13-15
+	:language: python
+
+This time let it be ICRP skin for body segments and polyethylene for hat from predefined databases. 
+
+Next part of the code will generate sphere segments according to laws for positions and radiuses:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 17
+	:lines: 17-20
+	:language: python
+
+Each new iteration appends new part of body with specific position and radius to the ``snake`` list. Pay attention, that here we use $x$ values from i=16 and make a shift by 3 by the $x$ coordinate in case to place our snake almost in the center of coordinates. 
+
+In lines **22--30** we create our "hardest" part with placing the hat on top of the snake's head. This task isn't actually hard with FitsGeo:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 22
+	:lines: 22-30
+	:language: python
+
+All we need is to take the last part of ``snake`` list --- the head of snake (line **22**). After that we can create the cone (hat) with parameters relative to that snake's head.
+
+Last part of the code is about the same as in the another examples. Here we define ``void`` surface object, ``outer_void`` cell object, cells for every part of snake and for the hat. Define scene with ``5`` axes length, draw all surfaces and export everything to the file.
+
+In the line **59** we use special parameter for hat visualization. In current release visualization of truncated cone might lead to some unstability: sometimes these cones are drawn not as expected with different sizes. To avoid this, we can set ``truncated`` parameter to ``False`` state, in that case even if cone is truncated, visualization will be performed as for the not truncated case:
+
+.. literalinclude:: examples/snake.py
+	:lineno-start: 59
+	:lines: 59
+	:language: python
+
+Full PHITS input file and visualization of geometry via ANGEL are shown below. The highlighted part of the code --- exported sections from FitsGeo.
+
+.. toggle-header::
+	:header: **Example 2(b): Snake! PHITS input**
+
+	.. literalinclude:: examples/snake.inp
+		:linenos:
+		:emphasize-lines: 26-113
+		:language: none	
 
 .. figure:: images/snake_3D.png
 	:align: center
@@ -1386,7 +1494,9 @@ Example 3: Snowman
 	:align: center
 	:figclass: align-center
 
-	**Example 3: Snowman. FiotsGeo visualization**
+	**Example 3: Snowman. FitsGeo visualization**
+
+This example shows general workflow of work with FitsGeo, example contains all discussed features to build complex geometry --- pretty snowman. The final result of visualization via FitsGeo is in the picture above and the full code of the example is shown below.
 
 .. toggle-header::
 	:header: **Example 3: Snowman**
@@ -1395,15 +1505,20 @@ Example 3: Snowman
 		:linenos:
 		:language: python
 
+The main idea in this example was to make the bottom snowball of snowman and to set every other part of snowman relative to this object. This example doesn't need any additional commentaries, every feature was discussed in the previous examples. Just try to run the example and look carefully how the geometry was set in the code.
+
+Full PHITS input file and visualization of geometry via ANGEL are shown below. The highlighted part of the code --- exported sections from FitsGeo.
+
+.. toggle-header::
+	:header: **Example 3: Snowman. PHITS input**
+
+	.. literalinclude:: examples/snowman.inp
+		:linenos:
+		:emphasize-lines: 14-62
+		:language: none	
+
 .. figure:: images/snowman_3D.png
 	:align: center
 	:figclass: align-center
 
 	**Example 3: Snowman. PHITS visualization**
-
-.. .. literalinclude:: examples/example1.py
-.. 	:linenos:
-.. 	:lineno-start: 3
-.. 	:emphasize-lines: 1, 2
-.. 	:lines: 3-5
-.. 	:language: python			

@@ -1,5 +1,3 @@
-.. image:: images/logo.*
-
 ===============
 Getting Started
 ===============
@@ -9,7 +7,7 @@ Getting Started
 Introduction
 ============
 
-`FitsGeo`_ is a Python package that simplifies the most time-consuming part of the work associated with developing geometry in the Monte Carlo (MC) particle transport code `PHITS`_, other codes such as MCNP, FLUKA, may be added in future releases. To start MC calculations user need to create so-called input file for **PHITS** code and default way of creation geometry section in this input file may be a bit difficult especially with complicated geometry cases. Also, visualization of created geometry in PHITS is limited to only 2D non-interactive representation which makes process of geometry construction way more difficult. **FitsGeo** simplifies this process, user can define geometry surfaces as Python objects with all coming benefits of object-oriented programming paradigm. The part related to visualization in FitsGeo is based on `VPython`_, this way, all defined surfaces in user geometry are represented in 3D and can be viewed in browser from any side. In addition to surfaces, user can also define objects for other sections (materials and cells).
+`FitsGeo`_ is a Python package that simplifies the most time-consuming part of the work associated with developing geometry in the Monte Carlo (MC) particle transport code `PHITS`_, other codes such as MCNP, FLUKA, may be added in future releases. To start MC calculations user need to create so-called input file for **PHITS** code and default way of creation geometry section in this input file may be a bit difficult especially with complicated geometry cases. Also, visualization of created geometry in PHITS is limited to only 2D non-interactive representation which makes process of geometry construction way more difficult. **FitsGeo** simplifies this process, user can define geometry surfaces as Python objects with all coming benefits of object-oriented programming paradigm. The part related to visualization in FitsGeo is based on `VPython`_, this way, all defined surfaces in user geometry are represented in 3D and can be viewed in browser from any side interactively. In addition to surfaces, user can also define objects for other sections (materials and cells).
 
 **FitsGeo** provides bunch of modules dedicated to generation of certain sections of PHITS input files. Being Python package, **FitsGeo** works under any operating system --- only Python 3 interpreter with additional modules have to be installed. Very basic skills in programming with Python required to start. **FitsGeo** package provides bunch of usage examples, therefore, even for the new Python user it will be easy to develop their own geometries for future research.
 
