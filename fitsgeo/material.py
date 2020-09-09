@@ -112,9 +112,9 @@ class Material:
 
 			elements =\
 				[
-					[0,
-					 int(formula[i]),
-					 float(formula[i+1])] for i in range(0, n*2, 2)]
+					[
+						0, int(formula[i]),
+						float(formula[i+1])] for i in range(0, n*2, 2)]
 
 			# Sum all ratios
 			total_sum = 0

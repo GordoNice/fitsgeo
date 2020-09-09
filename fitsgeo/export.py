@@ -1,11 +1,13 @@
 from .surface import created_surfaces
 from .material import created_materials
 from .cell import created_cells
+import sys
 
 
 def phits_export(
 		to_file=False, inp_name="example",
-		export_surfaces=True, export_materials=True, export_cells=True):
+		export_surfaces=True, export_materials=True, export_cells=True,
+		add_comment=""):
 	# TODO: improve export to file
 	"""
 	Function for printing defined sections in PHITS format, uses created_surfaces,
@@ -16,7 +18,13 @@ def phits_export(
 	:param export_surfaces: flag for [ Surface ] section export
 	:param export_materials: flag for [ Material ] section export
 	:param export_cells: flag for [ Cell ] section export
+	:param add_comment: additional commentaries in title section
 	"""
+	text_title = "[ Title ]\n"
+	text_title += f"\t{sys.argv[0][:-3]} PHITS input file\n"
+	text_title += f"\tgeometry generated with FitsGeo\n"
+	text_title += f"\t{add_comment}\n"
+	# ------------------------------------------------------------------------------
 	text_materials = ""
 	if not created_materials:
 		print("No material is defined!\ncreated_materials list is empty!")
@@ -52,10 +60,11 @@ def phits_export(
 		for c in created_cells:
 			text_cells += c.phits_print() + "\n"
 # ------------------------------------------------------------------------------
-	print(text_materials+text_surfaces+text_cells)
+	print(text_title+text_materials+text_surfaces+text_cells)
 
 	if to_file:
 		with open(f"{inp_name}_FitsGeo.inp", "w", encoding="utf-8") as f:
+			f.write(text_title)
 			if export_materials:
 				f.write(text_materials)
 			if export_surfaces:
