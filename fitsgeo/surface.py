@@ -243,7 +243,9 @@ class Surface:  # superclass with common properties/methods for all surfaces
 		else:
 			self.__opacity = opacity
 
-		if self.material.matn == 0:  # For vacuum even more transparent
+		# For vacuum even more transparent
+		# TODO: pass opacity in draw method
+		if self.material.matn == 0:
 			self.__opacity = 0.02
 
 

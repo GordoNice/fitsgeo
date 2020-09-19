@@ -24,7 +24,7 @@ def phits_export(
 	text_title += f"\t{sys.argv[0][:-3]} PHITS input file\n"
 	text_title += f"\tgeometry generated with FitsGeo\n"
 	text_title += f"\t{add_comment}\n"
-	# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 	text_materials = ""
 	if not created_materials:
 		print("No material is defined!\ncreated_materials list is empty!")
@@ -39,6 +39,8 @@ def phits_export(
 		for mat in created_materials:
 			if mat.matn > 0:  # To avoid outer and void
 				mat_name = "{"+mat.name.replace('_', '\\_')+"}"
+				mat_name = mat_name.replace("(", "\\(").replace(")", "\\)")
+
 				text_materials += \
 					f"\t{mat.matn}\t{mat_name}\t1.00\t{mat.color}\n"
 # ------------------------------------------------------------------------------
@@ -60,6 +62,13 @@ def phits_export(
 		for c in created_cells:
 			text_cells += c.phits_print() + "\n"
 # ------------------------------------------------------------------------------
+	# TODO: module for T-Gshow
+	# text_tgshow = "[ T-Gshow ]\n"
+
+
+
+# ------------------------------------------------------------------------------
+
 	print(text_title+text_materials+text_surfaces+text_cells)
 
 	if to_file:

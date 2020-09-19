@@ -137,20 +137,18 @@ class Cell:  # superclass with common properties/methods for all surfaces
 			else:
 				raise ValueError("cell_def incorrect!")
 
-		if self.material.matn < 1:  # For void and outer
-			txt = \
-				f"    {self.cn} {self.material.matn}  " + \
-				f"{cell_def}" + \
-				f" $ name: '{self.name}' \n"
-			return txt
-
 		if self.volume is None:
 			volume = ""
 		else:
 			volume = f"VOL={self.volume}"
 
+		if self.material.matn < 1:  # For void and outer
+			density = ""
+		else:
+			density = -self.material.density
+
 		txt = \
 			f"    {self.cn} {self.material.matn}  " + \
-			f"{self.material.density}  {cell_def}  {volume}" + \
+			f"{density}  {cell_def}  {volume}" + \
 			f" $ name: '{self.name}' "
 		return txt
